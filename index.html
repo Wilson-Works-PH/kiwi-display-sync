@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiwi Display Sync — Digital signage that runs itself</title>
+    <meta
+      name="description"
+      content="Design, schedule and sync content to every screen you own. Kiwi Display Sync is the digital signage platform by Kiwi Technologies."
+    />
+    <meta name="theme-color" content="#3D0D37" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kiwi Display Sync — Digital signage that runs itself" />
+    <meta
+      property="og:description"
+      content="Design layouts, schedule campaigns, and sync every screen you own — from one friendly dashboard."
+    />
+    <meta property="og:image" content="/media/designer-preview-poster.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <script>
+      // Stamp the stored theme before first paint to avoid a flash.
+      try {
+        if (localStorage.getItem("kds:theme") === "light") {
+          document.documentElement.dataset.theme = "light";
+        }
+      } catch {}
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
