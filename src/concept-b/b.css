@@ -1,0 +1,46 @@
+/* Concept B — palette and motion primitives from the Claude Design prototype.
+   Scoped to the /b page; deliberately independent of the site theme tokens. */
+
+.msr {
+  font-family: "Material Symbols Rounded Variable";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  font-variation-settings: "opsz" 24, "FILL" 0;
+}
+
+@keyframes bspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bblink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes bfloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes bmarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

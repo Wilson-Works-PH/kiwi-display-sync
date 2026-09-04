@@ -23,6 +23,34 @@ same toolchain as the CMS frontend.
   mentions it).
 - **Don't touch the backend/CMS repos** from here; read-only for facts.
 
+## Two concepts, one repo
+
+The site has two competing versions behind a floating variant switcher
+(`src/components/VariantSwitch.tsx`, bottom-right on every page):
+
+- `/` — **Concept A** (`src/pages/Classic.tsx` + `src/sections/*`): plum/lime,
+  Fraunces, theme toggle, GSAP/Lenis motion.
+- `/b` — **Concept B** (`src/concept-b/*`): 1:1 implementation of the
+  "Kiwi Site.dc.html" prototype from the Claude Design project
+  (314fd7cf-a26b-4f84-bad6-4eb8f50616be). Paper `#F1EDE1` / ink `#2C1830` /
+  berry `#9D3A6A` / lime `#B7D24F`; Newsreader + Hanken Grotesk + Material
+  Symbols Rounded (all self-hosted via Fontsource). Its motion runtime is a
+  direct port of the prototype's script (`src/concept-b/b-motion.ts`): custom
+  cursor + lime blob, word cascade, IO reveals + counters, condensing nav that
+  inverts over dark sections, scroll-driven 3D card stage, tilt cards,
+  magnetic buttons, viewport-centered parallax. Concept B owns its palette —
+  the site theme toggle does not apply there.
+
+Deliberate deviations from the design file (don't "restore" them):
+pricing uses the real plan catalog numbers; Pro says "Website, clock & QR
+widgets" (PDF is Enterprise-only); footer/company is Kiwi Technologies with
+contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
+"Retail Solutions" name); demo links go to kiwi.wilsonworksph.com.
+Hero stats (1,284 screens / 96% online) are still the design's aspirational
+numbers — pending a decision.
+
+Any static deploy needs an SPA fallback (all paths → index.html) for `/b`.
+
 ## Architecture
 
 - `src/index.css` — raw brand tokens (`@theme`) + semantic theme tokens
