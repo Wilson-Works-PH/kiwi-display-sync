@@ -6,7 +6,7 @@ import wordmarkLime from "../../assets/brand/wordmark-lime.png";
  * Draws a piece of signage content from a description — no stock imagery.
  * Sizes use container-query units, so the same art renders as a thumbnail
  * in the dashboard and full-bleed on a simulated screen. The parent must be
- * a `container-type: inline-size` box; DisplayWall and DashboardFrame are.
+ * a `container-type: inline-size` box (StaticDevice and the features cards are).
  */
 const THEMES: Record<
   ArtTheme,

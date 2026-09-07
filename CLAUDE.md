@@ -51,100 +51,61 @@ contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
 Hero stats (1,284 screens / 96% online) are still the design's aspirational
 numbers — pending a decision.
 
-- `/` (also `/c`) — **Concept C** (`src/concept-c/*`, built 2026-09-07 from the user's
-  brief): modern light-only SaaS page whose centerpiece is an **interactive
-  demo simulation** — a mock Kiwi dashboard (left) driving three simulated
-  screens (right) through a dashboard → cloud → screens connector. Pure
-  front-end state: `demo/scenarios.ts` holds four industry presets (retail,
-  restaurant, corporate, government: screens, content, playlists, schedules,
-  defaults); `demo/useDemo.ts` is the reducer + timers (push → `syncing` →
-  `synced`/`published`, staggered fleet publishes, shared 3.2 s playlist
-  tick); `demo/ContentArt.tsx` draws every piece of "content" from a
-  description in container-query units (no stock imagery), so the same art
-  is a thumbnail in the dashboard and full-bleed on a screen. The hero
-  mockup is the same components in a second, non-interactive `useDemo`
-  instance. Brand mapping for the brief's "green accent": lime `#CEED7A`
-  buttons with plum text, leaf `#7FA060` for accents/status, plum `#2D0D29`
-  for text; Instrument Sans throughout. Scoped styles in `c.css`; the site
-  theme toggle does not apply. Pricing is the brief's Starter / Business /
-  Enterprise with "Request pricing" (no numbers) — NOTE the real plans are
-  Basic / Pro / Enterprise; bullets stay within the catalog's truths.
-  Contact links (Concept C): "Book a demo" → https://kiwi.com.ph/contact/ (the
-  company site's own Request-a-Demo page), sales → mailto:info@kiwi.com.ph, phones
-  +63 969 170 2299 / +63 2 8658 6962, showroom Greenhills, San Juan (Mon–Fri
-  9–5), socials @kiwitechnologiesph — all read off kiwi.com.ph on 2026-09-07.
-  Concepts A/B still use the older guessed contact@wilsonworksph.com.
+- `/` (also `/c`) — **Concept C** (`src/concept-c/*`): modern light-only SaaS
+  page that SHOWS the real product, roommaster.com-style (user decision
+  2026-09-07 after finding the interactive simulation "confusing"). Hero =
+  a recording of the real CMS in a browser frame (`VideoFrame.tsx`: muted,
+  looping, plays only while on screen, poster-only under reduced motion);
+  "See Kiwi in action" (`CShowcase.tsx`, section `#demo`) = one recording per
+  job, text/frame rows alternating. **All four clips are REAL recordings made
+  2026-09-07 on the local stack** (`public/media/{hero,displays,schedule,designer}-light.mp4`
+  + posters; raw takes in gitignored `public/media/raw/`): hero = Displays →
+  Storefront 01 → Content → Choose layout → default updates; displays = fleet +
+  Display Groups; schedule = week + Dayparts; designer = Media → Layouts → New
+  layout (HD Landscape, Fullscreen Media) → Add image → Preview (×1.25). The
+  image must be exactly 16:9 ("Still - Video Wall", 800×450) — a 16:10 file gets
+  cropped by the section and the user rejected that frame.
+  Re-record with `scripts/record-cms.mjs --clip <name>` (see "Recording the
+  CMS on LOCAL") and `scripts/encode-clip.sh`; the sidecar `raw/<clip>.json`
+  carries the warm-up trim point. The interactive
+  demo engine (useDemo, MobileDemo, DashboardFrame, ConnectionFlow,
+  DisplayWall, StatusChip) is DELETED — don't resurrect it. What remains of
+  `demo/`: `scenarios.ts` (industry copy + drawn content), `ContentArt.tsx`,
+  `devices.ts` + `homography.ts` + `useDevicePanel.ts` (real Kiwi renders
+  with content projected onto the measured screen quad), used by the hero-free
+  `StaticDevice` in the industries carousel and the features section.
+  Brand mapping: lime `#CEED7A` buttons with plum text, leaf `#7FA060`
+  accents/status, plum `#2D0D29` text. Pricing = the real Basic / Pro /
+  Enterprise catalog, all three tiers on identical cards with the same button and NO
+  "Most popular" badge or inverted card (team feedback 2026-09-07: "do not force them to
+  go to Pro"). Footer socials use real brand SVGs (`BRAND_PATHS`), not Material stand-ins. Contact links: "Book a demo" → https://kiwi.com.ph/contact/,
+  sales → mailto:info@kiwi.com.ph, phones +63 969 170 2299 / +63 2 8658 6962,
+  showroom Greenhills, San Juan (Mon–Fri 9–5), socials @kiwitechnologiesph —
+  all read off kiwi.com.ph on 2026-09-07. Concepts A/B still use the older
+  guessed contact@wilsonworksph.com.
   **Device renders** (`src/assets/devices/*.webp`, `demo/devices.ts`) are Kiwi's
   own product renders from kiwi.com.ph/digital-solutions (transparent PNGs →
-  trimmed webp), with each screen panel's rectangle measured in % so the demo
-  composites live content into the real hardware. The site sits behind a
-  "Checking your browser" bot check: curl gets 403/429, but a Playwright page
-  that has passed the check can `fetch()` the uploads with cookies; render an
-  `<img>` on a transparent same-origin page and element-screenshot it with
-  `omitBackground` to keep alpha (there is no `fs` inside run_code snippets).
-  Rotatable, K-type kiosk and the tabletop stay out of the demo wall (no
-  corners measured yet); the E-Poster and outdoor totem ARE angled and get the
-  homography described under Mobile-first.
-  **Mobile-first (2026-09-07 briefs, ~80% phone traffic):** below `lg` the
-  page order is hero → demo → benefit statement (desktop keeps trust strip →
-  demo; `CPage` swaps them with `useMediaQuery`). The demo is a GUIDED flow
-  (`demo/MobileDemo.tsx`, mounted `key={scenario.id}`): a large in-flow
-  LIVE DISPLAY — the scenario's first screen, for retail the portrait
-  **Indoor Digital E-Poster** "Storefront 01" at `min(44vh, 400px)` — opening
-  on "Welcome to Kiwi"; as it scrolls out, a COMPACT STICKY PREVIEW (124px
-  under the 56px header, zero flow footprint via negative margin, IO-driven)
-  shows the same screen as a 16:9 panel + "LIVE · Storefront 01" + status
-  chip, and stays until the demo leaves the middle of the viewport. CONTROL:
-  2-col content cards that only mark "✓ SELECTED" (plum 3px ring, lift, plum
-  footer) — selection never touches the live screen — then TARGET DISPLAY,
-  then a 56px contextual publish button: neutral "Publish to screen" until a
-  pick, then lime `Publish "50% off" → Storefront 01`, mirrored by a fixed
-  bottom bar while the inline button is off-screen. Publish runs Publishing…
-  → Sending to Storefront 01… → Screen syncing… → Published ✓ (~1.4 s,
-  `useDemo.publishSequence`, lime pulse on both previews, SYNCING chip) and
-  the screen changes in both; no auto-scroll; success card "Published to
-  Storefront 01 ✓" offers "Try another campaign" / "Publish to multiple
-  screens", and "Now update every screen." reveals the checklist; after that
-  publish the single device becomes a swipeable strip of the fleet. "How it
-  works" on phones is one tappable UPLOAD → CREATE → ASSIGN → PUBLISH row
-  (desktop keeps the four cards). Desktop (`lg+`) keeps the side-by-side
-  stage; `useMediaQuery` mounts only one. Mobile also has the compact nav +
-  menu sheet, the simplified hero, feature blocks, the industry snap carousel
-  (~20 % of the next card peeks) and a sticky "Book a demo" past the demo.
-  All demo tap targets ≥ 44px. Validate at 360/390/430 with reduced motion;
-  the desktop composition must never be squeezed onto phones.
-  **Mixed orientations never share a height (user, 2026-09-07: "mixing vertical
-  with horizontal… very large difference in the height"):** wherever devices
-  sit in a row — the industry carousel, the fleet strip, the desktop wall's
-  portrait side — each render is fitted into an equal CELL via
-  `devices.ts fitWidth(dev, cellHeight)` (portrait fills the height, landscape
-  is capped at the cell width, bottom-aligned so units stand on one floor).
-  Never size a row by a common height: a landscape unit as tall as a totem is
-  wider than a phone. Every scenario's fleet is TWO landscape + ONE portrait
-  screen (portrait first for retail, it's the phone demo's hero unit) — the
-  desktop wall's stacked-landscapes-beside-one-standing-unit composition only
-  balances for that shape, so keep it when adding scenarios.
-  **Angled renders are projected, not pasted:** `devices.ts` entries with
-  `quad` (E-Poster, outdoor totem) carry the screen's four corners; the shared
-  `demo/useDevicePanel.ts` (used by `DisplayFrame` AND `StaticDevice`) lays
-  the content out flat at its on-screen size and applies a 4-point homography
-  (`demo/homography.ts` → `matrix3d`) measured through a ResizeObserver
-  (`useElementSize`). Corners were found by masking saturated wallpaper
-  pixels (`sat > 28`) and taking the extreme points — redo that if a render
-  is re-trimmed; never hand-tweak the numbers.
-  **Brand kit + type roles (2026-09-07, user: "do not forget about the
-  assets… follow fonts in the design"):** the nav, hero, footer, dashboard
-  mock and Kiwi's welcome screen use the designer's real PNG/webp logos from
-  `src/assets/brand/` (`icon-k-plum` / `icon-k-lime` icon logos, `wordmark-plum`,
-  `lockup-plum` "kiwi technologies", `icon-circle-lime`, `wordmark-lime`) —
-  never type-set "k"/"kiwi". Slices (`slice-half-lime`, `slice-full-purple`)
-  and seed splashes (`seeds-plum`, `seeds-lime`) decorate the hero, the plum
-  benefits band and the lime CTA card, kept clear of text. Type follows the
-  brand roles via `c.css`: Lato body (root), Fraunces (Grand Royal stand-in)
-  on h1–h4 with `SOFT 30`, Instrument Sans (Telegraf stand-in) on buttons,
-  nav, eyebrows and everything inside `#demo`; customer content in
-  `ContentArt` stays Instrument Sans (it's *their* signage), only the
-  `brand: "kiwi"` welcome card takes the brand kit.
+  trimmed webp). Angled renders (E-Poster, outdoor totem) carry the screen's
+  four corners (`quad`) and get a real perspective projection; front-facing
+  ones use the rectangle. Corners were measured by masking saturated wallpaper
+  pixels (`sat > 28`) — redo that if a render is re-trimmed. The site sits
+  behind a "Checking your browser" bot check: curl gets 403/429, but a
+  Playwright page that has passed the check can `fetch()` the uploads.
+  **Mixed orientations never share a height:** rows of devices (industries
+  carousel) fit each render into an equal cell via `devices.ts fitWidth`.
+  Every scenario's fleet is two landscape + one portrait screen.
+  **Brand kit + type roles:** real designer logos from `src/assets/brand/`
+  (`icon-k-plum`/`icon-k-lime`, `wordmark-plum`, `lockup-plum`,
+  `icon-circle-lime`, `wordmark-lime`) — never type-set "k"/"kiwi"; slices and
+  seeds on the hero, plum band and CTA card; type via `c.css`: Lato body,
+  Fraunces (Grand Royal stand-in) h1–h4, Instrument Sans (Telegraf stand-in)
+  on buttons, nav, eyebrows and `#demo`. `.gitignore` anchors `/brand` to the
+  root so `src/assets/brand/` stays tracked.
+  **Mobile:** compact nav + menu sheet, hero video full-width under the CTAs,
+  showcase rows stacked, industries as a snap carousel, sticky "Book a demo"
+  after `#demo`. Validate at 360/390/430 and 1440 after every change.
+
+  "How it works" (`CHowItWorks.tsx`) is TEXT ONLY: four steps as cards in a row on desktop, a plain list on phones, heading kept on one line (`lg:whitespace-nowrap`, set outside SectionHead whose column width wrapped it). Three treatments were rejected 2026-09-07: a tappable strip, thumbnail-topped cards, and a step tour with a large real-CMS frame ("it doesn't need screenshots" — the recordings above already show the product).
 
 Any static deploy needs an SPA fallback (all paths → index.html) for `/a` and `/b`.
 
@@ -168,6 +129,45 @@ Any static deploy needs an SPA fallback (all paths → index.html) for `/a` and 
   field behind the hero. Everything respects `prefers-reduced-motion`.
 - `Wordmark` is **type-set** (Fraunces + seed PNG accent), not a logo image —
   the PNG wordmark stretched inside flex columns and blurred at nav size.
+
+## Recording the CMS on LOCAL (2026-09-07, user decision: "record on local so we have full control")
+
+Production can't be used (the APK fleet is production-only), so the clips are recorded against the
+dev stack: backend on :3000 (Atlas `kiwi-cms-dev-local`), and a **production build of the CMS
+frontend served by `vite preview` on :4173** (`npm run build && npx vite preview --port 4173` in
+`../kiwi-signage-frontend`) — the :5173 dev server shows TanStack devtools badges and is the user's;
+never kill it. Cookies come from the MCP browser's logged-in localhost session →
+`.secrets/cms-storage-state.json` (gitignored; cookies ignore ports, so :5173's session works on :4173).
+`scripts/record-cms.mjs` boots at "/" and clicks the sidebar (deep links bounce to /dashboard),
+runs every flow once QUIETLY first (warm-up: primes queries + images so nothing loads on camera;
+the designer flow's warm-up layout is deleted again; the hero's default layout is cleared), reloads
+and waits for network-idle + no skeletons, then records the take with a drawn cursor at 1440×900 →
+`public/media/raw/<clip>.webm` + a JSON sidecar with the on-camera start second. Cookies: export
+`context.storageState()` from the MCP browser RIGHT BEFORE recording
+(`.secrets/cms-storage-state.json`) — better-auth rotates the session token, a stale file lands on
+the login page;
+`scripts/encode-clip.sh raw out start end [speed]` → mp4 + poster. Displays are **simulated
+players** on the real /player API (see the frontend memory recipe): "Storefront 01"
+(SIM-PORTRAIT-0001, 1080x1920), "Counter Display" (SIM-LANDSCAPE-0001), "Window Display"
+(SIM-LANDSCAPE-0002); a heartbeat keeper (scratchpad `heartbeat.py`, 90 s) holds them Online;
+tokens live only in the session scratchpad — re-register with the same hardwareKey to get new
+ones. The user provided the layouts + media in "Home"; I added display groups BY ORIENTATION ("Makati
+storefront" = the portrait Storefront 01, "Makati window" = Window Display, "BGC counter" = Counter
+Display — never mix orientations in a group, a portrait layout on a landscape screen letterboxes)
+and hour-block schedules (the free plan blocks dayparts/recurrence and caps active schedules at 10,
+so only Mon–Wed are filled). Sims carry orientation-matched layout previews as screenshots. The industries
+carousel and the features section show the user's REAL layout previews (`src/assets/media/layouts/*.webp`,
+re-download from the API if layouts change) on devices whose panel RESOLUTION matches the layout
+(1080×1920 layouts on the 9:16 totems, 1920×1080 on the Indoor Digital Display — the 3840×2160 layout
+is only shown as a layout card, never on a 1080p unit; user: "resolution is not aligned"), letterboxed
+(`object-contain`) never cropped; drawn scenario content survives only in `ArtPage` (`/art/:scenario/:index`) as a fallback.
+Device screen rects come from a percentile scan of the wallpaper pixels — the Indoor Digital Display
+rect was re-measured 2026-09-07 after the user saw thicker top/right bezels.
+Projected devices (E-Poster, outdoor totem) lay content out at `screenAspect` (devices.ts), not at the
+quad's foreshortened edge lengths — that gave a 0.26 box and black bars. Outdoor = 9/16 (spec); the
+E-Poster uses 1488/3840, the ratio of the tall "Kiwi Beauty Clinic" artwork the user made for it (media
+"2.png", asset `layouts/kiwi-beauty-clinic.webp`, shown on the retail card) — switch to 9/16 if the
+real panel is 1080×1920.
 
 ## Real-app media
 

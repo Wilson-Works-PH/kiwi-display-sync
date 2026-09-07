@@ -6,8 +6,14 @@ import {
   useRef,
 } from "react";
 import { cx } from "./cx";
-import iconKPlum from "../assets/brand/icon-k-plum.webp";
-import iconKLime from "../assets/brand/icon-k-lime.webp";
+import wordmarkLime from "../assets/brand/wordmark-lime.png";
+import featureSchedule from "../assets/media/feature-schedule.webp";
+import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
+import layoutRestaurantL from "../assets/media/layouts/kiwi-restaurant-landscape.webp";
+import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
+import layoutGrandOpening from "../assets/media/layouts/grand-opening.webp";
+import layoutClinic from "../assets/media/layouts/kiwi-clinic.webp";
+import beautyClinic from "../assets/media/layouts/kiwi-beauty-clinic.webp";
 import wordmarkPlum from "../assets/brand/wordmark-plum.webp";
 import lockupPlum from "../assets/brand/lockup-plum.webp";
 import sliceHalfLime from "../assets/brand/slice-half-lime.png";
@@ -15,12 +21,10 @@ import sliceFullPurple from "../assets/brand/slice-full-purple.png";
 import seedsPlum from "../assets/brand/seeds-plum.png";
 import seedsLime from "../assets/brand/seeds-lime.png";
 import { ContentArt } from "./demo/ContentArt";
-import { DashboardFrame } from "./demo/DashboardFrame";
 import { DEVICES, fitWidth, type DeviceId } from "./demo/devices";
 import { useDevicePanel } from "./demo/useDevicePanel";
-import { DisplayFrame } from "./demo/DisplayWall";
 import { SCENARIOS, type ContentItem, type ScenarioId } from "./demo/scenarios";
-import type { Demo } from "./demo/useDemo";
+import { VideoFrame } from "./VideoFrame";
 
 // Real channels, read off kiwi.com.ph (2026-09-07): its "Request a Demo" / "Get Started"
 // buttons go to /contact/, the site's email is info@kiwi.com.ph, and the CMS lives at
@@ -33,20 +37,41 @@ const PHONES: [string, string][] = [
   ["+63 969 170 2299", "tel:+639691702299"],
   ["+63 2 8658 6962", "tel:+63286586962"],
 ];
-const SOCIALS: [string, string, string][] = [
-  ["Facebook", "https://www.facebook.com/kiwitechnologiesph", "thumb_up"],
-  [
-    "Instagram",
-    "https://www.instagram.com/kiwitechnologiesph/",
-    "photo_camera",
-  ],
-  ["YouTube", "https://www.youtube.com/@KiwiTechnologiesPH", "play_circle"],
+const SOCIALS: [string, string][] = [
+  ["Facebook", "https://www.facebook.com/kiwitechnologiesph"],
+  ["Instagram", "https://www.instagram.com/kiwitechnologiesph/"],
+  ["YouTube", "https://www.youtube.com/@KiwiTechnologiesPH"],
   [
     "LinkedIn",
     "https://www.linkedin.com/company/kiwi-technologies-ph-display-solution/",
-    "work",
   ],
 ];
+
+/** Brand marks (Material Symbols has none) — the standard 24×24 glyphs, drawn in currentColor. */
+const BRAND_PATHS: Record<string, string> = {
+  Facebook:
+    "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",
+  Instagram:
+    "M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z",
+  YouTube:
+    "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+  LinkedIn:
+    "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+};
+
+function BrandIcon({ name, size = 18 }: { name: string; size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d={BRAND_PATHS[name]} />
+    </svg>
+  );
+}
 const SIGN_IN = "https://kiwi.wilsonworksph.com";
 
 /* ------------------------------------------------------------------ atoms */
@@ -103,7 +128,11 @@ function Eyebrow({
   );
 }
 
-/** The official lockup: icon logo + wordmark PNGs from the designer kit (never type-set). */
+/**
+ * The site logo: the official "kiwi" wordmark PNG with DISPLAY SYNC set underneath —
+ * the same treatment the CMS gives its own "CONTENT MANAGEMENT SYSTEM" line. No icon
+ * mark (user, 2026-09-07: "I don't like the K").
+ */
 function Logo({
   className,
   mark = "plum",
@@ -112,31 +141,30 @@ function Logo({
   mark?: "plum" | "lime";
 }) {
   return (
-    <span className={cx("inline-flex items-center gap-2", className)}>
+    <span
+      className={cx("inline-flex flex-col items-start leading-none", className)}
+    >
       <img
-        src={mark === "plum" ? iconKPlum : iconKLime}
-        alt=""
-        width={200}
-        height={192}
-        className="h-8 w-auto"
-        draggable={false}
-      />
-      <img
-        src={wordmarkPlum}
+        src={mark === "plum" ? wordmarkPlum : wordmarkLime}
         alt="Kiwi"
         width={344}
         height={120}
-        className={cx(
-          "h-[15px] w-auto translate-y-px",
-          mark === "lime" && "brightness-0 invert",
-        )}
+        className="h-[22px] w-auto"
         draggable={false}
       />
+      <span
+        className={cx(
+          "font-header mt-[4px] text-[8px] font-bold uppercase tracking-[0.3em]",
+          mark === "plum" ? "text-plum-950/65" : "text-cream-100/80",
+        )}
+      >
+        Display Sync
+      </span>
     </span>
   );
 }
 
-function SectionHead({
+export function SectionHead({
   eyebrow,
   title,
   sub,
@@ -160,7 +188,7 @@ function SectionHead({
   );
 }
 
-function Icon({
+export function Icon({
   name,
   size = 22,
   filled,
@@ -189,12 +217,16 @@ const delay = (ms: number) =>
 function StaticDevice({
   device,
   content,
+  image,
   badge,
   className,
   fitHeight,
 }: {
   device: DeviceId;
-  content: ContentItem;
+  /** Drawn demo content (industries carousel)… */
+  content?: ContentItem;
+  /** …or a real layout preview from the CMS (features). Orientation must match the device. */
+  image?: string;
   badge?: string;
   className?: string;
   /**
@@ -227,7 +259,18 @@ function StaticDevice({
         style={{ filter: "drop-shadow(0 18px 24px rgba(45,13,41,0.2))" }}
       />
       <div className="absolute overflow-hidden bg-[#1a0718]" style={panelStyle}>
-        <ContentArt kind={content.kind} art={content.art} />
+        {image ? (
+          <img
+            src={image}
+            alt=""
+            className="absolute inset-0 h-full w-full object-contain"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        ) : content ? (
+          <ContentArt kind={content.kind} art={content.art} />
+        ) : null}
         {badge ? (
           <span className="absolute right-[3%] top-[3%] flex items-center gap-1 rounded-full bg-lime-400 px-2 py-0.5 text-[10px] font-bold text-plum-950 shadow">
             <Icon name="check_circle" size={12} filled />
@@ -308,7 +351,7 @@ export function CNav() {
         className="border-t border-plum-950/[0.06] bg-white lg:hidden"
       >
         <ul className="mx-auto max-w-[1280px] px-4 py-2 sm:px-8">
-          {[...links, ["#demo", "Live demo"], [SIGN_IN, "Sign in"]].map(
+          {[...links, ["#demo", "See it in action"], [SIGN_IN, "Sign in"]].map(
             ([href, label]) => (
               <li key={label}>
                 <a
@@ -336,10 +379,7 @@ export function CNav() {
 
 /* ------------------------------------------------------------------- hero */
 
-export function CHero({ demo }: { demo: Demo }) {
-  const screen =
-    demo.scenario.screens.find((s) => s.orientation === "landscape") ??
-    demo.scenario.screens[0];
+export function CHero() {
   return (
     <section id="top" className="relative overflow-hidden bg-white">
       <div
@@ -361,16 +401,6 @@ export function CHero({ demo }: { demo: Demo }) {
       />
       <div className="relative mx-auto max-w-[1280px] px-5 pt-7 pb-8 sm:px-8 sm:pt-16 lg:pt-28 lg:pb-16">
         <div className="mx-auto max-w-3xl text-center">
-          <div data-reveal className="mx-auto flex justify-center lg:hidden">
-            <img
-              src={iconKPlum}
-              alt=""
-              width={200}
-              height={192}
-              className="h-12 w-auto"
-              draggable={false}
-            />
-          </div>
           <div
             data-reveal
             className="hidden items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[12.5px] font-semibold text-plum-950/70 shadow-sm ring-1 ring-plum-950/10 lg:inline-flex"
@@ -440,125 +470,24 @@ export function CHero({ demo }: { demo: Demo }) {
           </div>
         </div>
 
-        {/* Phones: CMS → Kiwi → display, top to bottom. */}
+        {/* The product, for real: a recording of the Kiwi CMS in a browser
+            frame (roommaster-style hero, user decision 2026-09-07). Recorded on
+            the local stack with scripts/record-cms.mjs: Displays → Storefront
+            01 → Content → Choose layout → the default updates. */}
         <div
           data-reveal
           style={delay(320)}
-          className="mx-auto mt-8 flex max-w-[360px] flex-col items-center lg:hidden"
+          className="mx-auto mt-8 max-w-[1120px] lg:mt-14"
         >
-          <div className="flex w-full items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-plum-950/10 shadow-[0_18px_40px_-24px_rgba(45,13,41,0.45)]">
-            <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-plum-950 text-lime-400">
-              <Icon name="dashboard" size={22} />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-plum-950/50">
-                CMS
-              </span>
-              <span className="block text-[14.5px] font-bold text-plum-950">
-                Your Kiwi dashboard
-              </span>
-            </span>
-            <span className="ml-auto flex gap-1" aria-hidden="true">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="h-7 w-5 rounded-[5px] ring-1 ring-plum-950/10"
-                  style={{ background: ["#ceed7a", "#3d0d37", "#96507e"][i] }}
-                />
-              ))}
-            </span>
-          </div>
-          <FlowArrow />
-          <div className="flex w-full items-center gap-3 rounded-2xl bg-white p-3.5 ring-1 ring-plum-950/10 shadow-[0_18px_40px_-24px_rgba(45,13,41,0.45)]">
-            <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400 text-plum-950">
-              <Icon name="cloud" size={22} filled />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-plum-950/50">
-                Kiwi
-              </span>
-              <span className="block text-[14.5px] font-bold text-plum-950">
-                Publishes to every screen
-              </span>
-            </span>
-            <span className="ml-auto flex items-center gap-1.5 text-[12px] font-semibold text-[#4f6b3a]">
-              <span
-                className="c-pulse size-1.5 rounded-full bg-leaf-600"
-                aria-hidden="true"
-              />
-              Live
-            </span>
-          </div>
-          <FlowArrow />
-          <div className="w-full rounded-2xl bg-[#f6f9ee] p-3 ring-1 ring-plum-950/[0.06]">
-            <div className="mb-2 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.14em] text-plum-950/50">
-              <span>Display</span>
-              <span>
-                {screen.location} · {screen.name}
-              </span>
-            </div>
-            <div className="mx-auto max-w-[260px]">
-              <DisplayFrame
-                screen={screen}
-                demo={demo}
-                interactive={false}
-                priority
-                showLabel={false}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Desktop: the product mockup, playing on its own. */}
-        <div
-          data-reveal
-          style={delay(320)}
-          className="relative mx-auto mt-16 hidden max-w-[1120px] items-end gap-6 lg:grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]"
-        >
-          <div className="min-w-0">
-            <DashboardFrame demo={demo} interactive={false} />
-          </div>
-          <div className="min-w-0 pb-6">
-            <div className="mb-3 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.14em] text-plum-950/55">
-              <Icon name="tv" size={16} />
-              {screen.location} · {screen.name}
-            </div>
-            <DisplayFrame
-              screen={screen}
-              demo={demo}
-              interactive={false}
-              priority
-              showLabel={false}
-            />
-            <p className="mt-4 text-[13px] text-plum-950/55">
-              Playing exactly what the dashboard scheduled.{" "}
-              <a
-                href="#demo"
-                className="font-semibold text-plum-950 underline decoration-lime-400 decoration-2 underline-offset-4"
-              >
-                Try it yourself ↓
-              </a>
-            </p>
-          </div>
+          <VideoFrame
+            src="/media/hero-light.mp4"
+            poster="/media/hero-light-poster.jpg"
+            url="kiwi.wilsonworksph.com/displays"
+            label="Publishing a layout to Storefront 01 in the Kiwi CMS"
+          />
         </div>
       </div>
     </section>
-  );
-}
-
-function FlowArrow() {
-  return (
-    <div
-      className="flex h-9 flex-col items-center justify-center"
-      aria-hidden="true"
-    >
-      <span className="h-5 border-l-2 border-dashed border-leaf-600/70" />
-      <Icon
-        name="keyboard_arrow_down"
-        size={18}
-        className="-mt-1 text-leaf-600"
-      />
-    </div>
   );
 }
 
@@ -603,8 +532,19 @@ export function CTrust() {
 
 /* --------------------------------------------------------------- features */
 
+/** Real layouts from the Home workspace (CMS layout previews, 800px webp) — shown the way the Layouts page shows them. */
+const REAL_LAYOUTS = [
+  { name: "Kiwi Technologies", size: "1920 × 1080", src: layoutKiwiTech },
+  {
+    name: "Kiwi Restaurant Landscape",
+    size: "3840 × 2160",
+    src: layoutRestaurantL,
+  },
+  { name: "Kiwi Restaurant", size: "1080 × 1920", src: layoutRestaurant },
+  { name: "Grand Opening", size: "800 × 1280", src: layoutGrandOpening },
+];
+
 export function CFeatures() {
-  const retail = SCENARIOS[0];
   const cards = [
     [
       "photo_library",
@@ -652,13 +592,29 @@ export function CFeatures() {
             body="Manage your images, videos and campaigns from one library."
           >
             <div className="grid grid-cols-2 gap-2 p-3">
-              {retail.content.slice(0, 4).map((c) => (
+              {REAL_LAYOUTS.map((l) => (
                 <div
-                  key={c.id}
-                  className="relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-plum-950/10"
-                  style={{ containerType: "inline-size" }}
+                  key={l.name}
+                  className="overflow-hidden rounded-xl bg-white ring-1 ring-plum-950/10"
                 >
-                  <ContentArt kind={c.kind} art={c.art} />
+                  <div className="flex aspect-[4/3] items-center justify-center bg-[#f6f9ee] p-2">
+                    <img
+                      src={l.src}
+                      alt={`${l.name} layout`}
+                      className="max-h-full max-w-full rounded-[3px] shadow-sm"
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  </div>
+                  <div className="px-2.5 py-2">
+                    <div className="truncate text-[12.5px] font-bold text-plum-950">
+                      {l.name}
+                    </div>
+                    <div className="font-header text-[10.5px] text-plum-950/55">
+                      {l.size}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -667,34 +623,15 @@ export function CFeatures() {
             title="Right content. Right time."
             body="Schedule exactly when your campaigns should appear, down to the hour."
           >
-            <ul className="flex flex-col gap-2 p-3">
-              {SCENARIOS[1].schedules.map((s, i) => (
-                <li
-                  key={s.id}
-                  className={cx(
-                    "flex items-center gap-3 rounded-xl bg-white px-3.5 py-3 ring-1",
-                    i === 1 ? "ring-leaf-600" : "ring-plum-950/10",
-                  )}
-                >
-                  <span className="w-[92px] shrink-0 font-mono text-[12px] font-semibold text-plum-950/70">
-                    {s.when}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate text-[14px] font-bold text-plum-950">
-                    {s.name}
-                  </span>
-                  <span
-                    className={cx(
-                      "shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold",
-                      i === 1
-                        ? "bg-leaf-600 text-white"
-                        : "bg-plum-950/[0.05] text-plum-950/60",
-                    )}
-                  >
-                    {i === 1 ? "Active" : "Scheduled"}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <img
+              src={featureSchedule}
+              alt="The Kiwi schedule: a week of hour-blocked layouts per screen group"
+              width={900}
+              height={562}
+              loading="lazy"
+              decoding="async"
+              className="w-full rounded-xl ring-1 ring-plum-950/10"
+            />
           </FeatureBlock>
           <FeatureBlock
             title="Publish from anywhere."
@@ -703,7 +640,7 @@ export function CFeatures() {
             <div className="mx-auto max-w-[320px] p-5">
               <StaticDevice
                 device="indoor-display"
-                content={retail.content[0]}
+                image={layoutKiwiTech}
                 badge="Published"
               />
             </div>
@@ -714,24 +651,18 @@ export function CFeatures() {
           >
             <div className="flex items-end justify-center gap-4 p-5">
               <div className="w-[38%]">
-                <StaticDevice
-                  device="indoor-display"
-                  content={retail.content[1]}
-                />
+                <StaticDevice device="indoor-display" image={layoutKiwiTech} />
                 <Loc label="Makati" />
               </div>
               <div className="w-[18%]">
                 <StaticDevice
                   device="floor-standing"
-                  content={retail.content[3]}
+                  image={layoutRestaurant}
                 />
                 <Loc label="BGC" />
               </div>
               <div className="w-[38%]">
-                <StaticDevice
-                  device="indoor-display"
-                  content={retail.content[2]}
-                />
+                <StaticDevice device="indoor-display" image={layoutKiwiTech} />
                 <Loc label="Cebu" />
               </div>
             </div>
@@ -799,108 +730,25 @@ function Loc({ label }: { label: string }) {
 
 /* ------------------------------------------------------------ how it works */
 
-export function CHowItWorks() {
-  const steps = [
-    ["upload", "Upload", "Drop your images, videos and PDFs into the library."],
-    ["design_services", "Create", "Build a layout or start from a template."],
-    ["ads_click", "Assign", "Choose the screens, groups and schedule."],
-    ["publish", "Publish", "Kiwi syncs every screen. Done."],
-  ] as const;
-  const [active, setActive] = useState(0);
-  return (
-    <section
-      id="how"
-      className="scroll-mt-14 bg-[#f6f9ee] py-12 lg:scroll-mt-20 lg:py-28"
-    >
-      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-        <SectionHead
-          eyebrow="How it works"
-          title="Upload → Create → Assign → Publish."
-        />
-
-        {/* Phones: the demo already taught the loop, so this is one compact row — tap a step for its line. */}
-        <div className="mt-6 lg:hidden" data-reveal>
-          <ol className="flex items-stretch gap-1">
-            {steps.map(([icon, title], i) => (
-              <li
-                key={title}
-                className="flex min-w-0 flex-1 items-center gap-1"
-              >
-                <button
-                  type="button"
-                  onClick={() => setActive(i)}
-                  aria-pressed={active === i}
-                  className={cx(
-                    "flex min-h-[64px] w-full flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[11px] font-bold uppercase tracking-[0.08em] transition-colors",
-                    active === i
-                      ? "bg-plum-950 text-lime-400"
-                      : "bg-white text-plum-950/70 ring-1 ring-plum-950/10",
-                  )}
-                >
-                  <Icon name={icon} size={20} />
-                  {title}
-                </button>
-                {i < steps.length - 1 ? (
-                  <Icon
-                    name="arrow_forward"
-                    size={14}
-                    className="shrink-0 text-plum-950/35"
-                  />
-                ) : null}
-              </li>
-            ))}
-          </ol>
-          <p
-            className="c-rise-in mt-3 rounded-2xl bg-white px-4 py-3 text-[14px] leading-snug text-plum-950/75 ring-1 ring-plum-950/[0.06]"
-            key={active}
-          >
-            <span className="font-bold text-plum-950">{steps[active][1]}.</span>{" "}
-            {steps[active][2]}
-          </p>
-        </div>
-
-        {/* Desktop: four cards. */}
-        <ol className="mt-14 hidden gap-4 lg:grid lg:grid-cols-4">
-          {steps.map(([icon, title, body], i) => (
-            <li
-              key={title}
-              data-reveal
-              style={delay(i * 80)}
-              className="relative rounded-2xl bg-white p-6 shadow-sm ring-1 ring-plum-950/[0.06]"
-            >
-              <div className="flex items-center justify-between">
-                <span className="grid size-11 place-items-center rounded-xl bg-plum-950 text-lime-400">
-                  <Icon name={icon} size={22} />
-                </span>
-                <span className="text-[13px] font-bold text-plum-950/35">
-                  0{i + 1}
-                </span>
-              </div>
-              <h3 className="mt-5 text-[18px] font-bold tracking-tight text-plum-950">
-                {title}
-              </h3>
-              <p className="mt-1.5 text-[14.5px] leading-relaxed text-plum-950/65">
-                {body}
-              </p>
-              {i < steps.length - 1 ? (
-                <span
-                  className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-plum-950/25 lg:block"
-                  aria-hidden="true"
-                >
-                  <Icon name="arrow_forward" size={20} />
-                </span>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
 /* -------------------------------------------------------------- use cases */
 
-export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
+/**
+ * Industries → the user's real layouts (Home workspace previews) on a device whose
+ * panel matches the layout's resolution exactly (user, 2026-09-07: "resolution is
+ * not aligned" when a 3840×2160 layout sat on a 1920×1080 unit). Drawn scenario content is no longer shown here (user, 2026-09-07:
+ * "it should be using the new layouts that I uploaded").
+ */
+const INDUSTRY_SHOWCASE: Record<
+  ScenarioId,
+  { device: DeviceId; image: string }
+> = {
+  retail: { device: "e-poster", image: beautyClinic }, // the 1488×3840 artwork made for the E-Poster
+  restaurant: { device: "floor-standing", image: layoutRestaurant }, // 1080×1920 on a 1080×1920 panel
+  corporate: { device: "indoor-display", image: layoutKiwiTech },
+  government: { device: "outdoor", image: layoutClinic }, // 1080×1920 on the 9:16 outdoor totem
+};
+
+export function CUseCases() {
   return (
     <section
       id="solutions"
@@ -910,7 +758,7 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
         <SectionHead
           eyebrow="Solutions"
           title="Built for the places screens live."
-          sub="Every industry loads its own scenario into the live demo."
+          sub="Retail, food, offices and public service — each with its own kind of screen."
         />
 
         {/* Phones and tablets: swipe through the industries, each on a real Kiwi unit. */}
@@ -919,7 +767,7 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
           aria-label="Industries"
         >
           {SCENARIOS.map((s) => {
-            const screen = s.screens[0];
+            const show = INDUSTRY_SHOWCASE[s.id];
             return (
               <article
                 key={s.id}
@@ -927,8 +775,8 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
               >
                 <div className="flex h-[300px] items-end justify-center px-6 pt-6">
                   <StaticDevice
-                    device={screen.device}
-                    content={s.content[0]}
+                    device={show.device}
+                    image={show.image}
                     fitHeight={276}
                   />
                 </div>
@@ -943,14 +791,6 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
                   <p className="mt-1 text-[14px] leading-snug text-plum-950/65">
                     {s.blurb}
                   </p>
-                  <a
-                    href="#demo"
-                    onClick={() => onPick(s.id)}
-                    className="mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-plum-950 px-4 text-[14px] font-bold text-white"
-                  >
-                    Try the {s.label.toLowerCase()} demo
-                    <Icon name="arrow_forward" size={16} />
-                  </a>
                 </div>
               </article>
             );
@@ -963,19 +803,16 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
         {/* Desktop grid. */}
         <ul className="mt-14 hidden gap-5 lg:grid lg:grid-cols-4">
           {SCENARIOS.map((s, i) => {
-            const hero = s.content[0];
+            const show = INDUSTRY_SHOWCASE[s.id];
             return (
               <li key={s.id} data-reveal style={delay(i * 80)}>
-                <a
-                  href="#demo"
-                  onClick={() => onPick(s.id)}
-                  className="group block overflow-hidden rounded-2xl border border-plum-950/[0.08] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-leaf-600/40 hover:shadow-[0_24px_48px_-28px_rgba(45,13,41,0.45)]"
-                >
-                  <div
-                    className="relative aspect-[4/3] overflow-hidden"
-                    style={{ containerType: "inline-size" }}
-                  >
-                    <ContentArt kind={hero.kind} art={hero.art} />
+                <div className="group block overflow-hidden rounded-2xl border border-plum-950/[0.08] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-leaf-600/40 hover:shadow-[0_24px_48px_-28px_rgba(45,13,41,0.45)]">
+                  <div className="flex aspect-[4/3] items-end justify-center overflow-hidden bg-[#f6f9ee] px-6 pt-6">
+                    <StaticDevice
+                      device={show.device}
+                      image={show.image}
+                      fitHeight={200}
+                    />
                   </div>
                   <div className="p-5">
                     <h3 className="text-[17px] font-bold tracking-tight text-plum-950">
@@ -984,12 +821,8 @@ export function CUseCases({ onPick }: { onPick: (id: ScenarioId) => void }) {
                     <p className="mt-1.5 text-[14px] leading-relaxed text-plum-950/65">
                       {s.blurb}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-plum-950 transition-colors group-hover:text-leaf-600">
-                      Try the {s.label.toLowerCase()} demo
-                      <Icon name="arrow_forward" size={16} />
-                    </span>
                   </div>
-                </a>
+                </div>
               </li>
             );
           })}
@@ -1094,7 +927,6 @@ export function CPricing() {
         "FAQ and self-serve help",
       ],
       cta: "Book a demo",
-      featured: false,
     },
     {
       name: "Pro",
@@ -1112,7 +944,6 @@ export function CPricing() {
         "Priority email and chat support",
       ],
       cta: "Book a demo",
-      featured: true,
     },
     {
       name: "Enterprise",
@@ -1129,7 +960,6 @@ export function CPricing() {
         "Dedicated account manager and SLA",
       ],
       cta: "Talk to sales",
-      featured: false,
     },
   ];
   return (
@@ -1143,52 +973,30 @@ export function CPricing() {
           title="Plans that grow with your fleet."
           sub="Priced per device, per month. Basic is free with your Kiwi display."
         />
+        {/* All three tiers get the same card, the same button and no badge — the page
+            informs, it doesn't steer (team feedback, 2026-09-07: "do not force them to go
+            to Pro"). */}
         <ul className="mt-8 grid gap-4 lg:mt-14 lg:grid-cols-3 lg:gap-5">
           {tiers.map((t, i) => (
             <li
               key={t.name}
               data-reveal
               style={delay(i * 80)}
-              className={cx(
-                "relative flex flex-col rounded-2xl p-6 transition-all duration-300 lg:p-7 lg:hover:-translate-y-1",
-                t.featured
-                  ? "bg-plum-950 text-white shadow-[0_32px_64px_-32px_rgba(45,13,41,0.6)]"
-                  : "border border-plum-950/[0.08] bg-white",
-              )}
+              className="flex flex-col rounded-2xl border border-plum-950/[0.08] bg-white p-6 transition-all duration-300 lg:p-7 lg:hover:-translate-y-1 lg:hover:shadow-[0_24px_48px_-28px_rgba(45,13,41,0.35)]"
             >
-              {t.featured ? (
-                <span className="absolute right-5 top-5 rounded-full bg-lime-400 px-2.5 py-1 text-[11px] font-bold text-plum-950">
-                  Most popular
-                </span>
-              ) : null}
-              <h3 className="text-[22px] font-bold tracking-tight">{t.name}</h3>
-              <p
-                className={cx(
-                  "mt-1 text-[14.5px]",
-                  t.featured ? "text-cream-100/70" : "text-plum-950/65",
-                )}
-              >
-                {t.blurb}
-              </p>
+              <h3 className="text-[22px] font-bold tracking-tight text-plum-950">
+                {t.name}
+              </h3>
+              <p className="mt-1 text-[14.5px] text-plum-950/65">{t.blurb}</p>
               <div className="mt-4 flex items-baseline gap-1.5">
-                <span className="text-[36px] font-bold leading-none tracking-[-0.03em]">
+                <span className="text-[36px] font-bold leading-none tracking-[-0.03em] text-plum-950">
                   {t.price}
                 </span>
-                <span
-                  className={cx(
-                    "text-[13px] font-semibold",
-                    t.featured ? "text-cream-100/70" : "text-plum-950/60",
-                  )}
-                >
+                <span className="text-[13px] font-semibold text-plum-950/60">
                   {t.per}
                 </span>
               </div>
-              <p
-                className={cx(
-                  "mt-1.5 text-[12.5px]",
-                  t.featured ? "text-cream-100/60" : "text-plum-950/55",
-                )}
-              >
+              <p className="mt-1.5 text-[12.5px] text-plum-950/55">
                 {t.billing}
               </p>
               <ul className="mt-5 flex flex-col gap-2.5 text-[14px]">
@@ -1198,28 +1006,22 @@ export function CPricing() {
                       name="check_circle"
                       size={18}
                       filled
-                      className={cx(
-                        "mt-px shrink-0",
-                        t.featured ? "text-lime-400" : "text-leaf-600",
-                      )}
+                      className="mt-px shrink-0 text-leaf-600"
                     />
-                    <span
-                      className={
-                        t.featured ? "text-cream-100/90" : "text-plum-950/80"
-                      }
-                    >
-                      {p}
-                    </span>
+                    <span className="text-plum-950/80">{p}</span>
                   </li>
                 ))}
               </ul>
-              <Button
-                href={t.name === "Enterprise" ? SALES_LINK : DEMO_LINK}
-                variant={t.featured ? "primary" : "ghost"}
-                className="mt-6 w-full lg:mt-8"
-              >
-                {t.cta}
-              </Button>
+              {/* flex-1 + items-end pins every button to the card's bottom edge so the row lines up; mt-6/8 is the minimum gap above it. */}
+              <div className="mt-6 flex flex-1 items-end lg:mt-8">
+                <Button
+                  href={t.name === "Enterprise" ? SALES_LINK : DEMO_LINK}
+                  variant="ghost"
+                  className="w-full"
+                >
+                  {t.cta}
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
@@ -1289,7 +1091,7 @@ export function CFooter() {
     [
       "Product",
       [
-        ["#demo", "Live demo"],
+        ["#demo", "See it in action"],
         ["#features", "Features"],
         ["#how", "How it works"],
         ["#pricing", "Pricing"],
@@ -1364,16 +1166,16 @@ export function CFooter() {
             className="mt-4 flex gap-2"
             aria-label="Kiwi Technologies on social media"
           >
-            {SOCIALS.map(([name, href, icon]) => (
+            {SOCIALS.map(([name, href]) => (
               <li key={name}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noreferrer"
                   aria-label={name}
-                  className="grid size-11 place-items-center rounded-full text-plum-950/70 ring-1 ring-plum-950/10 lg:size-10"
+                  className="grid size-11 place-items-center rounded-full text-plum-950/70 ring-1 ring-plum-950/10 transition-colors hover:text-plum-950 lg:size-10"
                 >
-                  <Icon name={icon} size={18} />
+                  <BrandIcon name={name} size={17} />
                 </a>
               </li>
             ))}
