@@ -18,6 +18,6 @@ npm-debug.log*
 # designer source dump (kept locally, not tracked)
 1. PNG-*/
 
-brand
+/brand
 # brand source material (PDF proposal — kept locally, not tracked)
-brand/
+/brand/

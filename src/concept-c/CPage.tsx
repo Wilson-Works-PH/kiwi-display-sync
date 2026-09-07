@@ -2,8 +2,21 @@ import { useEffect, useRef } from "react";
 import "@fontsource-variable/material-symbols-rounded";
 import "./c.css";
 import { CDemo } from "./CDemo";
-import { CBenefits, CFeatures, CFinalCta, CFooter, CHero, CHowItWorks, CNav, CPricing, CStickyCta, CTrust, CUseCases } from "./CSections";
+import {
+  CBenefits,
+  CFeatures,
+  CFinalCta,
+  CFooter,
+  CHero,
+  CHowItWorks,
+  CNav,
+  CPricing,
+  CStickyCta,
+  CTrust,
+  CUseCases,
+} from "./CSections";
 import { useDemo } from "./demo/useDemo";
+import { useMediaQuery } from "./useMediaQuery";
 import { useReveal } from "./useReveal";
 
 /**
@@ -15,6 +28,7 @@ export default function CPage() {
   const root = useRef<HTMLDivElement>(null);
   const heroDemo = useDemo("retail");
   const demo = useDemo("retail");
+  const desktop = useMediaQuery("(min-width: 1024px)");
   useReveal(root);
 
   useEffect(() => {
@@ -22,12 +36,23 @@ export default function CPage() {
   }, []);
 
   return (
-    <div ref={root} className="c-root font-header antialiased">
+    <div ref={root} className="c-root antialiased">
       <CNav />
       <main>
         <CHero demo={heroDemo} />
-        <CTrust />
-        <CDemo demo={demo} />
+        {/* Phones reach the interactive demo one swipe after the hero; the benefit
+            statement follows it. Desktop keeps the original order. */}
+        {desktop ? (
+          <>
+            <CTrust />
+            <CDemo demo={demo} />
+          </>
+        ) : (
+          <>
+            <CDemo demo={demo} />
+            <CTrust />
+          </>
+        )}
         <CFeatures />
         <CHowItWorks />
         <CUseCases onPick={demo.setScenario} />
