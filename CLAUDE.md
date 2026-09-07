@@ -82,27 +82,69 @@ numbers — pending a decision.
   that has passed the check can `fetch()` the uploads with cookies; render an
   `<img>` on a transparent same-origin page and element-screenshot it with
   `omitBackground` to keep alpha (there is no `fs` inside run_code snippets).
-  Front-facing renders only in the demo wall — rotatable, K-type kiosk and the
-  tabletop are shot at an angle and would need a perspective transform.
-  **Mobile-first (2026-09-07 brief, ~80% phone traffic):** below `lg` the demo
-  is a GUIDED flow (`demo/MobileDemo.tsx`, mounted `key={scenario.id}`): a
-  sticky LIVE DISPLAY (real Indoor Digital Display, ~32% of the viewport with
-  its header, opening on "Welcome to Kiwi") → CONTROL (2-col content cards that
-  only mark "Selected ✓") → TARGET DISPLAY → a 56px PUBLISH TO SCREEN, mirrored
-  by a fixed bottom bar while the inline button is off-screen. Publish runs
-  Publishing… → Sending to … → Screen syncing… → Published ✓ (~1.4 s,
-  `useDemo.publishSequence`) and then the screen changes; success card offers
-  "Try another campaign" / "Publish to multiple screens", which reveals the
-  screen checklist and, after publishing, swaps the single device for a
-  swipeable strip of the whole fleet. Desktop (`lg+`) keeps the side-by-side
-  stage; `useMediaQuery` mounts only one. Mobile also gets: compact nav with a
-  menu sheet (Product / How it works / Solutions / Pricing / Live demo / Sign
-  in), a simplified hero ("Every screen. One Kiwi." + CMS ↓ Kiwi ↓ Display
-  visual, "See Kiwi in action" first), feature blocks with visuals instead of
-  card stacks, a snap carousel for industries, and a sticky "Book a demo" bar
-  that only appears after the visitor scrolls past the demo. All tap targets
-  in the demo ≥ 44px. Validate at 360/390/430 with reduced motion; the
-  desktop composition must never be squeezed onto phones.
+  Rotatable, K-type kiosk and the tabletop stay out of the demo wall (no
+  corners measured yet); the E-Poster and outdoor totem ARE angled and get the
+  homography described under Mobile-first.
+  **Mobile-first (2026-09-07 briefs, ~80% phone traffic):** below `lg` the
+  page order is hero → demo → benefit statement (desktop keeps trust strip →
+  demo; `CPage` swaps them with `useMediaQuery`). The demo is a GUIDED flow
+  (`demo/MobileDemo.tsx`, mounted `key={scenario.id}`): a large in-flow
+  LIVE DISPLAY — the scenario's first screen, for retail the portrait
+  **Indoor Digital E-Poster** "Storefront 01" at `min(44vh, 400px)` — opening
+  on "Welcome to Kiwi"; as it scrolls out, a COMPACT STICKY PREVIEW (124px
+  under the 56px header, zero flow footprint via negative margin, IO-driven)
+  shows the same screen as a 16:9 panel + "LIVE · Storefront 01" + status
+  chip, and stays until the demo leaves the middle of the viewport. CONTROL:
+  2-col content cards that only mark "✓ SELECTED" (plum 3px ring, lift, plum
+  footer) — selection never touches the live screen — then TARGET DISPLAY,
+  then a 56px contextual publish button: neutral "Publish to screen" until a
+  pick, then lime `Publish "50% off" → Storefront 01`, mirrored by a fixed
+  bottom bar while the inline button is off-screen. Publish runs Publishing…
+  → Sending to Storefront 01… → Screen syncing… → Published ✓ (~1.4 s,
+  `useDemo.publishSequence`, lime pulse on both previews, SYNCING chip) and
+  the screen changes in both; no auto-scroll; success card "Published to
+  Storefront 01 ✓" offers "Try another campaign" / "Publish to multiple
+  screens", and "Now update every screen." reveals the checklist; after that
+  publish the single device becomes a swipeable strip of the fleet. "How it
+  works" on phones is one tappable UPLOAD → CREATE → ASSIGN → PUBLISH row
+  (desktop keeps the four cards). Desktop (`lg+`) keeps the side-by-side
+  stage; `useMediaQuery` mounts only one. Mobile also has the compact nav +
+  menu sheet, the simplified hero, feature blocks, the industry snap carousel
+  (~20 % of the next card peeks) and a sticky "Book a demo" past the demo.
+  All demo tap targets ≥ 44px. Validate at 360/390/430 with reduced motion;
+  the desktop composition must never be squeezed onto phones.
+  **Mixed orientations never share a height (user, 2026-09-07: "mixing vertical
+  with horizontal… very large difference in the height"):** wherever devices
+  sit in a row — the industry carousel, the fleet strip, the desktop wall's
+  portrait side — each render is fitted into an equal CELL via
+  `devices.ts fitWidth(dev, cellHeight)` (portrait fills the height, landscape
+  is capped at the cell width, bottom-aligned so units stand on one floor).
+  Never size a row by a common height: a landscape unit as tall as a totem is
+  wider than a phone. Every scenario's fleet is TWO landscape + ONE portrait
+  screen (portrait first for retail, it's the phone demo's hero unit) — the
+  desktop wall's stacked-landscapes-beside-one-standing-unit composition only
+  balances for that shape, so keep it when adding scenarios.
+  **Angled renders are projected, not pasted:** `devices.ts` entries with
+  `quad` (E-Poster, outdoor totem) carry the screen's four corners; the shared
+  `demo/useDevicePanel.ts` (used by `DisplayFrame` AND `StaticDevice`) lays
+  the content out flat at its on-screen size and applies a 4-point homography
+  (`demo/homography.ts` → `matrix3d`) measured through a ResizeObserver
+  (`useElementSize`). Corners were found by masking saturated wallpaper
+  pixels (`sat > 28`) and taking the extreme points — redo that if a render
+  is re-trimmed; never hand-tweak the numbers.
+  **Brand kit + type roles (2026-09-07, user: "do not forget about the
+  assets… follow fonts in the design"):** the nav, hero, footer, dashboard
+  mock and Kiwi's welcome screen use the designer's real PNG/webp logos from
+  `src/assets/brand/` (`icon-k-plum` / `icon-k-lime` icon logos, `wordmark-plum`,
+  `lockup-plum` "kiwi technologies", `icon-circle-lime`, `wordmark-lime`) —
+  never type-set "k"/"kiwi". Slices (`slice-half-lime`, `slice-full-purple`)
+  and seed splashes (`seeds-plum`, `seeds-lime`) decorate the hero, the plum
+  benefits band and the lime CTA card, kept clear of text. Type follows the
+  brand roles via `c.css`: Lato body (root), Fraunces (Grand Royal stand-in)
+  on h1–h4 with `SOFT 30`, Instrument Sans (Telegraf stand-in) on buttons,
+  nav, eyebrows and everything inside `#demo`; customer content in
+  `ContentArt` stays Instrument Sans (it's *their* signage), only the
+  `brand: "kiwi"` welcome card takes the brand kit.
 
 Any static deploy needs an SPA fallback (all paths → index.html) for `/a` and `/b`.
 

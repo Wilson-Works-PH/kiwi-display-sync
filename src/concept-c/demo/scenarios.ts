@@ -13,6 +13,8 @@ export type ArtKind =
 export type ArtTheme = "lime" | "plum" | "cream" | "leaf" | "mauve" | "dark";
 
 export interface ArtProps {
+  /** Kiwi's own screens (the welcome card) carry the brand kit: circle icon logo + lime wordmark. */
+  brand?: "kiwi";
   theme: ArtTheme;
   headline: string;
   sub?: string;
@@ -29,6 +31,12 @@ export interface ContentItem {
   art: ArtProps;
 }
 
+/**
+ * Every scenario's fleet is TWO landscape screens + ONE portrait screen, and the
+ * portrait one is `screens[0]` for retail (the phone demo's hero unit). The
+ * desktop wall composes exactly that shape — two landscapes stacked beside one
+ * standing unit balance in height; two portraits do not fit its 0.9fr column.
+ */
 export interface Screen {
   id: string;
   name: string;
@@ -79,6 +87,7 @@ export const WELCOME_CONTENT: ContentItem = {
   art: {
     theme: "plum",
     headline: "Welcome to Kiwi",
+    brand: "kiwi",
     sub: "This screen is waiting for its first campaign.",
     footer: "Powered by Kiwi",
   },
@@ -96,12 +105,12 @@ export const SCENARIOS: Scenario[] = [
         id: "r-endcap",
         name: "Storefront 01",
         location: "Makati",
-        orientation: "landscape",
-        device: "indoor-display",
+        orientation: "portrait",
+        device: "e-poster",
       },
       {
         id: "r-checkout",
-        name: "Counter",
+        name: "Counter Display",
         location: "BGC",
         orientation: "landscape",
         device: "indoor-display",
@@ -110,8 +119,8 @@ export const SCENARIOS: Scenario[] = [
         id: "r-window",
         name: "Window Display",
         location: "Makati",
-        orientation: "portrait",
-        device: "floor-standing",
+        orientation: "landscape",
+        device: "indoor-display",
       },
     ],
     content: [

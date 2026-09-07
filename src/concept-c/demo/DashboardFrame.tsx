@@ -1,4 +1,5 @@
 import { useState } from "react";
+import iconKPlum from "../../assets/brand/icon-k-plum.webp";
 import { cx } from "../cx";
 import { ContentArt } from "./ContentArt";
 import { StatusChip } from "./StatusChip";
@@ -50,9 +51,14 @@ export function DashboardFrame({
         {/* Rail */}
         <aside className="flex flex-col border-b border-plum-950/10 bg-[#fbfbf7] p-3 sm:border-b-0 sm:border-r">
           <div className="flex items-center gap-2 px-1 pb-3">
-            <span className="grid size-6 place-items-center rounded-md bg-plum-950 text-[11px] font-black text-lime-400">
-              k
-            </span>
+            <img
+              src={iconKPlum}
+              alt=""
+              width={200}
+              height={192}
+              className="h-6 w-auto"
+              draggable={false}
+            />
             <span className="truncate text-[12.5px] font-bold text-plum-950">
               {scenario.workspace}
             </span>

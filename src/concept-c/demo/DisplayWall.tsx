@@ -1,7 +1,11 @@
-import type { CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import { cx } from "../cx";
 import { ContentArt } from "./ContentArt";
-import { DEVICES, SCREEN_BLEED_PCT } from "./devices";
+import { DEVICES, fitWidth } from "./devices";
+
+/** Height every portrait unit in the wall is fitted to (px). */
+const PORTRAIT_H = 340;
+import { useDevicePanel } from "./useDevicePanel";
 import { ROTATION_MS, type Screen } from "./scenarios";
 import { StatusChip } from "./StatusChip";
 import type { Demo } from "./useDemo";
@@ -27,9 +31,16 @@ export function DisplayWall({ demo }: { demo: Demo }) {
           <DisplayFrame key={s.id} screen={s} demo={demo} />
         ))}
       </div>
-      <div className="flex flex-col gap-5">
+      {/* Portrait units share a row at one height instead of stacking — a
+          stacked pair of totems is twice as tall as the dashboard. */}
+      <div className="flex flex-wrap items-end justify-center gap-4">
         {portrait.map((s) => (
-          <DisplayFrame key={s.id} screen={s} demo={demo} />
+          <div
+            key={s.id}
+            style={{ width: fitWidth(DEVICES[s.device], PORTRAIT_H) }}
+          >
+            <DisplayFrame screen={s} demo={demo} />
+          </div>
         ))}
       </div>
     </div>
@@ -54,8 +65,9 @@ export function DisplayFrame({
   const playlist = demo.playlistFor(screen.id);
   const selected = demo.state.selectedScreenId === screen.id;
   const dev = DEVICES[screen.device];
-  const b = SCREEN_BLEED_PCT;
   const Tag = interactive ? "button" : "div";
+  const frameRef = useRef<HTMLDivElement>(null);
+  const panelStyle = useDevicePanel(dev, frameRef);
 
   return (
     <Tag
@@ -68,6 +80,7 @@ export function DisplayFrame({
       {/* The real device: Kiwi's own product render, with the live content
           composited into its measured screen rectangle. */}
       <div
+        ref={frameRef}
         className={cx(
           "relative transition-transform duration-300",
           interactive && "group-hover:-translate-y-0.5",
@@ -85,13 +98,7 @@ export function DisplayFrame({
         />
         <div
           className="absolute overflow-hidden bg-[#1a0718]"
-          style={{
-            left: `${dev.screen.left - b}%`,
-            top: `${dev.screen.top - b}%`,
-            width: `${dev.screen.width + 2 * b}%`,
-            height: `${dev.screen.height + 2 * b}%`,
-            containerType: "inline-size",
-          }}
+          style={panelStyle}
         >
           {content ? (
             <div

@@ -1,4 +1,6 @@
 import type { ArtKind, ArtProps, ArtTheme } from "./scenarios";
+import iconCircleLime from "../../assets/brand/icon-circle-lime.png";
+import wordmarkLime from "../../assets/brand/wordmark-lime.png";
 
 /**
  * Draws a piece of signage content from a description — no stock imagery.
@@ -266,26 +268,37 @@ export function ContentArt({ kind, art }: { kind: ArtKind; art: ArtProps }) {
   }
 
   if (kind === "welcome") {
+    const kiwi = art.brand === "kiwi";
     return (
       <div
         className="absolute inset-0 flex flex-col justify-center"
         style={{ ...base, padding: pad }}
       >
+        {kiwi ? (
+          <img
+            src={iconCircleLime}
+            alt=""
+            draggable={false}
+            style={{ width: "16cqi", height: "16cqi", objectFit: "contain" }}
+          />
+        ) : (
+          <div
+            style={{
+              width: "10cqi",
+              height: "10cqi",
+              borderRadius: "50%",
+              background: t.accent,
+              opacity: 0.9,
+            }}
+          />
+        )}
         <div
           style={{
-            width: "10cqi",
-            height: "10cqi",
-            borderRadius: "50%",
-            background: t.accent,
-            opacity: 0.9,
-          }}
-        />
-        <div
-          style={{
+            fontFamily: kiwi ? "var(--font-display)" : undefined,
             fontSize: "11cqi",
-            fontWeight: 800,
+            fontWeight: kiwi ? 700 : 800,
             lineHeight: 1,
-            letterSpacing: "-0.03em",
+            letterSpacing: kiwi ? "-0.02em" : "-0.03em",
             marginTop: "5cqi",
           }}
         >
@@ -296,7 +309,26 @@ export function ContentArt({ kind, art }: { kind: ArtKind; art: ArtProps }) {
             {art.sub}
           </div>
         ) : null}
-        {art.footer ? (
+        {art.footer && kiwi ? (
+          <div
+            style={{
+              marginTop: "auto",
+              fontSize: "2.8cqi",
+              opacity: 0.85,
+              display: "flex",
+              alignItems: "center",
+              gap: "1.5cqi",
+            }}
+          >
+            <span>Powered by</span>
+            <img
+              src={wordmarkLime}
+              alt="Kiwi"
+              draggable={false}
+              style={{ height: "4.2cqi", width: "auto" }}
+            />
+          </div>
+        ) : art.footer ? (
           <div style={{ marginTop: "auto", fontSize: "2.8cqi", opacity: 0.7 }}>
             {art.footer}
           </div>
