@@ -18,9 +18,9 @@ same toolchain as the CMS frontend.
   real — don't remove them as "too good to be true".
 - **Pricing mirrors** `kiwi-signage-backend/src/modules/plan/domain/plan-catalog.ts`
   (Basic ₱0 · Pro ₱99/device/mo · Enterprise from ₱129/device/mo). Keep in
-  sync. Known deliberate deviation: Pro card omits "PDFs" (the plan's upload
-  types + widget flags exclude PDF even though the catalog's marketing row
-  mentions it).
+  sync. Since 2026-09-04 (backend PR #133) Pro DOES include PDF uploads and the
+  PDF widget — the old "Pro omits PDFs" deviation is obsolete; Concept B's
+  pricing card still needs the PDF line moved from Enterprise to Pro.
 - **Don't touch the backend/CMS repos** from here; read-only for facts.
 
 ## Two concepts, one repo
@@ -42,14 +42,44 @@ The site has two competing versions behind a floating variant switcher
   the site theme toggle does not apply there.
 
 Deliberate deviations from the design file (don't "restore" them):
-pricing uses the real plan catalog numbers; Pro says "Website, clock & QR
-widgets" (PDF is Enterprise-only); footer/company is Kiwi Technologies with
+pricing uses the real plan catalog numbers; Pro's widget line predates PDFs
+moving to Pro (backend PR #133, 2026-09-04) — update both concepts' pricing copy; footer/company is Kiwi Technologies with
 contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
 "Retail Solutions" name); demo links go to kiwi.wilsonworksph.com.
 Hero stats (1,284 screens / 96% online) are still the design's aspirational
 numbers — pending a decision.
 
-Any static deploy needs an SPA fallback (all paths → index.html) for `/b`.
+- `/c` — **Concept C** (`src/concept-c/*`, built 2026-09-07 from the user's
+  brief): modern light-only SaaS page whose centerpiece is an **interactive
+  demo simulation** — a mock Kiwi dashboard (left) driving three simulated
+  screens (right) through a dashboard → cloud → screens connector. Pure
+  front-end state: `demo/scenarios.ts` holds four industry presets (retail,
+  restaurant, corporate, government: screens, content, playlists, schedules,
+  defaults); `demo/useDemo.ts` is the reducer + timers (push → `syncing` →
+  `synced`/`published`, staggered fleet publishes, shared 3.2 s playlist
+  tick); `demo/ContentArt.tsx` draws every piece of "content" from a
+  description in container-query units (no stock imagery), so the same art
+  is a thumbnail in the dashboard and full-bleed on a screen. The hero
+  mockup is the same components in a second, non-interactive `useDemo`
+  instance. Brand mapping for the brief's "green accent": lime `#CEED7A`
+  buttons with plum text, leaf `#7FA060` for accents/status, plum `#2D0D29`
+  for text; Instrument Sans throughout. Scoped styles in `c.css`; the site
+  theme toggle does not apply. Pricing is the brief's Starter / Business /
+  Enterprise with "Request pricing" (no numbers) — NOTE the real plans are
+  Basic / Pro / Enterprise; bullets stay within the catalog's truths.
+  Contact links are `mailto:contact@wilsonworksph.com` like the other concepts.
+  **Device renders** (`src/assets/devices/*.webp`, `demo/devices.ts`) are Kiwi's
+  own product renders from kiwi.com.ph/digital-solutions (transparent PNGs →
+  trimmed webp), with each screen panel's rectangle measured in % so the demo
+  composites live content into the real hardware. The site sits behind a
+  "Checking your browser" bot check: curl gets 403/429, but a Playwright page
+  that has passed the check can `fetch()` the uploads with cookies; render an
+  `<img>` on a transparent same-origin page and element-screenshot it with
+  `omitBackground` to keep alpha (there is no `fs` inside run_code snippets).
+  Front-facing renders only in the demo wall — rotatable, K-type kiosk and the
+  tabletop are shot at an angle and would need a perspective transform.
+
+Any static deploy needs an SPA fallback (all paths → index.html) for `/b` and `/c`.
 
 ## Architecture
 
