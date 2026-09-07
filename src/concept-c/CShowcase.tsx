@@ -26,7 +26,7 @@ const ROWS = [
     ],
     poster: "/media/displays-light-poster.jpg",
     src: "/media/displays-light.mp4" as string | undefined,
-    url: "kiwi.wilsonworksph.com/displays",
+    url: "cms.kiwi.com.ph/displays",
   },
   {
     id: "schedule",
@@ -40,7 +40,7 @@ const ROWS = [
     ],
     poster: "/media/schedule-light-poster.jpg",
     src: "/media/schedule-light.mp4" as string | undefined,
-    url: "kiwi.wilsonworksph.com/schedule",
+    url: "cms.kiwi.com.ph/schedule",
   },
   {
     id: "designer",
@@ -54,7 +54,7 @@ const ROWS = [
     ],
     poster: "/media/designer-light-poster.jpg",
     src: "/media/designer-light.mp4" as string | undefined,
-    url: "kiwi.wilsonworksph.com/layouts",
+    url: "cms.kiwi.com.ph/layouts",
   },
 ];
 
