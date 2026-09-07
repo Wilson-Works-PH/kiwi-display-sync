@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import "@fontsource-variable/material-symbols-rounded";
 import "./c.css";
 import { CDemo } from "./CDemo";
-import { CBenefits, CFeatures, CFinalCta, CFooter, CHero, CHowItWorks, CNav, CPricing, CTrust, CUseCases } from "./CSections";
+import { CBenefits, CFeatures, CFinalCta, CFooter, CHero, CHowItWorks, CNav, CPricing, CStickyCta, CTrust, CUseCases } from "./CSections";
 import { useDemo } from "./demo/useDemo";
 import { useReveal } from "./useReveal";
 
@@ -36,6 +36,7 @@ export default function CPage() {
         <CFinalCta />
       </main>
       <CFooter />
+      <CStickyCta />
     </div>
   );
 }
