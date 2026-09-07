@@ -36,6 +36,14 @@ export interface DeviceSpec {
    * When present the frame projects content onto this quad instead of `screen`.
    */
   quad?: Quad;
+  /**
+   * The panel's width/height ratio used to lay content out flat before projecting.
+   * The quad's own edge lengths are foreshortened by the camera angle and would give
+   * a squashed box (the E-Poster came out ~0.26, so content sat in black bars).
+   * Outdoor totem: 1080×1920 (spec). E-Poster: the 1488×3840 artwork the user made
+   * for it — switch to 9/16 if the real panel turns out to be 1080×1920.
+   */
+  screenAspect?: number;
 }
 
 export const DEVICES: Record<DeviceId, DeviceSpec> = {
@@ -44,7 +52,7 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
     src: indoorDisplay,
     w: 1389,
     h: 793,
-    screen: { left: 0.65, top: 1.77, width: 98.34, height: 96.72 },
+    screen: { left: 1.11, top: 1.95, width: 97.67, height: 96.3 },
   },
   "floor-standing": {
     name: "Indoor Floor-standing Large Format Display",
@@ -65,6 +73,7 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
       [87.13, 67.44],
       [25.25, 68.33],
     ],
+    screenAspect: 9 / 16,
   },
   "e-poster": {
     name: "Indoor Digital E-Poster",
@@ -78,6 +87,7 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
       [55.16, 98.0],
       [2.35, 94.22],
     ],
+    screenAspect: 1488 / 3840,
   },
   tabletop: {
     name: "Digital Tabletop Display",
@@ -88,8 +98,12 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
   },
 };
 
-/** Grow the overlay a hair past the measured panel so no wallpaper peeks out at the edges. */
-export const SCREEN_BLEED_PCT = 0.5;
+/**
+ * Grow the overlay a hair past the measured panel so no wallpaper peeks out at the
+ * edges. A hair only: the Indoor Digital Display's bezel is ~1 % of its width, and
+ * 0.5 % per side swallowed it (user, 2026-09-07: "this eats the frame").
+ */
+export const SCREEN_BLEED_PCT = 0.12;
 /** Same idea for projected quads: scale about the centroid. */
 export const QUAD_BLEED = 1.012;
 

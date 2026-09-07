@@ -6,6 +6,8 @@ const ConceptC = lazy(() => import("./concept-c/CPage"));
 // Earlier concepts stay reachable for the team, but are not linked anywhere.
 const Classic = lazy(() => import("./pages/Classic"));
 const ConceptB = lazy(() => import("./concept-b/BPage"));
+// Dev helper for producing demo media from the drawn content (see ArtPage).
+const ArtPage = lazy(() => import("./concept-c/ArtPage"));
 
 export default function App() {
   return (
@@ -16,6 +18,7 @@ export default function App() {
           <Route path="/a" element={<Classic />} />
           <Route path="/b" element={<ConceptB />} />
           <Route path="/c" element={<ConceptC />} />
+          <Route path="/art/:scenario/:index?" element={<ArtPage />} />
         </Routes>
       </Suspense>
     </ThemeProvider>

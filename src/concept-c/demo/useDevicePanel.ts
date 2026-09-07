@@ -31,7 +31,12 @@ export function useDevicePanel(
     frame.width,
     frame.height,
   );
-  const flat = flatSizeOf(px);
+  const measured = flatSizeOf(px);
+  // Lay the content out at the panel's ratio (height from the quad's near-vertical
+  // edges, which the camera barely foreshortens), not at the projected edge lengths.
+  const flat = dev.screenAspect
+    ? { h: measured.h, w: measured.h * dev.screenAspect }
+    : measured;
   return {
     left: 0,
     top: 0,

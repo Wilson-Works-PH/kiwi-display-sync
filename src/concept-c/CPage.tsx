@@ -1,34 +1,29 @@
 import { useEffect, useRef } from "react";
 import "@fontsource-variable/material-symbols-rounded";
 import "./c.css";
-import { CDemo } from "./CDemo";
+import { CHowItWorks } from "./CHowItWorks";
+import { CShowcase } from "./CShowcase";
 import {
   CBenefits,
   CFeatures,
   CFinalCta,
   CFooter,
   CHero,
-  CHowItWorks,
   CNav,
   CPricing,
   CStickyCta,
   CTrust,
   CUseCases,
 } from "./CSections";
-import { useDemo } from "./demo/useDemo";
-import { useMediaQuery } from "./useMediaQuery";
 import { useReveal } from "./useReveal";
 
 /**
- * Concept C — modern SaaS landing page with the interactive demo as its
- * centerpiece. Two independent demo instances: the hero mockup plays on its
- * own (non-interactive), the "See Kiwi in action" section is the live one.
+ * Concept C — the site. Modern SaaS landing page that SHOWS the real product:
+ * a recording of the CMS in the hero, then one recording per job in
+ * "See Kiwi in action". No interactive simulation (replaced 2026-09-07).
  */
 export default function CPage() {
   const root = useRef<HTMLDivElement>(null);
-  const heroDemo = useDemo("retail");
-  const demo = useDemo("retail");
-  const desktop = useMediaQuery("(min-width: 1024px)");
   useReveal(root);
 
   useEffect(() => {
@@ -39,23 +34,12 @@ export default function CPage() {
     <div ref={root} className="c-root antialiased">
       <CNav />
       <main>
-        <CHero demo={heroDemo} />
-        {/* Phones reach the interactive demo one swipe after the hero; the benefit
-            statement follows it. Desktop keeps the original order. */}
-        {desktop ? (
-          <>
-            <CTrust />
-            <CDemo demo={demo} />
-          </>
-        ) : (
-          <>
-            <CDemo demo={demo} />
-            <CTrust />
-          </>
-        )}
+        <CHero />
+        <CTrust />
+        <CShowcase />
         <CFeatures />
         <CHowItWorks />
-        <CUseCases onPick={demo.setScenario} />
+        <CUseCases />
         <CBenefits />
         <CPricing />
         <CFinalCta />

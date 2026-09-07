@@ -21,3 +21,5 @@ npm-debug.log*
 /brand
 # brand source material (PDF proposal — kept locally, not tracked)
 /brand/
+public/media/raw/
+.secrets/
