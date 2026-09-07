@@ -14,8 +14,12 @@ import type { Demo } from "./useDemo";
  * selects it in the dashboard.
  */
 export function DisplayWall({ demo }: { demo: Demo }) {
-  const landscape = demo.scenario.screens.filter((s) => s.orientation === "landscape");
-  const portrait = demo.scenario.screens.filter((s) => s.orientation === "portrait");
+  const landscape = demo.scenario.screens.filter(
+    (s) => s.orientation === "landscape",
+  );
+  const portrait = demo.scenario.screens.filter(
+    (s) => s.orientation === "portrait",
+  );
   return (
     <div className="grid grid-cols-[minmax(0,1.45fr)_minmax(0,0.9fr)] items-start gap-6">
       <div className="flex flex-col gap-5">
@@ -32,7 +36,19 @@ export function DisplayWall({ demo }: { demo: Demo }) {
   );
 }
 
-export function DisplayFrame({ screen, demo, interactive = true }: { screen: Screen; demo: Demo; interactive?: boolean }) {
+export function DisplayFrame({
+  screen,
+  demo,
+  interactive = true,
+  priority = false,
+  showLabel = true,
+}: {
+  screen: Screen;
+  demo: Demo;
+  interactive?: boolean;
+  priority?: boolean;
+  showLabel?: boolean;
+}) {
   const st = demo.state.screens[screen.id];
   const content = demo.contentFor(screen.id);
   const playlist = demo.playlistFor(screen.id);
@@ -52,13 +68,18 @@ export function DisplayFrame({ screen, demo, interactive = true }: { screen: Scr
       {/* The real device: Kiwi's own product render, with the live content
           composited into its measured screen rectangle. */}
       <div
-        className={cx("relative transition-transform duration-300", interactive && "group-hover:-translate-y-0.5")}
+        className={cx(
+          "relative transition-transform duration-300",
+          interactive && "group-hover:-translate-y-0.5",
+        )}
         style={{ aspectRatio: `${dev.w} / ${dev.h}` }}
       >
         <img
           src={dev.src}
           alt=""
           draggable={false}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
           className="absolute inset-0 h-full w-full select-none"
           style={{ filter: "drop-shadow(0 22px 28px rgba(45,13,41,0.22))" }}
         />
@@ -73,7 +94,10 @@ export function DisplayFrame({ screen, demo, interactive = true }: { screen: Scr
           }}
         >
           {content ? (
-            <div key={`${content.id}-${st.version}`} className="c-fade-in absolute inset-0">
+            <div
+              key={`${content.id}-${st.version}`}
+              className="c-fade-in absolute inset-0"
+            >
               <ContentArt kind={content.kind} art={content.art} />
             </div>
           ) : null}
@@ -81,7 +105,10 @@ export function DisplayFrame({ screen, demo, interactive = true }: { screen: Scr
           {st.status === "syncing" ? (
             <div className="absolute inset-0 grid place-items-center bg-plum-950/50 backdrop-blur-[2px]">
               <div className="flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-bold text-plum-950 shadow-lg">
-                <span className="c-spin size-2.5 rounded-full border-2 border-plum-950/20 border-t-plum-950" aria-hidden="true" />
+                <span
+                  className="c-spin size-2.5 rounded-full border-2 border-plum-950/20 border-t-plum-950"
+                  aria-hidden="true"
+                />
                 Syncing…
               </div>
             </div>
@@ -89,7 +116,13 @@ export function DisplayFrame({ screen, demo, interactive = true }: { screen: Scr
 
           {st.status === "published" ? (
             <div className="c-fade-in absolute right-[3%] top-[3%] flex items-center gap-1 rounded-full bg-lime-400 px-2 py-0.5 text-[10px] font-bold text-plum-950 shadow">
-              <span className="c-icon is-filled" style={{ fontSize: 12 }} aria-hidden="true">check_circle</span>
+              <span
+                className="c-icon is-filled"
+                style={{ fontSize: 12 }}
+                aria-hidden="true"
+              >
+                check_circle
+              </span>
               Published
             </div>
           ) : null}
@@ -105,20 +138,27 @@ export function DisplayFrame({ screen, demo, interactive = true }: { screen: Scr
           ) : null}
         </div>
         {interactive && selected ? (
-          <div className="pointer-events-none absolute -inset-2 rounded-2xl ring-2 ring-leaf-600" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute -inset-2 rounded-2xl ring-2 ring-leaf-600"
+            aria-hidden="true"
+          />
         ) : null}
       </div>
 
-      <div className="mt-3 flex items-start justify-between gap-2 px-0.5">
-        <div className="min-w-0">
-          <div className="truncate text-[13px] font-semibold text-plum-950">{screen.name}</div>
-          <div className="truncate text-[11.5px] text-plum-950/55">
-            {screen.location} · {dev.name}
-            {playlist ? ` · ${playlist.name}` : ""}
+      {showLabel ? (
+        <div className="mt-3 flex items-start justify-between gap-2 px-0.5">
+          <div className="min-w-0">
+            <div className="truncate text-[13px] font-semibold text-plum-950">
+              {screen.name}
+            </div>
+            <div className="truncate text-[11.5px] text-plum-950/55">
+              {screen.location} · {dev.name}
+              {playlist ? ` · ${playlist.name}` : ""}
+            </div>
           </div>
+          <StatusChip status={st.status} />
         </div>
-        <StatusChip status={st.status} />
-      </div>
+      ) : null}
     </Tag>
   );
 }

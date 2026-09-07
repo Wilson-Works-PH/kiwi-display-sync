@@ -23,12 +23,14 @@ same toolchain as the CMS frontend.
   pricing card still needs the PDF line moved from Enterprise to Pro.
 - **Don't touch the backend/CMS repos** from here; read-only for facts.
 
-## Two concepts, one repo
+## Concepts, one repo
 
-The site has two competing versions behind a floating variant switcher
-(`src/components/VariantSwitch.tsx`, bottom-right on every page):
+**Concept C is the site** (2026-09-07, user decision): `/` renders it. Concepts
+A and B are hidden — still routable at `/a` and `/b` for team comparison, not
+linked from anywhere; the floating `VariantSwitch` is no longer mounted
+(`src/components/VariantSwitch.tsx` kept for reference).
 
-- `/` — **Concept A** (`src/pages/Classic.tsx` + `src/sections/*`): plum/lime,
+- `/a` — **Concept A** (`src/pages/Classic.tsx` + `src/sections/*`): plum/lime,
   Fraunces, theme toggle, GSAP/Lenis motion.
 - `/b` — **Concept B** (`src/concept-b/*`): 1:1 implementation of the
   "Kiwi Site.dc.html" prototype from the Claude Design project
@@ -49,7 +51,7 @@ contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
 Hero stats (1,284 screens / 96% online) are still the design's aspirational
 numbers — pending a decision.
 
-- `/c` — **Concept C** (`src/concept-c/*`, built 2026-09-07 from the user's
+- `/` (also `/c`) — **Concept C** (`src/concept-c/*`, built 2026-09-07 from the user's
   brief): modern light-only SaaS page whose centerpiece is an **interactive
   demo simulation** — a mock Kiwi dashboard (left) driving three simulated
   screens (right) through a dashboard → cloud → screens connector. Pure
@@ -67,7 +69,11 @@ numbers — pending a decision.
   theme toggle does not apply. Pricing is the brief's Starter / Business /
   Enterprise with "Request pricing" (no numbers) — NOTE the real plans are
   Basic / Pro / Enterprise; bullets stay within the catalog's truths.
-  Contact links are `mailto:contact@wilsonworksph.com` like the other concepts.
+  Contact links (Concept C): "Book a demo" → https://kiwi.com.ph/contact/ (the
+  company site's own Request-a-Demo page), sales → mailto:info@kiwi.com.ph, phones
+  +63 969 170 2299 / +63 2 8658 6962, showroom Greenhills, San Juan (Mon–Fri
+  9–5), socials @kiwitechnologiesph — all read off kiwi.com.ph on 2026-09-07.
+  Concepts A/B still use the older guessed contact@wilsonworksph.com.
   **Device renders** (`src/assets/devices/*.webp`, `demo/devices.ts`) are Kiwi's
   own product renders from kiwi.com.ph/digital-solutions (transparent PNGs →
   trimmed webp), with each screen panel's rectangle measured in % so the demo
@@ -78,8 +84,27 @@ numbers — pending a decision.
   `omitBackground` to keep alpha (there is no `fs` inside run_code snippets).
   Front-facing renders only in the demo wall — rotatable, K-type kiosk and the
   tabletop are shot at an angle and would need a perspective transform.
+  **Mobile-first (2026-09-07 brief, ~80% phone traffic):** below `lg` the demo
+  is a GUIDED flow (`demo/MobileDemo.tsx`, mounted `key={scenario.id}`): a
+  sticky LIVE DISPLAY (real Indoor Digital Display, ~32% of the viewport with
+  its header, opening on "Welcome to Kiwi") → CONTROL (2-col content cards that
+  only mark "Selected ✓") → TARGET DISPLAY → a 56px PUBLISH TO SCREEN, mirrored
+  by a fixed bottom bar while the inline button is off-screen. Publish runs
+  Publishing… → Sending to … → Screen syncing… → Published ✓ (~1.4 s,
+  `useDemo.publishSequence`) and then the screen changes; success card offers
+  "Try another campaign" / "Publish to multiple screens", which reveals the
+  screen checklist and, after publishing, swaps the single device for a
+  swipeable strip of the whole fleet. Desktop (`lg+`) keeps the side-by-side
+  stage; `useMediaQuery` mounts only one. Mobile also gets: compact nav with a
+  menu sheet (Product / How it works / Solutions / Pricing / Live demo / Sign
+  in), a simplified hero ("Every screen. One Kiwi." + CMS ↓ Kiwi ↓ Display
+  visual, "See Kiwi in action" first), feature blocks with visuals instead of
+  card stacks, a snap carousel for industries, and a sticky "Book a demo" bar
+  that only appears after the visitor scrolls past the demo. All tap targets
+  in the demo ≥ 44px. Validate at 360/390/430 with reduced motion; the
+  desktop composition must never be squeezed onto phones.
 
-Any static deploy needs an SPA fallback (all paths → index.html) for `/b` and `/c`.
+Any static deploy needs an SPA fallback (all paths → index.html) for `/a` and `/b`.
 
 ## Architecture
 
@@ -123,8 +148,8 @@ emulation instead.
 
 ## Known open items
 
-- Contact email `contact@wilsonworksph.com` is a best guess — confirm the
-  real inbox (old `kiwisolutions.com` domain was retired with the rename).
+- Concept C uses info@kiwi.com.ph + kiwi.com.ph/contact/ (from the company
+  site). Concepts A/B still carry the guessed `contact@wilsonworksph.com`.
 - `og:image` needs an absolute URL once the production domain exists.
 - Grand Royal / Telegraf aren't web-licensed; Fraunces / Instrument Sans are
   the stand-ins. Swap in `src/index.css` + `src/main.tsx` if licensed later.
