@@ -4,6 +4,7 @@ import {
   type CSSProperties,
   type ReactNode,
   useRef,
+  type MouseEvent,
 } from "react";
 import { cx } from "./cx";
 import wordmarkLime from "../assets/brand/wordmark-lime.png";
@@ -28,7 +29,7 @@ import { VideoFrame } from "./VideoFrame";
 
 // Real channels, read off kiwi.com.ph (2026-09-07): its "Request a Demo" / "Get Started"
 // buttons go to /contact/, the site's email is info@kiwi.com.ph, and the CMS lives at
-// kiwi.wilsonworksph.com.
+// cms.kiwi.com.ph.
 const DEMO_LINK = "https://kiwi.com.ph/contact/";
 const SALES_LINK =
   "mailto:info@kiwi.com.ph?subject=Kiwi%20Enterprise%20pricing";
@@ -72,7 +73,7 @@ function BrandIcon({ name, size = 18 }: { name: string; size?: number }) {
     </svg>
   );
 }
-const SIGN_IN = "https://kiwi.wilsonworksph.com";
+const SIGN_IN = "https://cms.kiwi.com.ph";
 
 /* ------------------------------------------------------------------ atoms */
 
@@ -292,88 +293,159 @@ export function CNav() {
     ["#solutions", "Solutions"],
     ["#pricing", "Pricing"],
   ] as const;
+  /** Close the sheet, then jump — the body is scroll-locked while it's open, so a plain anchor click wouldn't move. */
+  const go = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) return;
+    e.preventDefault();
+    setOpen(false);
+    requestAnimationFrame(() => {
+      document.body.style.overflow = "";
+      document
+        .querySelector(href)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", href);
+    });
+  };
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
   return (
-    <header className="font-header sticky top-0 z-50 border-b border-plum-950/[0.06] bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-[1280px] items-center justify-between gap-3 px-4 sm:px-8 lg:h-16">
-        <a
-          href="#top"
-          className="flex min-h-[44px] items-center gap-2.5"
-          aria-label="Kiwi home"
-          onClick={() => setOpen(false)}
-        >
-          <Logo />
-        </a>
-        <nav
-          className="hidden items-center gap-7 text-[14px] font-medium text-plum-950/70 lg:flex"
-          aria-label="Primary"
-        >
-          {links.map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              className="transition-colors hover:text-plum-950"
-            >
-              {label}
-            </a>
-          ))}
-          <a href="#demo" className="transition-colors hover:text-plum-950">
-            Demo
+    <>
+      <header className="font-header sticky top-0 z-50 border-b border-plum-950/[0.06] bg-white/85 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-[1280px] items-center justify-between gap-3 px-4 sm:px-8 lg:h-16">
+          <a
+            href="#top"
+            className="flex min-h-[44px] items-center gap-2.5"
+            aria-label="Kiwi home"
+            onClick={() => setOpen(false)}
+          >
+            <Logo />
           </a>
-        </nav>
-        <div className="flex items-center gap-2">
-          <Button
-            href={DEMO_LINK}
-            className="!min-h-[40px] !px-3.5 !py-2 !text-[13px] lg:!min-h-[44px] lg:!px-4"
+          <nav
+            className="hidden items-center gap-7 text-[14px] font-medium text-plum-950/70 lg:flex"
+            aria-label="Primary"
           >
-            Book a demo
-          </Button>
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-expanded={open}
-            aria-controls="c-mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-11 place-items-center rounded-full text-plum-950 ring-1 ring-plum-950/12 lg:hidden"
-          >
-            <Icon name={open ? "close" : "menu"} size={22} />
-          </button>
+            {links.map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="transition-colors hover:text-plum-950"
+              >
+                {label}
+              </a>
+            ))}
+            <a href="#demo" className="transition-colors hover:text-plum-950">
+              Demo
+            </a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Button
+              href={DEMO_LINK}
+              className="!min-h-[40px] !px-3.5 !py-2 !text-[13px] lg:!min-h-[44px] lg:!px-4"
+            >
+              Book a demo
+            </Button>
+            <button
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              aria-controls="c-mobile-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="grid size-11 place-items-center rounded-full text-plum-950 ring-1 ring-plum-950/12 lg:hidden"
+            >
+              <Icon name={open ? "close" : "menu"} size={22} />
+            </button>
+          </div>
         </div>
-      </div>
-      <div
-        id="c-mobile-menu"
-        hidden={!open}
-        className="border-t border-plum-950/[0.06] bg-white lg:hidden"
-      >
-        <ul className="mx-auto max-w-[1280px] px-4 py-2 sm:px-8">
-          {[...links, ["#demo", "See it in action"], [SIGN_IN, "Sign in"]].map(
-            ([href, label]) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="flex min-h-[48px] items-center justify-between border-b border-plum-950/[0.06] text-[16px] font-semibold text-plum-950 last:border-b-0"
-                >
-                  {label}
-                  <Icon
-                    name={
-                      href.startsWith("http") ? "open_in_new" : "arrow_forward"
-                    }
-                    size={18}
-                    className="text-plum-950/40"
-                  />
-                </a>
-              </li>
-            ),
-          )}
-        </ul>
-      </div>
-    </header>
+      </header>
+      {/* Phones: a FULL-SCREEN menu (user, 2026-09-07). It covers the page, keeps the logo +
+        a close button in the same spot as the bar, lists the destinations large, and ends in
+        the sales CTA. Body scroll is locked while it's open. */}
+      {open ? (
+        <div
+          id="c-mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          className="c-fade-in fixed inset-0 z-[60] flex flex-col bg-white lg:hidden"
+        >
+          <div className="flex h-14 items-center justify-between px-4">
+            <a
+              href="#top"
+              aria-label="Kiwi home"
+              onClick={() => setOpen(false)}
+              className="flex min-h-[44px] items-center"
+            >
+              <Logo />
+            </a>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="grid size-11 place-items-center rounded-full text-plum-950 ring-1 ring-plum-950/12"
+            >
+              <Icon name="close" size={22} />
+            </button>
+          </div>
+          <nav
+            className="flex flex-1 flex-col justify-center px-6"
+            aria-label="Menu"
+          >
+            <ul className="flex flex-col">
+              {[...links, ["#demo", "See it in action"]].map(
+                ([href, label], i) => (
+                  <li
+                    key={label}
+                    className="c-rise-in border-b border-plum-950/[0.08]"
+                    style={delay(i * 40)}
+                  >
+                    <a
+                      href={href}
+                      onClick={(e) => go(e, href)}
+                      className="flex min-h-[64px] items-center justify-between text-[28px] font-bold tracking-tight text-plum-950"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {label}
+                      <Icon
+                        name="arrow_forward"
+                        size={22}
+                        className="text-plum-950/35"
+                      />
+                    </a>
+                  </li>
+                ),
+              )}
+            </ul>
+          </nav>
+          <div className="c-safe-bottom flex flex-col gap-3 px-6 pb-6">
+            <Button
+              href={DEMO_LINK}
+              className="w-full !min-h-[52px] !text-[16px]"
+            >
+              Book a demo
+              <Icon name="arrow_forward" size={18} />
+            </Button>
+            <a
+              href={SIGN_IN}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-[48px] items-center justify-center gap-1.5 text-[15px] font-semibold text-plum-950/70"
+            >
+              Sign in to Kiwi
+              <Icon name="open_in_new" size={16} />
+            </a>
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -482,7 +554,7 @@ export function CHero() {
           <VideoFrame
             src="/media/hero-light.mp4"
             poster="/media/hero-light-poster.jpg"
-            url="kiwi.wilsonworksph.com/displays"
+            url="cms.kiwi.com.ph/displays"
             label="Publishing a layout to Storefront 01 in the Kiwi CMS"
           />
         </div>

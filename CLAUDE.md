@@ -47,7 +47,7 @@ Deliberate deviations from the design file (don't "restore" them):
 pricing uses the real plan catalog numbers; Pro's widget line predates PDFs
 moving to Pro (backend PR #133, 2026-09-04) — update both concepts' pricing copy; footer/company is Kiwi Technologies with
 contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
-"Retail Solutions" name); demo links go to kiwi.wilsonworksph.com.
+"Retail Solutions" name); demo links go to kiwi.wilsonworksph.com (Concepts A/B); Concept C shows and links cms.kiwi.com.ph (user, 2026-09-07).
 Hero stats (1,284 screens / 96% online) are still the design's aspirational
 numbers — pending a decision.
 

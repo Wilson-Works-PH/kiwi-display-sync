@@ -11,7 +11,7 @@ import { cx } from "./cx";
 export function VideoFrame({
   src,
   poster,
-  url = "kiwi.wilsonworksph.com",
+  url = "cms.kiwi.com.ph",
   label,
   aspect = "1280 / 800",
   className,
@@ -71,7 +71,7 @@ export function VideoFrame({
 
 /** The browser chrome the recordings sit in: three dots, a URL pill, then whatever you put inside. */
 export function BrowserFrame({
-  url = "kiwi.wilsonworksph.com",
+  url = "cms.kiwi.com.ph",
   className,
   children,
 }: {
