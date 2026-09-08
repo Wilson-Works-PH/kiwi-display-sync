@@ -51,7 +51,8 @@ toggle, the Newsreader/Hanken fonts and Concept A's CMS recordings. `/a`, `/b`, 
   the result element whole, one benefit caption (bar on phones, pill from `sm`).
   Files: `public/media/<clip>-light.mp4` (desktop) + `<clip>-light-m.mp4`
   (phone encode of the same cut) + posters; raw takes in gitignored
-  `public/media/raw/` with a JSON sidecar. Re-record with
+  gitignored `recordings/` (NOT under `public/` — Vite copies `public/` into `dist/`, so takes kept
+  there shipped 29 MB with every build until 2026-09-08) with a JSON sidecar. Re-record with
   `scripts/record-cms.mjs --clip <name> --sim-tokens <file>` and cut with
   `scripts/cut-clip.py` (see "Recording the CMS on LOCAL"). The interactive
   demo engine (useDemo, MobileDemo, DashboardFrame, ConnectionFlow,
@@ -172,7 +173,7 @@ clicks by coordinates (locator.click refuses targets under an overlay). Feature 
 sidebar collapsed (`kiwi:sidebar-collapsed`), the hero keeps it. Toast layer hidden for hero, schedule
 and designer (no MQTT broker locally → change-layout reports `delivered:false` and the CMS toasts
 "Queued — display offline"; the other toasts landed under frame edges). The sidecar
-`public/media/raw/<clip>.json` carries `startSec` and named `marks` — they run ≈0.35 s LATER than the
+`recordings/<clip>.json` carries `startSec` and named `marks` — they run ≈0.35 s LATER than the
 video, so place cuts from frame strips, never from marks. Park the pointer on empty space before the
 take (a hover tooltip over a block showed in an opening).
 

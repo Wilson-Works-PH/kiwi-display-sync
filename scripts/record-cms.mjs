@@ -19,7 +19,7 @@
  * from the MCP browser, a DRAWN-IN cursor (Playwright videos have no pointer) that glides between
  * targets and ripples on click, and Playwright's recordVideo. Feature clips run with the CMS sidebar
  * collapsed to its icon rail (localStorage `kiwi:sidebar-collapsed`); the hero keeps the full sidebar
- * as the establishing shot. Output: public/media/raw/<clip>.webm + a JSON sidecar with the on-camera
+ * as the establishing shot. Output: recordings/<clip>.webm + a JSON sidecar with the on-camera
  * start second and named `marks` (seconds) for caption timing — encode with scripts/encode-clip.sh.
  *
  * Every flow runs QUIETLY once first (warm-up: primes queries + images so nothing loads on camera,
@@ -45,7 +45,8 @@ const CLIP = args.clip ?? "hero";
 // Local dev by default (user decision 2026-09-07: record on local for full control — simulated
 // online displays, our own content, no production data in frame). Pass --base for another host.
 const BASE = args.base ?? "http://localhost:4173"; // vite preview of the CMS build: no devtools badges, no HMR
-const OUT_DIR = resolve(args.out ?? "public/media/raw");
+// NOT under public/: Vite copies public/ into dist/, so takes placed there ship with the build.
+const OUT_DIR = resolve(args.out ?? "recordings");
 const WORKSPACE = args.workspace ?? "Kiwi Digital";
 const DISPLAY = args.display ?? "Storefront 01";
 const LAYOUT = args.layout ?? ""; // hero: layout to switch to (default "Kiwi Food"); designer: name for the new layout

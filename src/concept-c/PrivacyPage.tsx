@@ -4,12 +4,10 @@ import "./c.css";
 import { CFooter, Logo } from "./CSections";
 
 const EFFECTIVE = "8 September 2026";
-const SUPERSEDES = "3 September 2026";
 const COMPANY = "Kiwi Technologies";
 const EMAIL = "info@kiwi.com.ph";
 const DPO_EMAIL = "dpo@kiwi.com.ph";
 const PHONE = "+63 969 170 2299";
-const DELETE_REQUEST_URL = "https://kiwi.com.ph/contact/";
 const NPC_REGISTRATION = "PIC-005-743-2026";
 
 /**
@@ -37,7 +35,8 @@ const NPC_REGISTRATION = "PIC-005-743-2026";
  *   - the deletion path: there is NO in-app or self-serve account deletion in
  *     the web app or the Android player (their draft described "Settings >
  *     Account > Delete Account", which does not exist), so this page offers
- *     the email / web request route only.
+ *     the email route only (the contact-page route was removed at the user's
+ *     request, 2026-09-08).
  * If the apps start collecting something new, this page changes in the same
  * pull request.
  */
@@ -86,7 +85,7 @@ export default function PrivacyPage() {
           Kiwi Display Sync Privacy Policy
         </h1>
         <p className="mt-3 text-[14px] text-plum-950/55">
-          Effective {EFFECTIVE} · Supersedes the version dated {SUPERSEDES}
+          Effective {EFFECTIVE}
         </p>
 
         <div className="c-prose mt-8">
@@ -351,21 +350,10 @@ export default function PrivacyPage() {
           <h2>9. Account and data deletion</h2>
           <p>
             You can ask for your account and its associated data to be deleted
-            at any time:
+            at any time by emailing <a href={`mailto:${EMAIL}`}>{EMAIL}</a>{" "}
+            with your account details and “Delete my account” in the subject
+            line.
           </p>
-          <ul>
-            <li>
-              email <a href={`mailto:${EMAIL}`}>{EMAIL}</a> with your account
-              details and “Delete my account” in the subject line; or
-            </li>
-            <li>
-              send the request through{" "}
-              <a href={DELETE_REQUEST_URL} target="_blank" rel="noreferrer">
-                {DELETE_REQUEST_URL.replace("https://", "")}
-              </a>
-              .
-            </li>
-          </ul>
           <p>
             We delete your account and associated personal data — not merely
             deactivate it — within 30 days of a verified request, except for

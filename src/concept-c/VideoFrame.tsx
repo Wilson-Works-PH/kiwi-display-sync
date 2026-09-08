@@ -261,7 +261,8 @@ export function BrowserFrame({
   return (
     <figure
       className={cx(
-        "overflow-hidden rounded-xl bg-white shadow-[0_14px_32px_-20px_rgba(45,13,41,0.28)] ring-1 ring-plum-950/10 sm:rounded-2xl",
+        // `c-settle`: a hair of scale as the surrounding [data-reveal] row comes in (c.css).
+        "c-settle overflow-hidden rounded-xl bg-white shadow-[0_14px_32px_-20px_rgba(45,13,41,0.28)] ring-1 ring-plum-950/10 sm:rounded-2xl",
         className,
       )}
     >
