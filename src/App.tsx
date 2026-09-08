@@ -1,26 +1,22 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "./lib/theme";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-const ConceptC = lazy(() => import("./concept-c/CPage"));
-// Earlier concepts stay reachable for the team, but are not linked anywhere.
-const Classic = lazy(() => import("./pages/Classic"));
-const ConceptB = lazy(() => import("./concept-b/BPage"));
+const CPage = lazy(() => import("./concept-c/CPage"));
+const PrivacyPage = lazy(() => import("./concept-c/PrivacyPage"));
 // Dev helper for producing demo media from the drawn content (see ArtPage).
 const ArtPage = lazy(() => import("./concept-c/ArtPage"));
 
+/** The site is Concept C alone (Concepts A and B were removed 2026-09-08 — see git history). */
 export default function App() {
   return (
-    <ThemeProvider>
-      <Suspense fallback={null}>
-        <Routes>
-          <Route path="/" element={<ConceptC />} />
-          <Route path="/a" element={<Classic />} />
-          <Route path="/b" element={<ConceptB />} />
-          <Route path="/c" element={<ConceptC />} />
-          <Route path="/art/:scenario/:index?" element={<ArtPage />} />
-        </Routes>
-      </Suspense>
-    </ThemeProvider>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/" element={<CPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/art/:scenario/:index?" element={<ArtPage />} />
+        {/* Old concept URLs (/a, /b, /c) and anything unknown land on the site. */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }

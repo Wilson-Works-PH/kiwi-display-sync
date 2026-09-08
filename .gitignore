@@ -23,3 +23,5 @@ npm-debug.log*
 /brand/
 public/media/raw/
 .secrets/
+# client logo source files from the user — curated copies live in src/assets/clients/
+/KIWI_CLIENT_LOGO/

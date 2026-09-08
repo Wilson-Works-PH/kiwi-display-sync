@@ -8,6 +8,15 @@ import {
 } from "react";
 import { cx } from "./cx";
 import wordmarkLime from "../assets/brand/wordmark-lime.png";
+import clientAppleAndEve from "../assets/clients/apple-and-eve.webp";
+import clientCardinalSantos from "../assets/clients/cardinal-santos.webp";
+import clientCaviteStateUniversity from "../assets/clients/cavite-state-university.webp";
+import clientCityGardenGrandHotel from "../assets/clients/city-garden-grand-hotel.webp";
+import clientDmw from "../assets/clients/dmw.webp";
+import clientGolfx from "../assets/clients/golfx.webp";
+import clientAlinoHotel from "../assets/clients/alino-hotel.webp";
+import clientMasil from "../assets/clients/masil.webp";
+import clientPaperdolls from "../assets/clients/paperdolls.webp";
 import featureSchedule from "../assets/media/feature-schedule.webp";
 import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
 import layoutRestaurantL from "../assets/media/layouts/kiwi-restaurant-landscape.webp";
@@ -134,7 +143,7 @@ function Eyebrow({
  * the same treatment the CMS gives its own "CONTENT MANAGEMENT SYSTEM" line. No icon
  * mark (user, 2026-09-07: "I don't like the K").
  */
-function Logo({
+export function Logo({
   className,
   mark = "plum",
 }: {
@@ -439,7 +448,7 @@ export function CNav() {
               rel="noreferrer"
               className="flex min-h-[48px] items-center justify-center gap-1.5 text-[15px] font-semibold text-plum-950/70"
             >
-              Sign in to Kiwi
+              Sign in to Kiwi Display Sync
               <Icon name="open_in_new" size={16} />
             </a>
           </div>
@@ -565,6 +574,38 @@ export function CHero() {
 
 /* ------------------------------------------------------------------ trust */
 
+/**
+ * Client logos supplied by the user (KIWI_CLIENT_LOGO/, 2026-09-08), keyed off their
+ * backgrounds and normalised to 120px tall in `src/assets/clients/`. Shown grayscale at
+ * reduced opacity, full colour on hover.
+ */
+const CLIENTS = [
+  { name: "Apple & Eve", src: clientAppleAndEve },
+  { name: "Cardinal Santos Medical Center", src: clientCardinalSantos },
+  { name: "Cavite State University", src: clientCaviteStateUniversity },
+  { name: "City Garden Grand Hotel", src: clientCityGardenGrandHotel },
+  { name: "Department of Migrant Workers", src: clientDmw },
+  { name: "GolfX Philippines", src: clientGolfx },
+  { name: "Alino Hotel", src: clientAlinoHotel },
+  { name: "Masil Charcoal Grill Restaurant", src: clientMasil },
+  { name: "Paperdolls by RGMC", src: clientPaperdolls },
+];
+
+function ClientLogo({ name, src }: { name: string; src: string }) {
+  return (
+    <img
+      src={src}
+      alt={name}
+      title={name}
+      height={120}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      className="h-8 w-auto max-w-[150px] shrink-0 object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 lg:h-9 lg:max-w-[170px]"
+    />
+  );
+}
+
 export function CTrust() {
   const facts = [
     ["cloud_sync", "One dashboard, every location"],
@@ -576,8 +617,35 @@ export function CTrust() {
     <section className="border-y border-plum-950/[0.06] bg-white py-12 lg:py-14">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <p
+          className="font-header text-center text-[12px] font-bold uppercase tracking-[0.18em] text-plum-950/50"
           data-reveal
-          className="max-w-2xl text-[19px] font-medium leading-snug text-plum-950 lg:mx-auto lg:text-center lg:text-[24px]"
+        >
+          Trusted by
+        </p>
+        {/* Phones: an endless marquee (two copies of the row); desktop: one wrapped row. */}
+        <div
+          className="c-marquee -mx-5 mt-5 overflow-hidden sm:-mx-8 lg:hidden"
+          aria-label="Client logos"
+        >
+          <div className="c-marquee-track gap-10 px-5">
+            {[...CLIENTS, ...CLIENTS].map((c, i) => (
+              <ClientLogo key={`${c.name}-${i}`} name={c.name} src={c.src} />
+            ))}
+          </div>
+        </div>
+        <ul
+          className="mt-6 hidden flex-wrap items-center justify-center gap-x-10 gap-y-6 lg:flex"
+          data-reveal
+        >
+          {CLIENTS.map((c) => (
+            <li key={c.name}>
+              <ClientLogo name={c.name} src={c.src} />
+            </li>
+          ))}
+        </ul>
+        <p
+          data-reveal
+          className="mt-10 max-w-2xl text-[19px] font-medium leading-snug text-plum-950 lg:mx-auto lg:mt-12 lg:text-center lg:text-[24px]"
         >
           One place to control what every screen shows, across every branch,
           floor and city.
@@ -1183,8 +1251,9 @@ export function CFooter() {
       [
         ["https://kiwi.com.ph", "kiwi.com.ph"],
         [DEMO_LINK, "Book a demo"],
-        [SIGN_IN, "Sign in to Kiwi"],
+        [SIGN_IN, "Sign in to Kiwi Display Sync"],
         [`mailto:${CONTACT_EMAIL}`, CONTACT_EMAIL],
+        ["/privacy", "Privacy policy"],
       ],
     ],
   ];
@@ -1222,17 +1291,6 @@ export function CFooter() {
                 </a>
               </li>
             ))}
-            <li className="flex items-start gap-2 pt-1">
-              <Icon
-                name="storefront"
-                size={16}
-                className="mt-0.5 text-plum-950/45"
-              />
-              <span>
-                Showroom · Greenhills, San Juan, Metro Manila · Mon–Fri, 9 AM–5
-                PM
-              </span>
-            </li>
           </ul>
           <ul
             className="mt-4 flex gap-2"
