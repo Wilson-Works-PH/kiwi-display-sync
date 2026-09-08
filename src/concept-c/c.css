@@ -198,9 +198,14 @@
 .c-rise-in {
   animation: c-rise-in 0.35s ease both;
 }
+/* Recording captions (VideoFrame): each cue rises in; the `key` swap restarts it. */
+.c-caption {
+  animation: c-rise-in 0.38s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
 @media (prefers-reduced-motion: reduce) {
   .c-lime-pulse,
-  .c-rise-in {
+  .c-rise-in,
+  .c-caption {
     animation: none !important;
   }
 }

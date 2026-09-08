@@ -19,7 +19,7 @@ const EMAIL = "info@kiwi.com.ph";
 export default function PrivacyPage() {
   useEffect(() => {
     const prev = document.title;
-    document.title = "Privacy Policy — Kiwi";
+    document.title = "Privacy Policy — Kiwi Display Sync";
     window.scrollTo({ top: 0, behavior: "instant" });
     return () => {
       document.title = prev;
