@@ -98,8 +98,8 @@ export const SCENARIOS: Scenario[] = [
     id: "retail",
     label: "Retail",
     icon: "storefront",
-    workspace: "Verde Apparel",
-    blurb: "Promos, product ads and sale announcements across every store.",
+    workspace: "Retail store",
+    blurb: "Product promotions and store announcements across every branch.",
     screens: [
       {
         id: "r-endcap",
@@ -231,8 +231,8 @@ export const SCENARIOS: Scenario[] = [
     id: "restaurant",
     label: "Restaurant",
     icon: "restaurant",
-    workspace: "Kape & Kanin",
-    blurb: "Menu boards, combos and featured meals that change with the hour.",
+    workspace: "Restaurant",
+    blurb: "Menu boards, featured meals and offers that change with the hour.",
     screens: [
       {
         id: "f-left",
@@ -379,8 +379,8 @@ export const SCENARIOS: Scenario[] = [
     id: "corporate",
     label: "Corporate",
     icon: "apartment",
-    workspace: "Northwind Group",
-    blurb: "Welcome screens, announcements and live KPIs across offices.",
+    workspace: "Corporate office",
+    blurb: "Welcome screens, announcements and reminders across offices.",
     screens: [
       {
         id: "c-sales",
@@ -412,7 +412,7 @@ export const SCENARIOS: Scenario[] = [
         kind: "welcome",
         art: {
           theme: "plum",
-          headline: "Welcome to Northwind",
+          headline: "Welcome",
           sub: "Please check in at reception",
           footer: "Visitors · Ground floor lobby",
         },
@@ -520,8 +520,8 @@ export const SCENARIOS: Scenario[] = [
     id: "government",
     label: "Government",
     icon: "account_balance",
-    workspace: "City Hall · Business Permits",
-    blurb: "Advisories, requirements and queue numbers for public offices.",
+    workspace: "Government office",
+    blurb: "Advisories, requirements and office hours for public service counters.",
     screens: [
       {
         id: "g-queue",

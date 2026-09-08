@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Kiwi Display Sync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E2A20;
+    --paper:#FBFAF6;
+    --paper-2:#F1F0E8;
+    --slate:#5B6B5D;
+    --rule:#DEE0D2;
+    --kiwi:#5C7A3D;
+    --kiwi-dark:#44602C;
+    --flag-bg:#FBF3D9;
+    --flag-text:#8A6D1E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .layout{
+    display:grid;
+    grid-template-columns:250px 1fr;
+    max-width:1160px;
+    margin:0 auto;
+  }
+  nav.toc{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    overflow-y:auto;
+    padding:40px 22px 40px 32px;
+    border-right:1px solid var(--rule);
+  }
+  .brand{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--kiwi-dark);
+    margin-bottom:2px;
+  }
+  .brand-sub{
+    font-size:12px;
+    color:var(--slate);
+    margin-bottom:28px;
+  }
+  .toc-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .toc-list li{margin-bottom:2px;}
+  .toc-list a{
+    display:block;
+    font-size:13px;
+    color:var(--slate);
+    text-decoration:none;
+    padding:6px 10px;
+    border-radius:3px;
+    line-height:1.4;
+  }
+  .toc-list a:hover{
+    background:var(--paper-2);
+    color:var(--ink);
+  }
+
+  main{
+    padding:56px 64px 96px;
+    max-width:760px;
+  }
+  header.page-head{
+    margin-bottom:28px;
+  }
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:2.2rem;
+    margin:0 0 10px;
+    color:var(--kiwi-dark);
+    letter-spacing:-0.01em;
+  }
+  .date-line{
+    font-size:14px;
+    color:var(--slate);
+  }
+  .date-line .supersede{
+    display:block;
+    font-size:12.5px;
+    margin-top:2px;
+    color:#8A8F7A;
+  }
+
+  .flag-box{
+    background:var(--flag-bg);
+    border:1px solid #E7D48F;
+    border-radius:3px;
+    padding:16px 20px;
+    margin:28px 0 36px;
+  }
+  .flag-box .flag-kicker{
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    font-weight:600;
+    color:var(--flag-text);
+    margin-bottom:6px;
+  }
+  .flag-box p{
+    margin:0;
+    font-size:13.5px;
+    color:#5C4A12;
+  }
+  mark.placeholder{
+    background:#FCEFAE;
+    color:#6B5610;
+    font-style:italic;
+    padding:0 3px;
+    border-radius:2px;
+  }
+
+  section{
+    margin-bottom:34px;
+    scroll-margin-top:24px;
+  }
+  h2{
+    font-family:'Source Serif 4', serif;
+    font-weight:600;
+    font-size:1.3rem;
+    color:var(--ink);
+    margin:0 0 12px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--rule);
+  }
+  p{
+    font-size:15px;
+    margin:0 0 12px;
+    color:#2B372D;
+  }
+  ul{
+    margin:0 0 14px;
+    padding-left:20px;
+  }
+  li{
+    font-size:15px;
+    margin-bottom:8px;
+    color:#2B372D;
+  }
+  strong{color:var(--ink);}
+  a.inline-link{color:var(--kiwi-dark);}
+
+  .closing{
+    margin-top:44px;
+    padding-top:22px;
+    border-top:2px solid var(--ink);
+  }
+  .closing p{font-size:14.5px;}
+
+  @media (max-width:880px){
+    .layout{grid-template-columns:1fr;}
+    nav.toc{
+      position:static;
+      height:auto;
+      border-right:none;
+      border-bottom:1px solid var(--rule);
+      padding:24px 20px;
+    }
+    main{padding:36px 22px 72px;}
+    h1{font-size:1.7rem;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="toc">
+    <div class="brand">Kiwi Display Sync</div>
+    <div class="brand-sub">Privacy Policy</div>
+    <ul class="toc-list">
+      <li><a href="#s1">1. Developer information</a></li>
+      <li><a href="#s2">2. Privacy inquiries &amp; concerns</a></li>
+      <li><a href="#s3">3. Information we collect</a></li>
+      <li><a href="#s4">4. Basis for processing &amp; consent</a></li>
+      <li><a href="#s5">5. How we use your information</a></li>
+      <li><a href="#s6">6. How we share your information</a></li>
+      <li><a href="#s7">7. Data storage and security</a></li>
+      <li><a href="#s8">8. Data retention</a></li>
+      <li><a href="#s9">9. Account and data deletion</a></li>
+      <li><a href="#s10">10. Your rights</a></li>
+      <li><a href="#s11">11. Marketing communications</a></li>
+      <li><a href="#s12">12. Data breach notification</a></li>
+      <li><a href="#s13">13. Children's privacy</a></li>
+      <li><a href="#s14">14. Permissions used by the app</a></li>
+      <li><a href="#s15">15. Regulatory compliance</a></li>
+      <li><a href="#s16">16. Changes to this policy</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <h1>Kiwi Display Sync Privacy Policy</h1>
+      <div class="date-line">
+        Revised Draft — September 8, 2026
+        <span class="supersede">Supersedes the version dated September 3, 2026</span>
+      </div>
+    </header>
+
+    <div class="flag-box">
+      <div class="flag-kicker">BEFORE PUBLISHING</div>
+      <p>One placeholder is still open in Section 9 — the web page users visit to request account deletion. Confirm or build that page (kiwi.com.ph/contact/ works as an interim link) before this is submitted with the Google Play listing.</p>
+    </div>
+
+    <p>This Privacy Policy explains how Kiwi Technologies ("Kiwi," "we," "us," or "our") collects, uses, shares, and protects information through the Kiwi Display Sync app ("the App"), available on Google Play. Kiwi Display Sync is a companion app used together with Kiwi digital display hardware and is designed to work with Kiwi CMS (<a class="inline-link" href="https://cms.kiwi.com.ph">cms.kiwi.com.ph</a>), our cloud-based content management platform — content, schedules, and device status you manage in the App sync with your Kiwi CMS account. By downloading or using the App, you agree to the practices described in this policy, and where the law requires your affirmative consent, we obtain that consent separately as described in Section 4.</p>
+
+    <section id="s1">
+      <h2>1. Developer Information and Contact</h2>
+      <p>Kiwi Display Sync is developed and published by Kiwi Technologies, based in the Philippines.</p>
+      <p>For privacy inquiries, data requests, or concerns, contact us at:</p>
+      <ul>
+        <li>Email: info@kiwi.com.ph</li>
+        <li>Phone: +63 969 170 2299</li>
+        <li>Office Hours: Monday to Friday, 9:00 AM – 5:00 PM</li>
+      </ul>
+    </section>
+
+    <section id="s2">
+      <h2>2. Privacy Inquiries and Concerns</h2>
+      <p>You may reach our Data Privacy Officer at <a class="inline-link" href="mailto:dpo@kiwi.com.ph">dpo@kiwi.com.ph</a> for any concern that general support cannot resolve, including data subject requests and complaints about how your information is handled.</p>
+    </section>
+
+    <section id="s3">
+      <h2>3. Information We Collect</h2>
+      <p>Depending on how you use the App, we may collect:</p>
+      <ul>
+        <li><strong>Account information</strong> — name, email address, and business/company details used to log in and manage your Kiwi Display Sync account, shared with your linked Kiwi CMS account.</li>
+        <li><strong>Device and display data</strong> — device identifiers, pairing status, connectivity status, and display performance data needed to sync and manage your screens.</li>
+        <li><strong>Content you upload</strong> — images, videos, GIFs, PDFs, and other files you upload for display on your Kiwi screens.</li>
+        <li><strong>Usage data</strong> — app interactions, scheduling activity, and diagnostic logs used to maintain and improve the App.</li>
+        <li><strong>Support communications</strong> — information you share with us when requesting technical support, including screenshots or files you choose to send.</li>
+      </ul>
+      <p>We collect this information directly from you when you create an account, upload content, or contact support, and automatically from your device and displays as they connect and sync with the App and with Kiwi CMS.</p>
+      <p>We do not knowingly collect information from children, and the App is not directed to children. See Section 13 for more on this.</p>
+    </section>
+
+    <section id="s4">
+      <h2>4. Basis for Processing and Your Consent</h2>
+      <p>We process your personal data on one or more of the following bases: your consent, the performance of our contract with you (providing the App, Kiwi CMS, and related services), our legitimate business interests (such as security and service improvement), and compliance with legal obligations.</p>
+      <p>Where consent is our basis for processing — for example, before support staff access uploaded images, videos, or device logs beyond what's needed for basic troubleshooting — we ask for that consent as a specific, affirmative step, not as a condition buried in general terms of use. You may withdraw consent at any time using the contact details in Section 1; doing so may limit our ability to provide certain support or features that depend on that processing.</p>
+    </section>
+
+    <section id="s5">
+      <h2>5. How We Use Your Information</h2>
+      <p>We use the information collected to:</p>
+      <ul>
+        <li>Provide, operate, and maintain the App, Kiwi CMS, and their services</li>
+        <li>Sync content and manage device/display status in real time between the App and Kiwi CMS</li>
+        <li>Provide technical support and troubleshoot issues</li>
+        <li>Maintain security and prevent unauthorized access</li>
+        <li>Improve app performance, features, and user experience</li>
+        <li>Communicate service updates, billing notices, or support responses</li>
+      </ul>
+    </section>
+
+    <section id="s6">
+      <h2>6. How We Share Your Information</h2>
+      <p>We do not sell your personal data. We may share information only in the following cases:</p>
+      <ul>
+        <li><strong>Within Kiwi's own services</strong> — your account and content data sync between the App and your Kiwi CMS account (cms.kiwi.com.ph), since both are operated by Kiwi Technologies to run the same displays</li>
+        <li><strong>Service providers</strong> — trusted vendors (e.g., cloud hosting) who process data on our behalf, under confidentiality obligations</li>
+        <li><strong>Support access</strong> — our authorized personnel may access uploaded images/videos and device logs strictly for support and troubleshooting purposes</li>
+        <li><strong>Legal requirements</strong> — when required by law, regulation, or valid legal process</li>
+        <li><strong>Business transfers</strong> — in the event of a merger, acquisition, or asset sale, subject to continued protection of your data</li>
+      </ul>
+    </section>
+
+    <section id="s7">
+      <h2>7. Data Storage and Security</h2>
+      <p>Your data is stored on secure servers protected by technical and organizational safeguards appropriate to the sensitivity of the data, including:</p>
+      <ul>
+        <li>Encryption of data in transit, and encryption of sensitive data at rest</li>
+        <li>Access controls limiting staff access to personal data on a need-to-know basis</li>
+        <li>Monitoring and logging designed to detect unauthorized access</li>
+      </ul>
+      <p>While we take data security seriously, no method of transmission or storage is 100% secure, and we cannot guarantee absolute security.</p>
+    </section>
+
+    <section id="s8">
+      <h2>8. Data Retention</h2>
+      <p>We retain your information for as long as your account remains active. Once you close your account, we delete or anonymize your personal data within <strong>30 days,</strong> except where we are required to retain it longer to comply with a legal obligation, resolve a dispute, or enforce our agreements. Support communications and diagnostic logs are retained for no longer than <strong>6 months</strong> from creation.</p>
+    </section>
+
+    <section id="s9">
+      <h2>9. Account and Data Deletion</h2>
+      <p>If you have created a Content Management System (CMS) account, you can request deletion of your account and its associated data at any time, in either of these ways:</p>
+      <ul>
+        <li><strong>In the App</strong> — go to Settings &gt; Account &gt; Delete Account and confirm your request.</li>
+      </ul>
+      <p><strong>On the web</strong> — visit <mark class="placeholder">[Insert dedicated account-deletion page URL, e.g. https://kiwi.com.ph/delete-account, or confirm https://kiwi.com.ph/contact/ as the interim request page]</mark> or email info@kiwi.com.ph with your account details and "Delete my account" in the subject line.</p>
+      <p>We will delete your account and associated personal data — not merely deactivate it — within <strong>30 days</strong> of a verified request, except for data we are required to retain for security, fraud prevention, or legal compliance, which we retain only as long as those reasons apply. If your account is linked to a paid subscription, you may need to cancel billing separately before deletion completes; we'll tell you if that applies to you.</p>
+    </section>
+
+    <section id="s10">
+      <h2>10. Your Rights</h2>
+      <p>Subject to applicable law, including the Philippine Data Privacy Act of 2012 (RA 10173), you have the right to:</p>
+      <ul>
+        <li>Be informed that your personal data will be, is being, or has been processed</li>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Request deletion or blocking of your data</li>
+        <li>Object to processing, including processing for direct marketing</li>
+        <li>Data portability — receive a copy of your data in a portable, commonly used format</li>
+        <li>Withdraw consent for data processing, where applicable</li>
+        <li>Be indemnified for damages sustained due to unlawful processing of your data</li>
+        <li>File a complaint with the National Privacy Commission if you believe your rights have been violated</li>
+      </ul>
+      <p>To exercise these rights, contact us or our DPO using the details in Sections 1 and 2.</p>
+    </section>
+
+    <section id="s11">
+      <h2>11. Marketing Communications</h2>
+      <p>We will only send you marketing or promotional information if you ask us to — for example, by emailing or calling us to request it. You may opt out of marketing communications at any time using the contact details in Section 1, without affecting your ability to use the App.</p>
+    </section>
+
+    <section id="s12">
+      <h2>12. Data Breach Notification</h2>
+      <p>If we become aware of a security incident that compromises your personal data, we will assess the risk of harm and, where the law requires it, notify the National Privacy Commission and affected users within 72 hours of learning of the breach, or as soon as practicable thereafter. Our notification will describe the nature of the incident, the data involved, and the steps we are taking in response.</p>
+    </section>
+
+    <section id="s13">
+      <h2>13. Children's Privacy</h2>
+      <p>The App is a business tool for managing digital displays and is not directed to children. We do not knowingly collect personal data from children. If we learn that a child has provided us with personal data, we will take reasonable steps to delete it. Parents or guardians who believe a child has provided us with personal data may contact us using the details in Section 1.</p>
+    </section>
+
+    <section id="s14">
+      <h2>14. Permissions Used by the App</h2>
+      <p>The App may request device permissions (e.g., network access, storage) solely to enable core features such as device pairing, content download, and display syncing. We do not use these permissions to collect data beyond what is necessary for the App's functionality.</p>
+    </section>
+
+    <section id="s15">
+      <h2>15. Regulatory Compliance</h2>
+      <p>Kiwi Technologies is registered under Wilson Works Trading Inc. with the National Privacy Commission (NPC), Registration No. PIC-005-743-2026, in compliance with the Data Privacy Act of 2012 (RA 10173) and its Implementing Rules and Regulations.</p>
+    </section>
+
+    <section id="s16">
+      <h2>16. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will reflect material changes by updating the "Last Updated" date above, and where changes materially affect your rights, we will also notify active account holders directly via email before the change takes effect. Continued use of the App and CMS platform after changes take effect constitutes acceptance of the revised policy.</p>
+    </section>
+
+    <div class="closing">
+      <p>This Privacy Policy is governed by the laws of the Republic of the Philippines.</p>
+      <p>Kiwi Technologies offers digital display solutions, the Kiwi CMS platform, and the Kiwi Display Sync companion app to help businesses manage their content more efficiently.</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

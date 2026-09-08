@@ -94,10 +94,51 @@ toggle, the Newsreader/Hanken fonts and Concept A's CMS recordings. `/a`, `/b`, 
   "How it works" (`CHowItWorks.tsx`) is TEXT ONLY: four steps as cards in a row on desktop, a plain list on phones, heading kept on one line (`lg:whitespace-nowrap`, set outside SectionHead whose column width wrapped it). Three treatments were rejected 2026-09-07: a tappable strip, thumbnail-topped cards, and a step tour with a large real-CMS frame ("it doesn't need screenshots" — the recordings above already show the product).
 
 Any static deploy needs an SPA fallback (all paths → index.html) for **`/privacy`** — the
-privacy policy the app stores link to (`src/concept-c/PrivacyPage.tsx`, effective 2026-09-08). Its
+privacy policy the app stores link to (`src/concept-c/PrivacyPage.tsx`, effective 2026-09-08). Since
+2026-09-08 it is a MERGE of the CMS team's revised draft (legal scaffolding: DPO, lawful bases,
+retention periods, deletion procedure, breach notice, rights, NPC registration) with this site's
+verified data inventory; the team's in-app deletion path was dropped because no such feature exists.
+Items the team must confirm are listed in the file's header comment. Its factual
 claims were checked against the backend (player register/heartbeat/screenshot payloads, account
 fields, audit log, AWS S3 + SES, MongoDB Atlas, MQTT); update the page whenever the apps collect
 something new. The product name is **Kiwi Display Sync** (user, 2026-09-08; the CMS is live at cms.kiwi.com.ph) — the policy calls the Android app "the Kiwi Display Sync app for Android" and the CMS "the Kiwi Display Sync web app".
+
+## Page structure and copy rules (2026-09-08 brief, approved section by section)
+
+Order: nav → hero → client proof (`CTrust`) → "Upload → Create → Assign → Publish" (`CHowItWorks`) →
+the three recordings (`CShowcase`) → `CFeatures` ("Beyond the basics": ONLY what the recordings don't
+show — campaigns/playlists, fonts + folders, remote actions, teams/roles, plus the two physical-screen
+visuals on phones) → `CUseCases` (Solutions) → `CPricing` → `CFaq` ("Before you buy") → `CFinalCta` →
+footer → `CStickyCta`. The plum "Why teams switch" band was removed (user). Each section must add
+something the previous ones didn't — don't reintroduce the library grid / schedule still / benefit
+tiles that repeated the recordings.
+
+- **Hero:** category label "Digital signage software" visible at every width; description "Manage,
+  schedule, and publish content to digital signs across all your locations."; phones lead with "See
+  Kiwi in action", desktop with "Book a demo".
+- **Trust:** "Trusted by organisations running Kiwi displays" (they are display customers; don't claim
+  they use the CMS). Logos carry a per-mark `scale` for comparable weight; never one height for all.
+  Fact chip: "Runs on any Android display" (user, 2026-09-08).
+- **Solutions:** descriptive titles, never invented customers. Retail = real 1920×1080 product
+  catalogue on the indoor display; restaurant = real 1080×1920 menu on the floor-standing unit;
+  corporate = drawn "Welcome" on the e-poster; government = drawn permit requirements on the outdoor
+  totem, with a note that those two are illustrative. NEVER use the `tabletop` render (no screen quad,
+  user dislikes it). Swap in real office/public-service layouts if the user provides them.
+- **Typography (proposal p.10):** Fraunces = Grand Royal stand-in for h1/h2 only; Lato for h3/h4,
+  body and all UI. Grand Royal/Telegraf aren't web-licensed — say "stand-in", never "brand match".
+  Instrument Sans is gone from the dependency list.
+- **CTAs:** the phone floating bar shows only after the recordings have scrolled off and hides over
+  pricing, the FAQ, the final panel and the footer. Final panel = one "Book a demo" and "See how your
+  content looks on screen in a 20-minute demo." (the 20-minute format is unverified — carried copy).
+- **FAQ:** answers are verified against the product (per-workspace plan limits, device-cap behaviour,
+  prefetch + offline status, URL-only website widget, any-Android hardware). Unverified, so NOT on the
+  page: VAT, onboarding contents, offline playback duration.
+- **Decorative brand art never over text:** content wrappers are `relative`; give slices their own
+  room on phones.
+- **Review baseline:** 390 px real emulation first (`page-tour.mjs`/`site-check.mjs` in the session
+  notes), then 820 and 1440. If a font package is added/removed while the user's `vite --host` dev
+  server (:5174) runs, its resolver cache breaks (500 on main.tsx) until they restart it — verify on
+  a separate `vite preview` port instead and never kill :5174.
 
 ## Icons
 

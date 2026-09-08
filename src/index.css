@@ -24,8 +24,13 @@
   --color-leaf-400: #c1d786; /* supporting light green */
   --color-leaf-600: #7fa060; /* supporting mid green */
 
+  /* Brand proposal p.10: Grand Royal for display text, Lato for subheaders and body, Telegraf as
+     an alternative for headers. Grand Royal and Telegraf are not web-licensed, so display text uses
+     Fraunces as a declared stand-in and EVERYTHING else is Lato (2026-09-08 brief: one body font;
+     Instrument Sans, the earlier Telegraf stand-in, is gone). `--font-header` stays as a token name
+     for the UI-chrome utility classes but resolves to Lato. */
   --font-display: "Fraunces Variable", Georgia, serif;
-  --font-header: "Instrument Sans Variable", system-ui, sans-serif;
+  --font-header: "Lato", system-ui, sans-serif;
   --font-body: "Lato", system-ui, sans-serif;
 }
 
