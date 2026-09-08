@@ -36,16 +36,24 @@ toggle, the Newsreader/Hanken fonts and Concept A's CMS recordings. `/a`, `/b`, 
   looping, plays only while on screen, poster-only under reduced motion);
   "See Kiwi in action" (`CShowcase.tsx`, section `#demo`) = one recording per
   job, text/frame rows alternating. **All four clips are REAL recordings made
-  2026-09-07 on the local stack** (`public/media/{hero,displays,schedule,designer}-light.mp4`
-  + posters; raw takes in gitignored `public/media/raw/`): hero = Displays →
-  Storefront 01 → Content → Choose layout → default updates; displays = fleet +
-  Display Groups; schedule = week + Dayparts; designer = Media → Layouts → New
-  layout (HD Landscape, Fullscreen Media) → Add image → Preview (×1.25). The
-  image must be exactly 16:9 ("Still - Video Wall", 800×450) — a 16:10 file gets
-  cropped by the section and the user rejected that frame.
-  Re-record with `scripts/record-cms.mjs --clip <name>` (see "Recording the
-  CMS on LOCAL") and `scripts/encode-clip.sh`; the sidecar `raw/<clip>.json`
-  carries the warm-up trim point. The interactive
+  2026-09-08 on the local stack**, each ONE capability / ONE action / ONE result
+  (brief of 2026-09-08; judged at a 390 px viewport first): hero = Storefront 01
+  → Content → Change layout now → Kiwi Food → Now playing, header thumbnail and
+  the Overview screenshot switch (the "screen" is the simulated player's
+  screenshot, swapped through the real player API — NOT a physical display);
+  displays = the fleet list → location selector → "Makati" → that location's
+  two screens; schedule = the week scoped to one screen group → arm "Kiwi Food" →
+  drag a window on Thursday → the block sits among the day's blocks (the naming
+  drawer is cut); designer = template picker → Fullscreen Media → Create →
+  select the empty section → Add image → the 16:9 library file → canvas fills →
+  full-frame preview (3:2 frame; naming/resolution off camera). Framing rules
+  live in `scripts/cut-clip.py`'s callers: whole page ≈1.4 s first, ONE push-in,
+  the result element whole, one benefit caption (bar on phones, pill from `sm`).
+  Files: `public/media/<clip>-light.mp4` (desktop) + `<clip>-light-m.mp4`
+  (phone encode of the same cut) + posters; raw takes in gitignored
+  `public/media/raw/` with a JSON sidecar. Re-record with
+  `scripts/record-cms.mjs --clip <name> --sim-tokens <file>` and cut with
+  `scripts/cut-clip.py` (see "Recording the CMS on LOCAL"). The interactive
   demo engine (useDemo, MobileDemo, DashboardFrame, ConnectionFlow,
   DisplayWall, StatusChip) is DELETED — don't resurrect it. What remains of
   `demo/`: `scenarios.ts` (industry copy + drawn content), `ContentArt.tsx`,
@@ -91,6 +99,12 @@ claims were checked against the backend (player register/heartbeat/screenshot pa
 fields, audit log, AWS S3 + SES, MongoDB Atlas, MQTT); update the page whenever the apps collect
 something new. The product name is **Kiwi Display Sync** (user, 2026-09-08; the CMS is live at cms.kiwi.com.ph) — the policy calls the Android app "the Kiwi Display Sync app for Android" and the CMS "the Kiwi Display Sync web app".
 
+## Icons
+
+`public/favicon.png` (64), `favicon-32.png` and `apple-touch-icon.png` are the brand kit's round kiwi
+slice (`Kiwi_FruitSlice_Purple.png`), not the "k" mark the user dislikes; tab/og title is
+"Kiwi Display Sync — Every screen. One platform." Regenerate from the kit, don't hand-draw.
+
 ## Client logos
 
 `KIWI_CLIENT_LOGO/` (gitignored source, user-supplied 2026-09-08) → `src/assets/clients/*.webp`:
@@ -98,44 +112,50 @@ backgrounds keyed out (white, a baked-in checkerboard, black, pink), dark-on-lig
 tall. `CTrust` shows them grayscale/70 % with colour on hover: a marquee on phones, a wrapped row on
 desktop. Re-run the keying script (in the session notes) if new logos arrive; don't hand-edit.
 
-## Recording the CMS on LOCAL (2026-09-07, user decision: "record on local so we have full control")
+## Recording the CMS on LOCAL (2026-09-07/08, user decision: "record on local so we have full control")
 
 Production can't be used (the APK fleet is production-only), so the clips are recorded against the
 dev stack: backend on :3000 (Atlas `kiwi-cms-dev-local`), and a **production build of the CMS
 frontend served by `vite preview` on :4173** (`npm run build && npx vite preview --port 4173` in
 `../kiwi-signage-frontend`) — the :5173 dev server shows TanStack devtools badges and is the user's;
-never kill it. Cookies come from the MCP browser's logged-in localhost session →
-`.secrets/cms-storage-state.json` (gitignored; cookies ignore ports, so :5173's session works on :4173).
-`scripts/record-cms.mjs` boots at "/" and clicks the sidebar (deep links bounce to /dashboard),
-runs every flow once QUIETLY first (warm-up: primes queries + images so nothing loads on camera;
-the designer flow's warm-up layout is deleted again; the hero's default layout is cleared), reloads
-and waits for network-idle + no skeletons, then records the take with a drawn cursor at 1440×900 →
-`public/media/raw/<clip>.webm` + a JSON sidecar with the on-camera start second. Cookies: export
-`context.storageState()` from the MCP browser RIGHT BEFORE recording
-(`.secrets/cms-storage-state.json`) — better-auth rotates the session token, a stale file lands on
-the login page;
-`scripts/encode-clip.sh raw out start end [speed]` → mp4 + poster. Displays are **simulated
-players** on the real /player API (see the frontend memory recipe): "Storefront 01"
+never kill it. Cookies: export `context.storageState()` from the logged-in MCP browser RIGHT BEFORE
+recording into `.secrets/cms-storage-state.json` (gitignored; better-auth rotates the session token).
+
+**Recorder** — `scripts/record-cms.mjs --clip hero|displays|schedule|designer --sim-tokens <file>`:
+headless system Chrome launched with `--force-device-scale-factor=2` (the only way the screencast is a
+real 2×; the context's deviceScaleFactor alone pads 1× frames), viewport 1280×800 → raw 2560×1600 WebM.
+Every flow runs QUIETLY first (warm-up: primes queries + images, then undoes its mutations), the app is
+reloaded, the take runs with a drawn-in cursor whose glides are animated IN-PAGE (`window.__kwGlide`,
+one rAF loop — 28 Playwright mouse moves over a blurred dialog backdrop took 6–8 s). The quiet pass
+clicks by coordinates (locator.click refuses targets under an overlay). Feature clips run with the
+sidebar collapsed (`kiwi:sidebar-collapsed`), the hero keeps it. Toast layer hidden for hero, schedule
+and designer (no MQTT broker locally → change-layout reports `delivered:false` and the CMS toasts
+"Queued — display offline"; the other toasts landed under frame edges). The sidecar
+`public/media/raw/<clip>.json` carries `startSec` and named `marks` — they run ≈0.35 s LATER than the
+video, so place cuts from frame strips, never from marks. Park the pointer on empty space before the
+take (a hover tooltip over a block showed in an opening).
+
+**Cutter** — `python3 scripts/cut-clip.py RAW OUT --start S --dur D --out-size WxH --window t[-t2]:x,y,w
+[--cut a:b]… [--fade 0.25] [--poster 0.93]`: keyframed crop windows in CSS px of the capture (height
+follows the output aspect; a range = smoothstep move, a single time = hard step), `--cut` removes raw
+ranges (jump cuts over loading/typing/idle), fades at both ends mark the loop restart. zoompan crops at
+the source aspect, so other aspects zoom by the binding dimension and crop per frame (never stretch).
+Encode each clip twice: desktop (1600 or 1500 wide) and phone (800–900 wide), same windows.
+`scripts/encode-clip.sh` is the older plain trim/encode (still works for a straight cut).
+
+**Simulated players** on the real /player API (recipe in the frontend memory): "Storefront 01"
 (SIM-PORTRAIT-0001, 1080x1920), "Counter Display" (SIM-LANDSCAPE-0001), "Window Display"
-(SIM-LANDSCAPE-0002); a heartbeat keeper (scratchpad `heartbeat.py`, 90 s) holds them Online;
-tokens live only in the session scratchpad — re-register with the same hardwareKey to get new
-ones. The user provided the layouts + media in "Home"; I added display groups BY ORIENTATION ("Makati
-storefront" = the portrait Storefront 01, "Makati window" = Window Display, "BGC counter" = Counter
-Display — never mix orientations in a group, a portrait layout on a landscape screen letterboxes)
-and hour-block schedules (the free plan blocks dayparts/recurrence and caps active schedules at 10,
-so only Mon–Wed are filled). Sims carry orientation-matched layout previews as screenshots. The industries
-carousel and the features section show the user's REAL layout previews (`src/assets/media/layouts/*.webp`,
-re-download from the API if layouts change) on devices whose panel RESOLUTION matches the layout
-(1080×1920 layouts on the 9:16 totems, 1920×1080 on the Indoor Digital Display — the 3840×2160 layout
-is only shown as a layout card, never on a 1080p unit; user: "resolution is not aligned"), letterboxed
-(`object-contain`) never cropped; drawn scenario content survives only in `ArtPage` (`/art/:scenario/:index`) as a fallback.
-Device screen rects come from a percentile scan of the wallpaper pixels — the Indoor Digital Display
-rect was re-measured 2026-09-07 after the user saw thicker top/right bezels.
-Projected devices (E-Poster, outdoor totem) lay content out at `screenAspect` (devices.ts), not at the
-quad's foreshortened edge lengths — that gave a 0.26 box and black bars. Outdoor = 9/16 (spec); the
-E-Poster uses 1488/3840, the ratio of the tall "Kiwi Beauty Clinic" artwork the user made for it (media
-"2.png", asset `layouts/kiwi-beauty-clinic.webp`, shown on the retail card) — switch to 9/16 if the
-real panel is 1080×1920.
+(SIM-LANDSCAPE-0002); re-register with the same hardwareKey to get tokens (claim code from
+/admin/tenant/me), heartbeat every ≤90 s to stay Online (a keeper script in the session scratchpad),
+`POST /player/screenshot` with a layout preview to set what the CMS shows as the screen. Groups in the
+dev tenant "Kiwi Digital": "Makati storefront" / "Makati window" / "BGC counter" (one screen each, by
+orientation) + "Makati" (Storefront 01 + Window Display, the displays clip's location). Hour-block
+schedules Mon–Wed (free plan: 10 active schedules, no dayparts). The revoked test device "Standing
+office" still exists (not ours to delete) and shows in the displays clip's whole-page opening.
+Layout previews for the features section: `src/assets/media/layouts/*.webp` (re-download from the API
+if layouts change) on devices whose panel RESOLUTION matches (1080×1920 on totems, 1920×1080 on the
+Indoor Digital Display), letterboxed never cropped. Device screen rects come from a percentile scan of
+the wallpaper pixels; projected devices (E-Poster, outdoor totem) lay content out at `screenAspect`.
 
 ## Verification
 

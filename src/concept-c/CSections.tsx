@@ -553,18 +553,32 @@ export function CHero() {
 
         {/* The product, for real: a recording of the Kiwi CMS in a browser
             frame (roommaster-style hero, user decision 2026-09-07). Recorded on
-            the local stack with scripts/record-cms.mjs: Displays → Storefront
-            01 → Content → Choose layout → the default updates. */}
+            the local stack with scripts/record-cms.mjs and cut around one
+            visible change (user, 2026-09-08): Storefront 01 → Content → Change
+            layout now → Kiwi Food → the Now playing card, header thumbnail and
+            the Overview screenshot all switch; the clip rests on the result.
+            Cut with scripts/cut-clip.py: whole page through the Content tab,
+            the layout picker and the switch (a mid-clip push-in left the
+            picker flush-left with its bottom row on the frame edge — user,
+            2026-09-08), then ONE zoom onto the Overview result. Phones get a
+            lighter encode of the same cut. */}
         <div
           data-reveal
           style={delay(320)}
           className="mx-auto mt-8 max-w-[1120px] lg:mt-14"
         >
           <VideoFrame
-            src="/media/hero-light.mp4"
-            poster="/media/hero-light-poster.jpg"
+            // The file names are stable across re-records; the query busts browser/CDN caches.
+            src="/media/hero-light.mp4?v=20260908c"
+            poster="/media/hero-light-poster.jpg?v=20260908c"
+            aspect="1600 / 1000"
+            mobile={{
+              src: "/media/hero-light-m.mp4?v=20260908c",
+              poster: "/media/hero-light-m-poster.jpg?v=20260908c",
+              aspect: "1600 / 1000",
+            }}
             url="cms.kiwi.com.ph/displays"
-            label="Publishing a layout to Storefront 01 in the Kiwi CMS"
+            label="Switching Storefront 01 to the Kiwi Food layout in the Kiwi CMS — the screen updates"
           />
         </div>
       </div>
@@ -1322,7 +1336,7 @@ export function CFooter() {
                   <li key={label}>
                     <a
                       href={href}
-                      className="flex min-h-[40px] items-center break-all transition-colors hover:text-plum-950 lg:min-h-0 lg:py-1"
+                      className="flex min-h-[40px] min-w-0 items-center break-words transition-colors hover:text-plum-950 lg:min-h-0 lg:py-1"
                     >
                       {label}
                     </a>
