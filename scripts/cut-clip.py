@@ -1,6 +1,6 @@
 """Cut a raw CMS take into a focused clip: keyframed crop windows, optional removed ranges, loop fades.
 
-  python3 scripts/cut-clip.py RAW OUT --start S --dur D --out-size 1600x924 \
+  python3 scripts/cut-clip.py recordings/RAW.webm public/media/OUT --start S --dur D --out-size 1600x924 \
       --window 0:92,60,876 --window 5.2-5.9:92,82,678 [--cut 3.1:4.0] [--fade 0.25] [--poster 0.92]
 
 Windows are `t[-t2]:x,y,w` in CSS px of the 1280×800 capture (the raw is 2×): the crop's top-left and

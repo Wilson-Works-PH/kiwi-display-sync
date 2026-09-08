@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Trim + encode a raw recording for the site, and cut its poster frame.
-#   scripts/encode-clip.sh public/media/raw/hero.webm public/media/hero-light 2.0 14.5 [speed] [posterAt]
+#   scripts/encode-clip.sh recordings/hero.webm public/media/hero-light 2.0 14.5 [speed] [posterAt]
 #   → hero-light.mp4 (H.264, no audio, faststart) + hero-light-poster.jpg
 # start/end are seconds in the raw file; speed > 1 shortens dead time (1.15–1.3 reads natural).
 # posterAt is a fraction of the encoded clip (default 0.3) OR an absolute second when suffixed "s"

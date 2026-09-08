@@ -19,6 +19,8 @@ import clientMasil from "../assets/clients/masil.webp";
 import clientPaperdolls from "../assets/clients/paperdolls.webp";
 import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
 import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
+import layoutKiwiFood from "../assets/media/layouts/kiwi-food.webp";
+import layoutKiwiTech2 from "../assets/media/layouts/kiwi-technologies-2.webp";
 import wordmarkPlum from "../assets/brand/wordmark-plum.webp";
 import lockupPlum from "../assets/brand/lockup-plum.webp";
 import sliceHalfLime from "../assets/brand/slice-half-lime.png";
@@ -205,7 +207,13 @@ export function Icon({
 }) {
   return (
     <span
-      className={cx("c-icon", filled && "is-filled", className)}
+      className={cx(
+        "c-icon",
+        filled && "is-filled",
+        // Forward arrows nudge on hover inside any link/button (c.css, pointer devices only).
+        name === "arrow_forward" && "c-arrow",
+        className,
+      )}
       style={{ fontSize: size }}
       aria-hidden="true"
     >
@@ -217,22 +225,43 @@ export function Icon({
 const delay = (ms: number) =>
   ({ "--reveal-delay": `${ms}ms` }) as CSSProperties;
 
-/** A Kiwi device render with content composited into its panel — no demo state needed. */
+/**
+ * A Kiwi device render with content composited into its panel — no demo state needed.
+ *
+ * `images` / `contents` with more than one item make the screen CHANGE: a slow crossfade between real
+ * layouts (or drawn items), staggered per card by `cycleOffsetMs`, running only while the device is
+ * on screen and never under prefers-reduced-motion. This is the site's own motion language (user,
+ * 2026-09-08: "tasteful implementation in our own way"): the one thing the product does — content on a
+ * screen changes — shown with real content, not ticking fake numbers.
+ */
 function StaticDevice({
   device,
   content,
+  contents,
   image,
+  images,
   badge,
   className,
   fitHeight,
+  cycleMs = 4600,
+  cycleOffsetMs = 0,
+  float,
 }: {
   device: DeviceId;
   /** Drawn demo content (industries carousel)… */
   content?: ContentItem;
+  contents?: ContentItem[];
   /** …or a real layout preview from the CMS (features). Orientation must match the device. */
   image?: string;
+  images?: string[];
   badge?: string;
   className?: string;
+  /** Time each item holds before the crossfade (ms). */
+  cycleMs?: number;
+  /** Delay before the first change, so neighbouring devices don't switch in unison. */
+  cycleOffsetMs?: number;
+  /** Slow idle float (desktop only), offset by `cycleOffsetMs` so a row doesn't bob in unison. */
+  float?: boolean;
   /**
    * Fit the render into a cell of this height (px): portrait units fill the
    * height, landscape units fill the width — so mixed orientations sit in
@@ -244,13 +273,45 @@ function StaticDevice({
   const dev = DEVICES[device];
   const frameRef = useRef<HTMLDivElement>(null);
   const panelStyle = useDevicePanel(dev, frameRef);
+  const imageList = images ?? (image ? [image] : []);
+  const contentList = contents ?? (content ? [content] : []);
+  const count = Math.max(imageList.length, contentList.length);
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el || count < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer: number | undefined;
+    let delay: number | undefined;
+    const start = () => {
+      stop();
+      delay = window.setTimeout(() => {
+        setActive((i) => (i + 1) % count);
+        timer = window.setInterval(() => setActive((i) => (i + 1) % count), cycleMs);
+      }, cycleOffsetMs + cycleMs);
+    };
+    const stop = () => {
+      window.clearTimeout(delay);
+      window.clearInterval(timer);
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => {
+      stop();
+      io.disconnect();
+    };
+  }, [count, cycleMs, cycleOffsetMs]);
   return (
     <div
       ref={frameRef}
-      className={cx("relative", className)}
+      className={cx("relative", float && "c-float", className)}
       style={{
         aspectRatio: `${dev.w} / ${dev.h}`,
         width: fitHeight ? fitWidth(dev, fitHeight) : undefined,
+        ...(float ? ({ "--float-delay": `${cycleOffsetMs}ms` } as CSSProperties) : null),
       }}
     >
       <img
@@ -263,18 +324,32 @@ function StaticDevice({
         style={{ filter: "drop-shadow(0 18px 24px rgba(45,13,41,0.2))" }}
       />
       <div className="absolute overflow-hidden bg-[#1a0718]" style={panelStyle}>
-        {image ? (
+        {imageList.map((src, i) => (
           <img
-            src={image}
+            key={src}
+            src={src}
             alt=""
-            className="absolute inset-0 h-full w-full object-contain"
+            className={cx(
+              "absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ease-in-out",
+              i === active ? "opacity-100" : "opacity-0",
+            )}
             loading="lazy"
             decoding="async"
             draggable={false}
           />
-        ) : content ? (
-          <ContentArt kind={content.kind} art={content.art} />
-        ) : null}
+        ))}
+        {contentList.map((c, i) => (
+          <div
+            key={c.id}
+            className={cx(
+              "absolute inset-0 transition-opacity duration-700 ease-in-out",
+              i === active ? "opacity-100" : "opacity-0",
+            )}
+            aria-hidden={i !== active}
+          >
+            <ContentArt kind={c.kind} art={c.art} />
+          </div>
+        ))}
         {badge ? (
           <span className="absolute right-[3%] top-[3%] flex items-center gap-1 rounded-full bg-lime-400 px-2 py-0.5 text-[10px] font-bold text-plum-950 shadow">
             <Icon name="check_circle" size={12} filled />
@@ -843,17 +918,27 @@ function Loc({ label }: { label: string }) {
  * illustrative content (`scenarios.ts`) because no office or public-service layout exists yet — the
  * section says so under the cards. Titles are descriptive, not invented customers.
  */
+/**
+ * Screens change: each card cycles between two pieces of content (real layouts where two exist for
+ * the unit's resolution, drawn items otherwise), staggered so the row never switches in unison.
+ * Retail has one 1920×1080 layout so far — it holds still until a second one exists.
+ */
 const INDUSTRY_SHOWCASE: Record<
   ScenarioId,
-  { device: DeviceId; image?: string; contentTitle?: string }
+  { device: DeviceId; images?: string[]; contentTitles?: string[] }
 > = {
-  retail: { device: "indoor-display", image: layoutKiwiTech },
-  restaurant: { device: "floor-standing", image: layoutRestaurant },
-  corporate: { device: "e-poster", contentTitle: "Welcome screen" }, // the tabletop render has no screen quad (flat content sat wrong) and the user dislikes it
-  government: { device: "outdoor", contentTitle: "Permit requirements" },
+  // Both retail items are real 1920×1080 layouts, so each fills the 16:9 panel edge to edge. (The raw
+  // 2000×1294 "Display Solutions" media letterboxed and was rejected, 2026-09-08; the user published it
+  // as the layout "Kiwi Technologies - 2" instead.)
+  retail: { device: "indoor-display", images: [layoutKiwiTech, layoutKiwiTech2] },
+  restaurant: { device: "floor-standing", images: [layoutRestaurant, layoutKiwiFood] },
+  corporate: { device: "e-poster", contentTitles: ["Welcome screen", "Town hall"] }, // no tabletop: its render has no screen quad and the user dislikes it
+  government: { device: "outdoor", contentTitles: ["Permit requirements", "Office hours"] },
 };
-const showcaseContent = (s: (typeof SCENARIOS)[number], title?: string) =>
-  title ? s.content.find((c) => c.title === title) : undefined;
+const showcaseContents = (s: (typeof SCENARIOS)[number], titles?: string[]) =>
+  titles
+    ? titles.map((t) => s.content.find((c) => c.title === t)).filter((c): c is ContentItem => !!c)
+    : undefined;
 
 export function CUseCases() {
   return (
@@ -873,7 +958,7 @@ export function CUseCases() {
           className="c-snap c-scroll -mx-5 mt-8 flex gap-4 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:px-8 lg:hidden"
           aria-label="Industries"
         >
-          {SCENARIOS.map((s) => {
+          {SCENARIOS.map((s, i) => {
             const show = INDUSTRY_SHOWCASE[s.id];
             return (
               <article
@@ -883,8 +968,10 @@ export function CUseCases() {
                 <div className="flex h-[300px] items-end justify-center px-6 pt-6">
                   <StaticDevice
                     device={show.device}
-                    image={show.image}
-                    content={showcaseContent(s, show.contentTitle)}
+                    images={show.images}
+                    contents={showcaseContents(s, show.contentTitles)}
+                    cycleOffsetMs={i * 1100}
+                    float
                     fitHeight={276}
                   />
                 </div>
@@ -908,9 +995,9 @@ export function CUseCases() {
           Swipe for more →
         </p>
         <p className="mt-4 text-[12.5px] leading-snug text-plum-950/50 lg:mt-8 lg:text-center">
-          Example scenarios on Kiwi display units. Retail and restaurant show real
-          layouts made in Kiwi; the office and public-service content is
-          illustrative.
+          Example scenarios on Kiwi display units; the screens change the way a
+          schedule would change them. Retail and restaurant show real layouts
+          made in Kiwi; the office and public-service content is illustrative.
         </p>
 
         {/* Desktop grid. */}
@@ -923,8 +1010,10 @@ export function CUseCases() {
                   <div className="flex aspect-[4/3] items-end justify-center overflow-hidden bg-[#f6f9ee] px-6 pt-6">
                     <StaticDevice
                       device={show.device}
-                      image={show.image}
-                      content={showcaseContent(s, show.contentTitle)}
+                      images={show.images}
+                      contents={showcaseContents(s, show.contentTitles)}
+                      cycleOffsetMs={i * 1100}
+                      float
                       fitHeight={200}
                     />
                   </div>

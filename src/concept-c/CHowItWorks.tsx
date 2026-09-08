@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Icon } from "./CSections";
 import sliceFullPurple from "../assets/brand/slice-full-purple.png";
 import seedsLime from "../assets/brand/seeds-lime.png";
@@ -27,6 +27,10 @@ const delay = (ms: number) =>
 
 /**
  * "How it works": four steps, text only (user, 2026-09-07: "it doesn't need
+ * screenshots"). The steps light up one after another on a slow loop while the band
+ * is on screen — the site's own way of showing a flow rather than a list (user,
+ * 2026-09-08: "tasteful implementation in our own way"); off under reduced motion.
+ * Original notes: (user, 2026-09-07: "it doesn't need
  * screenshots" — the recordings right after it show the product; it moved ahead of
  * them on 2026-09-08 as the compact overview). It carries the site's one PLUM band:
  * when the "Why teams switch" band was dropped the page lost its purple/green
@@ -34,10 +38,42 @@ const delay = (ms: number) =>
  * is set here rather than through SectionHead so it can stay on ONE line at
  * every width: fluid size on phones, no column cap on desktop.
  */
+/** Index of the step currently lit, cycling every `stepMs` while the section is on screen. */
+function useStepSequence(ref: React.RefObject<HTMLElement | null>, stepMs = 1400) {
+  const [active, setActive] = useState(-1);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer: number | undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        window.clearInterval(timer);
+        if (entry.isIntersecting) {
+          setActive(0);
+          timer = window.setInterval(() => setActive((i) => (i + 1) % STEPS.length), stepMs);
+        } else {
+          setActive(-1);
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => {
+      window.clearInterval(timer);
+      io.disconnect();
+    };
+  }, [ref, stepMs]);
+  return active;
+}
+
 export function CHowItWorks() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const active = useStepSequence(sectionRef);
   return (
     <section
       id="how"
+      ref={sectionRef}
       className="relative scroll-mt-14 overflow-hidden bg-plum-950 py-12 text-cream-100 lg:scroll-mt-20 lg:py-28"
     >
       {/* Brand art behind the content (the wrapper below is `relative`, so cards always sit above it;
@@ -73,10 +109,11 @@ export function CHowItWorks() {
             <li
               key={step.title}
               data-reveal
+              data-active={i === active || undefined}
               style={delay(i * 60)}
-              className="flex items-start gap-4 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10"
+              className="c-step flex items-start gap-4 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10"
             >
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400 text-plum-950">
+              <span className="c-step-tile grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400 text-plum-950">
                 <Icon name={step.icon} size={22} />
               </span>
               <span className="min-w-0 flex-1">
@@ -102,11 +139,12 @@ export function CHowItWorks() {
             <li
               key={step.title}
               data-reveal
+              data-active={i === active || undefined}
               style={delay(i * 80)}
-              className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10"
+              className="c-step rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10"
             >
               <div className="flex items-center justify-between">
-                <span className="grid size-11 place-items-center rounded-xl bg-lime-400 text-plum-950">
+                <span className="c-step-tile grid size-11 place-items-center rounded-xl bg-lime-400 text-plum-950">
                   <Icon name={step.icon} size={22} />
                 </span>
                 <span className="font-header text-[13px] font-bold text-white/35">

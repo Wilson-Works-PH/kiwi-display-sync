@@ -21,7 +21,9 @@ npm-debug.log*
 /brand
 # brand source material (PDF proposal — kept locally, not tracked)
 /brand/
-public/media/raw/
+# raw recording takes: kept locally, never deployed (they must stay OUT of public/ —
+# Vite copies public/ into dist/ and 29 MB of WebM shipped with the build until 2026-09-08)
+recordings/
 .secrets/
 # client logo source files from the user — curated copies live in src/assets/clients/
 /KIWI_CLIENT_LOGO/

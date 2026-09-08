@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { cx } from "./cx";
 import { Icon, SectionHead } from "./CSections";
 
 /**
@@ -9,6 +11,10 @@ import { Icon, SectionHead } from "./CSections";
  * pending changes on its next poll; the website widget (Pro) takes a URL — nothing on the page
  * needs a third-party integration. Not answered because unverified (ask the product owner before
  * adding): VAT, onboarding, and offline playback duration.
+ *
+ * Disclosure is a controlled accordion rather than <details> so the answer's height can animate
+ * (`.c-collapse` in c.css, 0fr → 1fr) and the chevron can turn with it; several can be open at once,
+ * as they could before. Under prefers-reduced-motion it opens instantly.
  */
 const QA: [string, string][] = [
   [
@@ -34,6 +40,13 @@ const QA: [string, string][] = [
 ];
 
 export function CFaq() {
+  const [openSet, setOpenSet] = useState<ReadonlySet<number>>(() => new Set());
+  const toggle = (i: number) =>
+    setOpenSet((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(i)) next.add(i);
+      return next;
+    });
   return (
     <section
       id="faq"
@@ -42,21 +55,43 @@ export function CFaq() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHead eyebrow="Good to know" title="Before you buy." />
         <dl className="mx-auto mt-8 max-w-3xl divide-y divide-plum-950/[0.08] lg:mt-12">
-          {QA.map(([q, a]) => (
-            <details key={q} className="group py-1" data-reveal>
-              <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-between gap-4 py-3 text-left text-[16px] font-bold tracking-tight text-plum-950 [&::-webkit-details-marker]:hidden lg:text-[17px]">
-                <dt>{q}</dt>
-                <Icon
-                  name="expand_more"
-                  size={22}
-                  className="shrink-0 text-plum-950/45 transition-transform group-open:rotate-180"
-                />
-              </summary>
-              <dd className="pb-4 text-[15px] leading-relaxed text-plum-950/70">
-                {a}
-              </dd>
-            </details>
-          ))}
+          {QA.map(([q, a], i) => {
+            const open = openSet.has(i);
+            return (
+              <div key={q} className="py-1" data-reveal>
+                <dt>
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    aria-controls={`faq-answer-${i}`}
+                    onClick={() => toggle(i)}
+                    className="flex w-full min-h-[52px] items-center justify-between gap-4 py-3 text-left text-[16px] font-bold tracking-tight text-plum-950 transition-colors hover:text-plum-700 lg:text-[17px]"
+                  >
+                    {q}
+                    <Icon
+                      name="expand_more"
+                      size={22}
+                      className={cx(
+                        "shrink-0 text-plum-950/45 transition-transform duration-300",
+                        open && "rotate-180",
+                      )}
+                    />
+                  </button>
+                </dt>
+                <dd
+                  id={`faq-answer-${i}`}
+                  className={cx("c-collapse", open && "is-open")}
+                  aria-hidden={!open}
+                >
+                  <div>
+                    <p className="pb-4 text-[15px] leading-relaxed text-plum-950/70">
+                      {a}
+                    </p>
+                  </div>
+                </dd>
+              </div>
+            );
+          })}
         </dl>
       </div>
     </section>

@@ -49,11 +49,65 @@
 /* Scroll entrance — one IntersectionObserver (useReveal) flips `is-in`. */
 .c-root [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(12px);
   transition:
-    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
   transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* A framed recording settles into place as its row reveals: a hair of scale and the shadow arriving,
+   so the frame reads as placed rather than pasted. Rides the parent's [data-reveal] state. */
+.c-root [data-reveal] .c-settle {
+  transform: scale(0.985);
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.c-root [data-reveal].is-in .c-settle {
+  transform: none;
+}
+
+/* Height-animated disclosure (FAQ). 0fr → 1fr animates without measuring; the child clips. */
+.c-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.34s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.c-collapse.is-open {
+  grid-template-rows: 1fr;
+}
+.c-collapse > * {
+  overflow: hidden;
+}
+
+/* "arrow_forward" glyphs nudge on hover — pointer devices only, so nothing shifts on a tap. */
+.c-root .c-arrow {
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .c-root a:hover .c-arrow,
+  .c-root button:hover .c-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* Device renders breathe: 3px over 7s, desktop only, staggered per card by --float-delay. */
+@keyframes c-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@media (min-width: 1024px) {
+  .c-float {
+    animation: c-float 7s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0ms);
+  }
 }
 .c-root [data-reveal].is-in {
   opacity: 1;
@@ -153,6 +207,18 @@
     transform: none;
     transition: none;
   }
+  .c-root [data-reveal] .c-settle,
+  .c-root [data-reveal].is-in .c-settle {
+    transform: none;
+    transition: none;
+  }
+  .c-collapse,
+  .c-root .c-arrow {
+    transition: none;
+  }
+  .c-float {
+    animation: none;
+  }
   .c-fade-in,
   .c-pulse,
   .c-flow-line,
@@ -198,6 +264,34 @@
 .c-rise-in {
   animation: c-rise-in 0.35s ease both;
 }
+/* "How it works" step sequence: the lit step brightens and its tile glows; everything eases so
+   the hand-off reads as a flow, not a blink. */
+.c-step {
+  transition:
+    background-color 0.45s ease,
+    box-shadow 0.45s ease,
+    transform 0.45s ease;
+}
+.c-step-tile {
+  transition:
+    box-shadow 0.45s ease,
+    transform 0.45s ease;
+}
+.c-step[data-active] {
+  background-color: rgb(255 255 255 / 0.11);
+  box-shadow: inset 0 0 0 1px rgb(206 237 122 / 0.45);
+}
+.c-step[data-active] .c-step-tile {
+  box-shadow: 0 0 0 6px rgb(206 237 122 / 0.22);
+  transform: scale(1.06);
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-step,
+  .c-step-tile {
+    transition: none;
+  }
+}
+
 /* Recording captions (VideoFrame): each cue rises in; the `key` swap restarts it. */
 .c-caption {
   animation: c-rise-in 0.38s cubic-bezier(0.2, 0.7, 0.2, 1) both;
