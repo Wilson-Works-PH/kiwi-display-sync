@@ -204,3 +204,68 @@
     animation: none !important;
   }
 }
+
+/* Client-logo marquee (phones): two copies of the row slide by half their width, forever. */
+.c-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: c-marquee 36s linear infinite;
+}
+.c-marquee:hover .c-marquee-track {
+  animation-play-state: paused;
+}
+@keyframes c-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+    row-gap: 1.25rem;
+  }
+}
+
+/* Long-form legal copy (/privacy). */
+.c-prose {
+  color: rgb(45 13 41 / 0.8);
+  font-size: 16px;
+  line-height: 1.7;
+}
+.c-prose h2 {
+  margin-top: 2.25rem;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #2d0d29;
+}
+.c-prose h3 {
+  margin-top: 1.5rem;
+  font-family: var(--font-header);
+  font-size: 15px;
+  font-weight: 700;
+  color: #2d0d29;
+}
+.c-prose p,
+.c-prose ul {
+  margin-top: 0.9rem;
+}
+.c-prose ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.c-prose li + li {
+  margin-top: 0.35rem;
+}
+.c-prose a {
+  color: #2d0d29;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: #ceed7a;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}

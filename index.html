@@ -17,18 +17,10 @@
       property="og:description"
       content="Manage, schedule, and publish digital signage across all your screens from one simple dashboard. Try the live demo."
     />
-    <meta property="og:image" content="/media/designer-preview-poster.jpg" />
+    <meta property="og:image" content="/media/hero-light-poster.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
-    <script>
-      // Stamp the stored theme before first paint to avoid a flash.
-      try {
-        if (localStorage.getItem("kds:theme") === "light") {
-          document.documentElement.dataset.theme = "light";
-        }
-      } catch {}
-    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

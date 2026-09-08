@@ -18,40 +18,18 @@ same toolchain as the CMS frontend.
   real — don't remove them as "too good to be true".
 - **Pricing mirrors** `kiwi-signage-backend/src/modules/plan/domain/plan-catalog.ts`
   (Basic ₱0 · Pro ₱99/device/mo · Enterprise from ₱129/device/mo). Keep in
-  sync. Since 2026-09-04 (backend PR #133) Pro DOES include PDF uploads and the
-  PDF widget — the old "Pro omits PDFs" deviation is obsolete; Concept B's
-  pricing card still needs the PDF line moved from Enterprise to Pro.
+  sync. Since 2026-09-04 (backend PR #133) Pro includes PDF uploads and the PDF widget.
 - **Don't touch the backend/CMS repos** from here; read-only for facts.
+- **`src/index.css`** holds the brand tokens only (light-only site); Concept C's own styles are in
+  `src/concept-c/c.css`.
 
-## Concepts, one repo
+## The site (Concept C only)
 
-**Concept C is the site** (2026-09-07, user decision): `/` renders it. Concepts
-A and B are hidden — still routable at `/a` and `/b` for team comparison, not
-linked from anywhere; the floating `VariantSwitch` is no longer mounted
-(`src/components/VariantSwitch.tsx` kept for reference).
+Concepts A and B were removed on 2026-09-08 (user: "remove the concepts and only keep this one");
+they live in git history before that date. With them went GSAP/Lenis/Three, the dark/light theme
+toggle, the Newsreader/Hanken fonts and Concept A's CMS recordings. `/a`, `/b`, `/c` redirect home.
 
-- `/a` — **Concept A** (`src/pages/Classic.tsx` + `src/sections/*`): plum/lime,
-  Fraunces, theme toggle, GSAP/Lenis motion.
-- `/b` — **Concept B** (`src/concept-b/*`): 1:1 implementation of the
-  "Kiwi Site.dc.html" prototype from the Claude Design project
-  (314fd7cf-a26b-4f84-bad6-4eb8f50616be). Paper `#F1EDE1` / ink `#2C1830` /
-  berry `#9D3A6A` / lime `#B7D24F`; Newsreader + Hanken Grotesk + Material
-  Symbols Rounded (all self-hosted via Fontsource). Its motion runtime is a
-  direct port of the prototype's script (`src/concept-b/b-motion.ts`): custom
-  cursor + lime blob, word cascade, IO reveals + counters, condensing nav that
-  inverts over dark sections, scroll-driven 3D card stage, tilt cards,
-  magnetic buttons, viewport-centered parallax. Concept B owns its palette —
-  the site theme toggle does not apply there.
-
-Deliberate deviations from the design file (don't "restore" them):
-pricing uses the real plan catalog numbers; Pro's widget line predates PDFs
-moving to Pro (backend PR #133, 2026-09-04) — update both concepts' pricing copy; footer/company is Kiwi Technologies with
-contact@wilsonworksph.com (design had kiwi.com placeholders and the retired
-"Retail Solutions" name); demo links go to kiwi.wilsonworksph.com (Concepts A/B); Concept C shows and links cms.kiwi.com.ph (user, 2026-09-07).
-Hero stats (1,284 screens / 96% online) are still the design's aspirational
-numbers — pending a decision.
-
-- `/` (also `/c`) — **Concept C** (`src/concept-c/*`): modern light-only SaaS
+- `/` — **Concept C** (`src/concept-c/*`): modern light-only SaaS
   page that SHOWS the real product, roommaster.com-style (user decision
   2026-09-07 after finding the interactive simulation "confusing"). Hero =
   a recording of the real CMS in a browser frame (`VideoFrame.tsx`: muted,
@@ -80,7 +58,7 @@ numbers — pending a decision.
   "Most popular" badge or inverted card (team feedback 2026-09-07: "do not force them to
   go to Pro"). Footer socials use real brand SVGs (`BRAND_PATHS`), not Material stand-ins. Contact links: "Book a demo" → https://kiwi.com.ph/contact/,
   sales → mailto:info@kiwi.com.ph, phones +63 969 170 2299 / +63 2 8658 6962,
-  showroom Greenhills, San Juan (Mon–Fri 9–5), socials @kiwitechnologiesph —
+  showroom Jafer Place, 19 Eisenhower St, San Juan City, 1502 Metro Manila (Mon–Fri 9–5), socials @kiwitechnologiesph —
   all read off kiwi.com.ph on 2026-09-07. Concepts A/B still use the older
   guessed contact@wilsonworksph.com.
   **Device renders** (`src/assets/devices/*.webp`, `demo/devices.ts`) are Kiwi's
@@ -107,28 +85,18 @@ numbers — pending a decision.
 
   "How it works" (`CHowItWorks.tsx`) is TEXT ONLY: four steps as cards in a row on desktop, a plain list on phones, heading kept on one line (`lg:whitespace-nowrap`, set outside SectionHead whose column width wrapped it). Three treatments were rejected 2026-09-07: a tappable strip, thumbnail-topped cards, and a step tour with a large real-CMS frame ("it doesn't need screenshots" — the recordings above already show the product).
 
-Any static deploy needs an SPA fallback (all paths → index.html) for `/a` and `/b`.
+Any static deploy needs an SPA fallback (all paths → index.html) for **`/privacy`** — the
+privacy policy the app stores link to (`src/concept-c/PrivacyPage.tsx`, effective 2026-09-08). Its
+claims were checked against the backend (player register/heartbeat/screenshot payloads, account
+fields, audit log, AWS S3 + SES, MongoDB Atlas, MQTT); update the page whenever the apps collect
+something new. The product name is **Kiwi Display Sync** (user, 2026-09-08; the CMS is live at cms.kiwi.com.ph) — the policy calls the Android app "the Kiwi Display Sync app for Android" and the CMS "the Kiwi Display Sync web app".
 
-## Architecture
+## Client logos
 
-- `src/index.css` — raw brand tokens (`@theme`) + semantic theme tokens
-  (`@theme inline` over `--t-*` vars) that flip via `data-theme="light"` on
-  `<html>`. Toggle in the nav; persisted as `kds:theme`; pre-paint inline
-  script in `index.html` prevents FOUC. Fixed-brand surfaces (marquee band,
-  CTA band, footer, pricing highlight card) keep literal plum/lime in both
-  themes — don't "semanticize" them.
-- `src/components/MotionRoot.tsx` — Lenis smooth scroll + GSAP/ScrollTrigger.
-  Declarative data attributes: `data-parallax`, `data-marquee-band`,
-  `data-split-reveal` (masked line reveal), `data-split-chars`,
-  `data-shot-reveal` (screenshot unclip), `data-magnetic`,
-  `data-hscroll`/`data-hscroll-track` (pinned horizontal product tour,
-  ≥1024px only). SplitText masks clip descenders at tight leading, so every
-  split **reverts on animation complete** — keep that pattern.
-- `src/components/Preloader.tsx` — once-per-session intro (`kds:intro-seen`
-  in sessionStorage). `src/components/HeroSeeds.tsx` — lazy Three.js seed
-  field behind the hero. Everything respects `prefers-reduced-motion`.
-- `Wordmark` is **type-set** (Fraunces + seed PNG accent), not a logo image —
-  the PNG wordmark stretched inside flex columns and blurred at nav size.
+`KIWI_CLIENT_LOGO/` (gitignored source, user-supplied 2026-09-08) → `src/assets/clients/*.webp`:
+backgrounds keyed out (white, a baked-in checkerboard, black, pink), dark-on-light everywhere, 120px
+tall. `CTrust` shows them grayscale/70 % with colour on hover: a marquee on phones, a wrapped row on
+desktop. Re-run the keying script (in the session notes) if new logos arrive; don't hand-edit.
 
 ## Recording the CMS on LOCAL (2026-09-07, user decision: "record on local so we have full control")
 
@@ -169,29 +137,16 @@ E-Poster uses 1488/3840, the ratio of the tall "Kiwi Beauty Clinic" artwork the 
 "2.png", asset `layouts/kiwi-beauty-clinic.webp`, shown on the retail card) — switch to 9/16 if the
 real panel is 1080×1920.
 
-## Real-app media
-
-Screenshots (`src/assets/media/*.webp`, dark + `-light` variants) and
-recordings (`public/media/*.mp4` + posters, dark + `-light`) are captures of
-the **real CMS** at `kiwi.wilsonworksph.com`, tenant *Wilson Works Trading
-Inc.* — not mockups; the "watch it work" section's whole pitch depends on
-that. Capture pipeline: headless `playwright-core` + system Chrome + session
-cookies, CMS theme forced via `localStorage kiwi:theme`; trim/encode with
-ffmpeg. Ask the user for credentials each time; the account belongs to two
-workspaces, so handle the `/select-workspace` screen.
-
 ## Verification
 
-`npm run build && npm run lint` after every change. Full-page Playwright
-screenshots show blank sections below the fold — that's an artifact (Lenis
-smoothing + IntersectionObserver never firing during stitched capture), not a
-bug; verify with stepped viewport screenshots or `reducedMotion: 'reduce'`
-emulation instead.
+`npm run build && npm run lint` after every change. Full-page Playwright screenshots show blank
+sections below the fold — the `[data-reveal]` IntersectionObserver never fires during a stitched
+capture — so verify with stepped viewport screenshots (390 and 1440 at minimum) or
+`reducedMotion: 'reduce'` emulation instead.
 
 ## Known open items
 
-- Concept C uses info@kiwi.com.ph + kiwi.com.ph/contact/ (from the company
-  site). Concepts A/B still carry the guessed `contact@wilsonworksph.com`.
+- Contact channels come from kiwi.com.ph (info@kiwi.com.ph, /contact/).
 - `og:image` needs an absolute URL once the production domain exists.
 - Grand Royal / Telegraf aren't web-licensed; Fraunces / Instrument Sans are
   the stand-ins. Swap in `src/index.css` + `src/main.tsx` if licensed later.

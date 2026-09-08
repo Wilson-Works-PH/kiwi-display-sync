@@ -5,37 +5,10 @@
  * Raw hex values sampled from the brand proposal (brand/Kiwi Retail Solutions -
  * Brand Proposal.pdf, pages 5 & 8) — do not tweak by eye.
  *
- * The site is theme-aware: semantic tokens flip between the dark (default) and
- * light palettes via [data-theme="light"] on <html>. Fixed-brand surfaces
- * (marquee band, CTA band, footer) keep literal brand colors in both themes.
+ * The site is light-only (the dark/light toggle went with Concepts A and B,
+ * 2026-09-08). Concept C paints its own surfaces inside `.c-root`; the body
+ * colours below only show at the edges (overscroll, before hydration).
  */
-
-:root {
-  /* dark (default) */
-  --t-surface: #3d0d37;
-  --t-surface-alt: #2f0a2a;
-  --t-surface-card: #3d0d37;
-  --t-frame: #2d0d29;
-  --t-frame-bar: #400a39;
-  --t-ink: #f3f9d4;
-  --t-ink-faint: #96507e; /* mauve — 3:1+ on plum for decorative numerals */
-  --t-line: rgb(243 249 212 / 0.1);
-  --t-accent-text: #ceed7a;
-}
-
-/* Light values are tints derived from the brand palette (cream #f3f9d4
-   lightened for the page, plum #2d0d29 as ink) — not eyeballed additions. */
-[data-theme="light"] {
-  --t-surface: #fdfdf6;
-  --t-surface-alt: #f4f7e3;
-  --t-surface-card: #ffffff;
-  --t-frame: #ffffff;
-  --t-frame-bar: #f4f7e3;
-  --t-ink: #2d0d29;
-  --t-ink-faint: rgb(150 80 126 / 0.75);
-  --t-line: rgb(61 13 55 / 0.14);
-  --t-accent-text: #96507e;
-}
 
 @theme {
   --color-plum-950: #2d0d29; /* darkest gradient stop */
@@ -54,91 +27,22 @@
   --font-display: "Fraunces Variable", Georgia, serif;
   --font-header: "Instrument Sans Variable", system-ui, sans-serif;
   --font-body: "Lato", system-ui, sans-serif;
-
-  --animate-marquee: marquee 32s linear infinite;
-  --animate-rise: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-drift: drift 9s ease-in-out infinite;
-}
-
-/* Semantic, theme-flipping tokens (emitted as var() references). */
-@theme inline {
-  --color-surface: var(--t-surface);
-  --color-surface-alt: var(--t-surface-alt);
-  --color-surface-card: var(--t-surface-card);
-  --color-frame: var(--t-frame);
-  --color-frame-bar: var(--t-frame-bar);
-  --color-ink: var(--t-ink);
-  --color-ink-faint: var(--t-ink-faint);
-  --color-line: var(--t-line);
-  --color-accent-text: var(--t-accent-text);
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translateY(0) rotate(var(--drift-rotate, 0deg));
-  }
-  50% {
-    transform: translateY(-14px) rotate(var(--drift-rotate, 0deg));
-  }
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-/* Lenis drives scrolling when active — hand it native control. */
-html.lenis {
-  scroll-behavior: auto;
-}
-
 body {
-  @apply bg-surface font-body text-ink antialiased;
-  transition: background-color 0.35s ease, color 0.35s ease;
+  background: #fdfdf6; /* cream lightened for the page */
+  color: #2d0d29;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
   background: var(--color-lime-400);
   color: var(--color-plum-900);
-}
-
-/* The type-set wordmark: lime on dark, primary plum on light. */
-.wordmark-ink {
-  color: var(--color-lime-400);
-}
-[data-theme="light"] .wordmark-ink {
-  color: var(--color-plum-700);
-}
-
-/* Pause the marquee while hovered (WCAG 2.2.2). */
-.marquee-pause:hover .animate-marquee,
-.marquee-pause:focus-within .animate-marquee {
-  animation-play-state: paused;
-}
-
-/* Show/hide helpers keyed off the html data-theme attribute. */
-[data-theme="light"] .dark-only {
-  display: none;
-}
-:root:not([data-theme="light"]) .light-only {
-  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
