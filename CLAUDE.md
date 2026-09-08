@@ -94,6 +94,15 @@ toggle, the Newsreader/Hanken fonts and Concept A's CMS recordings. `/a`, `/b`, 
 
   "How it works" (`CHowItWorks.tsx`) is TEXT ONLY: four steps as cards in a row on desktop, a plain list on phones, heading kept on one line (`lg:whitespace-nowrap`, set outside SectionHead whose column width wrapped it). Three treatments were rejected 2026-09-07: a tappable strip, thumbnail-topped cards, and a step tour with a large real-CMS frame ("it doesn't need screenshots" — the recordings above already show the product).
 
+**Deploying: Vercel, and the SPA fallback is mandatory.** `/privacy` (the URL the app stores link to)
+is a client-side route, so without a rewrite the host answers a direct request with 404 — exactly what
+the deployed site did on 2026-09-08. `vercel.json` at the repo root holds the fix:
+`{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}`. Keep it; a Vite build on Vercel does
+NOT add it for you. Verify after any deploy by loading `/privacy` as a typed URL, not by clicking from
+the home page — client-side navigation always works and hides the problem. (Other hosts would need
+their own: `_redirects` for Netlify/Cloudflare Pages, `404.html` for GitHub Pages, `try_files` for
+nginx.)
+
 Any static deploy needs an SPA fallback (all paths → index.html) for **`/privacy`** — the
 privacy policy the app stores link to (`src/concept-c/PrivacyPage.tsx`, effective 2026-09-08). Since
 2026-09-08 it is a MERGE of the CMS team's revised draft (legal scaffolding: DPO, lawful bases,
