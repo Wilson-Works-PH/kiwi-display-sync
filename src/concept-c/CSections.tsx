@@ -798,8 +798,8 @@ export function CFeatures() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHead
           eyebrow="Features"
-          title="Beyond the basics."
-          sub="The recordings above show the daily work. This is what else comes with it."
+          title="Manage content, screens, and teams."
+          sub="Organize playlists, control access, and manage your screens remotely."
         />
 
         {/* Phones and tablets: the two physical-screen visuals, then the compact list. */}
@@ -949,8 +949,8 @@ export function CUseCases() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHead
           eyebrow="Solutions"
-          title="Built for the places screens live."
-          sub="Retail, food, offices and public service — each with its own kind of screen."
+          title="The right message for every space."
+          sub="Share promotions, menus, announcements and service information wherever your audience is."
         />
 
         {/* Phones and tablets: swipe through the industries, each on a real Kiwi unit. */}
@@ -1098,8 +1098,8 @@ export function CPricing() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <SectionHead
           eyebrow="Pricing"
-          title="Plans that grow with your fleet."
-          sub="Priced per device, per month. Basic is free with your Kiwi display."
+          title="Plans for every screen setup."
+          sub="Paid plans are priced per screen, per month. Basic is included with Kiwi displays."
         />
         {/* All three tiers get the same card, the same button and no badge — the page
             informs, it doesn't steer (team feedback, 2026-09-07: "do not force them to go
@@ -1187,7 +1187,7 @@ export function CFinalCta() {
             See Kiwi on your screens.
           </h2>
           <p className="relative mx-auto mt-3 max-w-xl text-[15.5px] text-plum-950/75 lg:mt-4 lg:text-[17px]">
-            See how your content looks on screen in a 20-minute demo.
+            Book a 20-minute demo using your own content.
           </p>
           {/* One action: pricing sits a scroll above, so "See pricing" went (brief, 2026-09-08). */}
           <div className="relative mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:mt-8">

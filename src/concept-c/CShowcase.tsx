@@ -35,7 +35,7 @@ const ROWS: Row[] = [
     id: "displays",
     eyebrow: "Displays",
     title: "Every screen at a glance.",
-    body: "Online or offline, storage, last check-in — every unit in every branch on one list, grouped the way your business is.",
+    body: "Check screen status and organize displays by branch, floor or location — all from one dashboard.",
     points: [
       "Live online / offline status",
       "Groups by branch, floor or zone",
@@ -64,8 +64,8 @@ const ROWS: Row[] = [
   {
     id: "schedule",
     eyebrow: "Schedule & dayparts",
-    title: "Schedule once. It runs itself.",
-    body: "Put campaigns on the week, define your mornings, lunches and evenings, and the screens switch on their own.",
+    title: "Schedule ahead. Let Kiwi handle the rest.",
+    body: "Set content for different days and times. Kiwi switches what plays according to your schedule.",
     points: [
       "Weekly schedule per screen or group",
       "Dayparts you define once",
@@ -96,8 +96,8 @@ const ROWS: Row[] = [
   {
     id: "designer",
     eyebrow: "Media & layouts",
-    title: "From upload to layout in minutes.",
-    body: "Pick a template, drop in media from your library, and preview it exactly as the screen will play it.",
+    title: "Turn your media into screen-ready content.",
+    body: "Choose a template, add images or videos, and preview your layout before publishing.",
     points: [
       "Ready-made templates",
       "Undo, redo and auto-save",
@@ -120,7 +120,8 @@ const ROWS: Row[] = [
       poster: "/media/designer-light-m-poster.jpg?v=20260908c",
       aspect: "3 / 2",
     },
-    captions: [{ at: 0.6, text: "Turn your media into screen-ready layouts." }],
+    // The old caption duplicated what is now the row title; this one names the clip's closing beat.
+    captions: [{ at: 0.6, text: "Preview it exactly as the screen plays it." }],
   },
 ];
 
@@ -136,10 +137,11 @@ export function CShowcase() {
             See Kiwi in action
           </p>
           <h2 className="mt-2 text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-plum-950 sm:text-4xl lg:mt-3 lg:text-5xl">
-            From dashboard to display in seconds.
+            Your content. On your screens.
           </h2>
           <p className="mt-3 text-[15.5px] leading-relaxed text-plum-950/65 lg:text-[17px]">
-            Recordings of the real Kiwi CMS — no mockups.
+            See how Kiwi brings screen management, scheduling, and content
+            creation together.
           </p>
         </div>
 
