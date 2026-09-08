@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import "@fontsource-variable/material-symbols-rounded";
 import "./c.css";
+import { CFaq } from "./CFaq";
 import { CHowItWorks } from "./CHowItWorks";
 import { CShowcase } from "./CShowcase";
 import {
-  CBenefits,
   CFeatures,
   CFinalCta,
   CFooter,
@@ -34,14 +34,17 @@ export default function CPage() {
     <div ref={root} className="c-root antialiased">
       <CNav />
       <main>
+        {/* Order (brief, 2026-09-08): proof, the compact workflow overview, then the recordings carry
+            the feature explanation; extras, industries, pricing, buying answers,
+            the demo invitation. */}
         <CHero />
         <CTrust />
+        <CHowItWorks />
         <CShowcase />
         <CFeatures />
-        <CHowItWorks />
         <CUseCases />
-        <CBenefits />
         <CPricing />
+        <CFaq />
         <CFinalCta />
       </main>
       <CFooter />

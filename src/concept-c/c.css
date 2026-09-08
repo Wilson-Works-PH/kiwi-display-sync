@@ -3,20 +3,20 @@
 .c-root {
   color: #2d0d29;
   background: #ffffff;
-  /* Brand type roles (index.css tokens): Lato body, Fraunces (Grand Royal
-     stand-in) headlines, Instrument Sans (Telegraf stand-in) for UI chrome —
-     buttons, nav, eyebrows, chips and everything inside the demo. */
+  /* Brand type roles (index.css tokens, proposal p.10): Fraunces (Grand Royal stand-in) for
+     display text — h1/h2 only; Lato for subheaders (h3/h4), body and all UI chrome. */
   font-family: var(--font-body);
 }
-.c-root :is(h1, h2, h3, h4) {
+.c-root :is(h1, h2) {
   font-family: var(--font-display);
   letter-spacing: -0.02em;
   font-variation-settings:
     "SOFT" 30,
     "WONK" 0;
 }
-.c-root :is(button, #demo, [data-ui]) {
-  font-family: var(--font-header);
+.c-root :is(h3, h4) {
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
 }
 
 .c-icon {

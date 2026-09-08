@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 import { Icon } from "./CSections";
+import sliceFullPurple from "../assets/brand/slice-full-purple.png";
+import seedsLime from "../assets/brand/seeds-lime.png";
 
 const STEPS = [
   {
@@ -25,7 +27,10 @@ const delay = (ms: number) =>
 
 /**
  * "How it works": four steps, text only (user, 2026-09-07: "it doesn't need
- * screenshots" — the recordings above already show the product). The heading
+ * screenshots" — the recordings right after it show the product; it moved ahead of
+ * them on 2026-09-08 as the compact overview). It carries the site's one PLUM band:
+ * when the "Why teams switch" band was dropped the page lost its purple/green
+ * section, and the user asked to promote another (2026-09-08). The heading
  * is set here rather than through SectionHead so it can stay on ONE line at
  * every width: fluid size on phones, no column cap on desktop.
  */
@@ -33,41 +38,55 @@ export function CHowItWorks() {
   return (
     <section
       id="how"
-      className="scroll-mt-14 bg-[#f6f9ee] py-12 lg:scroll-mt-20 lg:py-28"
+      className="relative scroll-mt-14 overflow-hidden bg-plum-950 py-12 text-cream-100 lg:scroll-mt-20 lg:py-28"
     >
-      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
+      {/* Brand art behind the content (the wrapper below is `relative`, so cards always sit above it;
+          on phones the list's bottom margin gives the slice its own room). */}
+      <img
+        src={sliceFullPurple}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-28 -right-14 w-[200px] rotate-12 select-none opacity-60 lg:-bottom-40 lg:-right-10 lg:w-[460px]"
+      />
+      <img
+        src={seedsLime}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-3 top-4 w-16 -rotate-12 select-none opacity-40 lg:right-16 lg:top-12 lg:w-24"
+      />
+      <div className="relative mx-auto max-w-[1280px] px-5 sm:px-8">
         <div className="lg:text-center" data-reveal>
-          <p className="font-header text-[12px] font-bold uppercase tracking-[0.18em] text-leaf-600">
+          <p className="font-header text-[12px] font-bold uppercase tracking-[0.18em] text-lime-400">
             How it works
           </p>
           <h2 // One line at every width. The text is ~18× its font size wide, so 4.55vw fits the padded box down to
             // 320px; 36px only from md (at 640px it would overflow the box and scroll the page sideways).
-            className="mt-2 whitespace-nowrap text-[clamp(14px,4.55vw,30px)] font-bold leading-[1.05] tracking-[-0.03em] text-plum-950 md:text-4xl lg:mt-3 lg:text-[44px] xl:text-5xl"
+            className="mt-2 whitespace-nowrap text-[clamp(14px,4.55vw,30px)] font-bold leading-[1.05] tracking-[-0.03em] text-white md:text-4xl lg:mt-3 lg:text-[44px] xl:text-5xl"
           >
             Upload → Create → Assign → Publish.
           </h2>
         </div>
 
         {/* Phones and tablets: a plain list. */}
-        <ol className="mt-6 flex flex-col gap-3 lg:hidden">
+        <ol className="mb-16 mt-6 flex flex-col gap-3 lg:hidden">
           {STEPS.map((step, i) => (
             <li
               key={step.title}
               data-reveal
               style={delay(i * 60)}
-              className="flex items-start gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-plum-950/[0.06]"
+              className="flex items-start gap-4 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10"
             >
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-plum-950 text-lime-400">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400 text-plum-950">
                 <Icon name={step.icon} size={22} />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="font-header block text-[11px] font-bold uppercase tracking-[0.16em] text-leaf-600">
+                <span className="font-header block text-[11px] font-bold uppercase tracking-[0.16em] text-lime-400/90">
                   Step {i + 1}
                 </span>
-                <span className="block text-[19px] font-bold leading-tight tracking-tight text-plum-950">
+                <span className="block text-[19px] font-bold leading-tight tracking-tight text-white">
                   {step.title}
                 </span>
-                <span className="mt-1 block text-[14.5px] leading-snug text-plum-950/70">
+                <span className="mt-1 block text-[14.5px] leading-snug text-cream-100/70">
                   {step.body}
                 </span>
               </span>
@@ -84,20 +103,20 @@ export function CHowItWorks() {
               key={step.title}
               data-reveal
               style={delay(i * 80)}
-              className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-plum-950/[0.06]"
+              className="rounded-2xl bg-white/[0.06] p-6 ring-1 ring-white/10"
             >
               <div className="flex items-center justify-between">
-                <span className="grid size-11 place-items-center rounded-xl bg-plum-950 text-lime-400">
+                <span className="grid size-11 place-items-center rounded-xl bg-lime-400 text-plum-950">
                   <Icon name={step.icon} size={22} />
                 </span>
-                <span className="font-header text-[13px] font-bold text-plum-950/35">
+                <span className="font-header text-[13px] font-bold text-white/35">
                   0{i + 1}
                 </span>
               </div>
-              <h3 className="mt-5 text-[20px] font-bold tracking-tight text-plum-950">
+              <h3 className="mt-5 text-[20px] font-bold tracking-tight text-white">
                 {step.title}
               </h3>
-              <p className="mt-1.5 text-[14.5px] leading-relaxed text-plum-950/65">
+              <p className="mt-1.5 text-[14.5px] leading-relaxed text-cream-100/70">
                 {step.body}
               </p>
             </li>

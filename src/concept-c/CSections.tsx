@@ -17,19 +17,13 @@ import clientGolfx from "../assets/clients/golfx.webp";
 import clientAlinoHotel from "../assets/clients/alino-hotel.webp";
 import clientMasil from "../assets/clients/masil.webp";
 import clientPaperdolls from "../assets/clients/paperdolls.webp";
-import featureSchedule from "../assets/media/feature-schedule.webp";
 import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
-import layoutRestaurantL from "../assets/media/layouts/kiwi-restaurant-landscape.webp";
 import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
-import layoutGrandOpening from "../assets/media/layouts/grand-opening.webp";
-import layoutClinic from "../assets/media/layouts/kiwi-clinic.webp";
-import beautyClinic from "../assets/media/layouts/kiwi-beauty-clinic.webp";
 import wordmarkPlum from "../assets/brand/wordmark-plum.webp";
 import lockupPlum from "../assets/brand/lockup-plum.webp";
 import sliceHalfLime from "../assets/brand/slice-half-lime.png";
 import sliceFullPurple from "../assets/brand/slice-full-purple.png";
 import seedsPlum from "../assets/brand/seeds-plum.png";
-import seedsLime from "../assets/brand/seeds-lime.png";
 import { ContentArt } from "./demo/ContentArt";
 import { DEVICES, fitWidth, type DeviceId } from "./demo/devices";
 import { useDevicePanel } from "./demo/useDevicePanel";
@@ -482,15 +476,17 @@ export function CHero() {
       />
       <div className="relative mx-auto max-w-[1280px] px-5 pt-7 pb-8 sm:px-8 sm:pt-16 lg:pt-28 lg:pb-16">
         <div className="mx-auto max-w-3xl text-center">
+          {/* The category label stays visible on phones too (brief, 2026-09-08: "make the product
+              category explicit in the mobile hero"). */}
           <div
             data-reveal
-            className="hidden items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[12.5px] font-semibold text-plum-950/70 shadow-sm ring-1 ring-plum-950/10 lg:inline-flex"
+            className="font-header inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[12.5px] font-bold text-plum-950/75 shadow-sm ring-1 ring-plum-950/10"
           >
             <span
               className="c-pulse size-1.5 rounded-full bg-leaf-600"
               aria-hidden="true"
             />
-            Cloud digital signage CMS
+            Digital signage software
           </div>
           <h1
             data-reveal
@@ -508,14 +504,8 @@ export function CHero() {
             style={delay(160)}
             className="mx-auto mt-4 max-w-xl text-[17px] leading-relaxed text-plum-950/65 lg:mt-6 lg:text-[19px]"
           >
-            <span className="lg:hidden">
-              Manage and publish digital content to all your displays from one
-              place.
-            </span>
-            <span className="hidden lg:inline">
-              Manage, schedule, and publish digital signage across all your
-              screens from one simple dashboard.
-            </span>
+            Manage, schedule, and publish content to digital signs across all
+            your locations.
           </p>
           {/* Phones lead with the demo; desktop leads with the sales CTA. */}
           <div
@@ -593,19 +583,32 @@ export function CHero() {
  * backgrounds and normalised to 120px tall in `src/assets/clients/`. Shown grayscale at
  * reduced opacity, full colour on hover.
  */
+/**
+ * `scale` sizes each mark for comparable visual weight (brief, 2026-09-08): a 32 px row made the
+ * wordmarks read and the round seals vanish. Seals and stacked marks get more height, wide thin
+ * wordmarks stay near the baseline size. Aspect ratios are never touched.
+ */
 const CLIENTS = [
-  { name: "Apple & Eve", src: clientAppleAndEve },
-  { name: "Cardinal Santos Medical Center", src: clientCardinalSantos },
-  { name: "Cavite State University", src: clientCaviteStateUniversity },
-  { name: "City Garden Grand Hotel", src: clientCityGardenGrandHotel },
-  { name: "Department of Migrant Workers", src: clientDmw },
-  { name: "GolfX Philippines", src: clientGolfx },
-  { name: "Alino Hotel", src: clientAlinoHotel },
-  { name: "Masil Charcoal Grill Restaurant", src: clientMasil },
-  { name: "Paperdolls by RGMC", src: clientPaperdolls },
+  { name: "Apple & Eve", src: clientAppleAndEve, scale: 1 },
+  { name: "Cardinal Santos Medical Center", src: clientCardinalSantos, scale: 1.55 },
+  { name: "Cavite State University", src: clientCaviteStateUniversity, scale: 1.5 },
+  { name: "City Garden Grand Hotel", src: clientCityGardenGrandHotel, scale: 1.2 },
+  { name: "Department of Migrant Workers", src: clientDmw, scale: 1.55 },
+  { name: "GolfX Philippines", src: clientGolfx, scale: 1.1 },
+  { name: "Alino Hotel", src: clientAlinoHotel, scale: 1.4 },
+  { name: "Masil Charcoal Grill Restaurant", src: clientMasil, scale: 1.5 },
+  { name: "Paperdolls by RGMC", src: clientPaperdolls, scale: 1.45 },
 ];
 
-function ClientLogo({ name, src }: { name: string; src: string }) {
+function ClientLogo({
+  name,
+  src,
+  scale,
+}: {
+  name: string;
+  src: string;
+  scale: number;
+}) {
   return (
     <img
       src={src}
@@ -615,7 +618,8 @@ function ClientLogo({ name, src }: { name: string; src: string }) {
       loading="lazy"
       decoding="async"
       draggable={false}
-      className="h-8 w-auto max-w-[150px] shrink-0 object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 lg:h-9 lg:max-w-[170px]"
+      style={{ height: `calc(var(--logo-h) * ${scale})` }}
+      className="w-auto max-w-[230px] shrink-0 object-contain opacity-85 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 [--logo-h:32px] lg:[--logo-h:36px]"
     />
   );
 }
@@ -623,7 +627,7 @@ function ClientLogo({ name, src }: { name: string; src: string }) {
 export function CTrust() {
   const facts = [
     ["cloud_sync", "One dashboard, every location"],
-    ["android", "Runs on Kiwi Android displays"],
+    ["android", "Runs on any Android display"],
     ["screen_rotation", "Landscape and portrait, any size"],
     ["groups", "Teams, roles and permissions"],
   ] as const;
@@ -634,7 +638,7 @@ export function CTrust() {
           className="font-header text-center text-[12px] font-bold uppercase tracking-[0.18em] text-plum-950/50"
           data-reveal
         >
-          Trusted by
+          Trusted by organisations running Kiwi displays
         </p>
         {/* Phones: an endless marquee (two copies of the row); desktop: one wrapped row. */}
         <div
@@ -643,7 +647,7 @@ export function CTrust() {
         >
           <div className="c-marquee-track gap-10 px-5">
             {[...CLIENTS, ...CLIENTS].map((c, i) => (
-              <ClientLogo key={`${c.name}-${i}`} name={c.name} src={c.src} />
+              <ClientLogo key={`${c.name}-${i}`} {...c} />
             ))}
           </div>
         </div>
@@ -653,7 +657,7 @@ export function CTrust() {
         >
           {CLIENTS.map((c) => (
             <li key={c.name}>
-              <ClientLogo name={c.name} src={c.src} />
+              <ClientLogo {...c} />
             </li>
           ))}
         </ul>
@@ -686,49 +690,29 @@ export function CTrust() {
 
 /* --------------------------------------------------------------- features */
 
-/** Real layouts from the Home workspace (CMS layout previews, 800px webp) — shown the way the Layouts page shows them. */
-const REAL_LAYOUTS = [
-  { name: "Kiwi Technologies", size: "1920 × 1080", src: layoutKiwiTech },
-  {
-    name: "Kiwi Restaurant Landscape",
-    size: "3840 × 2160",
-    src: layoutRestaurantL,
-  },
-  { name: "Kiwi Restaurant", size: "1080 × 1920", src: layoutRestaurant },
-  { name: "Grand Opening", size: "800 × 1280", src: layoutGrandOpening },
-];
-
 export function CFeatures() {
+  // Capabilities the three recordings do NOT show (brief, 2026-09-08: each section adds
+  // something new; library, scheduling, publishing and locations live in the recordings).
   const cards = [
-    [
-      "photo_library",
-      "Content management",
-      "Images, video and PDFs in permissioned folders, with your own brand fonts.",
-    ],
     [
       "playlist_play",
       "Campaigns & playlists",
-      "Campaigns rotate layouts with durations and transitions; playlists sequence content inside a zone.",
+      "Rotate layouts with durations and transitions; sequence content inside one zone.",
     ],
     [
-      "calendar_month",
-      "Scheduling",
-      "Calendar, repeats and dayparts put the right message in the right hour.",
+      "text_fields",
+      "Your fonts, your folders",
+      "Upload brand fonts for the designer and keep media in permissioned folders.",
     ],
     [
-      "publish",
-      "Remote publishing",
-      "Push once. Every targeted screen updates within seconds.",
+      "settings_remote",
+      "Remote actions",
+      "Ask a screen for a screenshot, make it re-sync, or revert it to its schedule.",
     ],
     [
-      "devices",
-      "Screen management",
-      "Pair in seconds, see status live, act remotely when something's off.",
-    ],
-    [
-      "location_on",
-      "Multiple locations",
-      "Group screens by branch, floor or zone and target them together.",
+      "groups",
+      "Teams and roles",
+      "Invite colleagues with roles and groups so the right people change the right screens.",
     ],
   ] as const;
   return (
@@ -737,56 +721,14 @@ export function CFeatures() {
       className="scroll-mt-14 bg-white py-14 lg:scroll-mt-20 lg:py-28"
     >
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-        <SectionHead eyebrow="Features" title="Everything your screens need." />
+        <SectionHead
+          eyebrow="Features"
+          title="Beyond the basics."
+          sub="The recordings above show the daily work. This is what else comes with it."
+        />
 
-        {/* Phones and tablets: big visual, headline, one line — one feature at a time. */}
+        {/* Phones and tablets: the two physical-screen visuals, then the compact list. */}
         <div className="mt-6 flex flex-col gap-8 lg:hidden">
-          <FeatureBlock
-            title="Everything in one place."
-            body="Manage your images, videos and campaigns from one library."
-          >
-            <div className="grid grid-cols-2 gap-2 p-3">
-              {REAL_LAYOUTS.map((l) => (
-                <div
-                  key={l.name}
-                  className="overflow-hidden rounded-xl bg-white ring-1 ring-plum-950/10"
-                >
-                  <div className="flex aspect-[4/3] items-center justify-center bg-[#f6f9ee] p-2">
-                    <img
-                      src={l.src}
-                      alt={`${l.name} layout`}
-                      className="max-h-full max-w-full rounded-[3px] shadow-sm"
-                      loading="lazy"
-                      decoding="async"
-                      draggable={false}
-                    />
-                  </div>
-                  <div className="px-2.5 py-2">
-                    <div className="truncate text-[12.5px] font-bold text-plum-950">
-                      {l.name}
-                    </div>
-                    <div className="font-header text-[10.5px] text-plum-950/55">
-                      {l.size}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FeatureBlock>
-          <FeatureBlock
-            title="Right content. Right time."
-            body="Schedule exactly when your campaigns should appear, down to the hour."
-          >
-            <img
-              src={featureSchedule}
-              alt="The Kiwi schedule: a week of hour-blocked layouts per screen group"
-              width={900}
-              height={562}
-              loading="lazy"
-              decoding="async"
-              className="w-full rounded-xl ring-1 ring-plum-950/10"
-            />
-          </FeatureBlock>
           <FeatureBlock
             title="Publish from anywhere."
             body="Push once and every targeted screen updates within seconds."
@@ -823,24 +765,25 @@ export function CFeatures() {
           </FeatureBlock>
         </div>
 
-        {/* Desktop: the six capabilities as a grid. */}
-        <ul className="mt-14 hidden gap-5 lg:grid lg:grid-cols-3">
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-5">
           {cards.map(([icon, title, body], i) => (
             <li
               key={title}
               data-reveal
-              style={delay((i % 3) * 80)}
-              className="group rounded-2xl border border-plum-950/[0.08] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-leaf-600/40 hover:shadow-[0_24px_48px_-28px_rgba(45,13,41,0.45)]"
+              style={delay((i % 4) * 70)}
+              className="group flex gap-4 rounded-2xl border border-plum-950/[0.08] bg-white p-4 transition-all duration-300 lg:block lg:p-6 lg:hover:-translate-y-1 lg:hover:border-leaf-600/40 lg:hover:shadow-[0_18px_40px_-24px_rgba(45,13,41,0.35)]"
             >
-              <span className="grid size-11 place-items-center rounded-xl bg-lime-400/40 text-plum-950 transition-colors group-hover:bg-lime-400">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400/40 text-plum-950 transition-colors group-hover:bg-lime-400">
                 <Icon name={icon} size={22} />
               </span>
-              <h3 className="mt-5 text-[18px] font-bold tracking-tight text-plum-950">
-                {title}
-              </h3>
-              <p className="mt-2 text-[14.5px] leading-relaxed text-plum-950/65">
-                {body}
-              </p>
+              <div className="min-w-0 lg:mt-5">
+                <h3 className="text-[17px] font-bold tracking-tight text-plum-950 lg:text-[18px]">
+                  {title}
+                </h3>
+                <p className="mt-1 text-[14px] leading-snug text-plum-950/65 lg:mt-2 lg:text-[14.5px] lg:leading-relaxed">
+                  {body}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
@@ -892,15 +835,25 @@ function Loc({ label }: { label: string }) {
  * not aligned" when a 3840×2160 layout sat on a 1920×1080 unit). Drawn scenario content is no longer shown here (user, 2026-09-07:
  * "it should be using the new layouts that I uploaded").
  */
+/**
+ * Each example's content matches its industry (brief, 2026-09-08 — a beauty-clinic artwork sat on the
+ * retail and government cards, the corporate card showed a product catalogue). Real layouts where one
+ * fits (retail: the 1920×1080 product catalogue on the 1080p indoor unit; restaurant: the 1080×1920
+ * menu on the 1080×1920 floor-standing unit); the corporate and government cards use the drawn
+ * illustrative content (`scenarios.ts`) because no office or public-service layout exists yet — the
+ * section says so under the cards. Titles are descriptive, not invented customers.
+ */
 const INDUSTRY_SHOWCASE: Record<
   ScenarioId,
-  { device: DeviceId; image: string }
+  { device: DeviceId; image?: string; contentTitle?: string }
 > = {
-  retail: { device: "e-poster", image: beautyClinic }, // the 1488×3840 artwork made for the E-Poster
-  restaurant: { device: "floor-standing", image: layoutRestaurant }, // 1080×1920 on a 1080×1920 panel
-  corporate: { device: "indoor-display", image: layoutKiwiTech },
-  government: { device: "outdoor", image: layoutClinic }, // 1080×1920 on the 9:16 outdoor totem
+  retail: { device: "indoor-display", image: layoutKiwiTech },
+  restaurant: { device: "floor-standing", image: layoutRestaurant },
+  corporate: { device: "e-poster", contentTitle: "Welcome screen" }, // the tabletop render has no screen quad (flat content sat wrong) and the user dislikes it
+  government: { device: "outdoor", contentTitle: "Permit requirements" },
 };
+const showcaseContent = (s: (typeof SCENARIOS)[number], title?: string) =>
+  title ? s.content.find((c) => c.title === title) : undefined;
 
 export function CUseCases() {
   return (
@@ -931,6 +884,7 @@ export function CUseCases() {
                   <StaticDevice
                     device={show.device}
                     image={show.image}
+                    content={showcaseContent(s, show.contentTitle)}
                     fitHeight={276}
                   />
                 </div>
@@ -953,6 +907,11 @@ export function CUseCases() {
         <p className="mt-3 text-center text-[12px] text-plum-950/45 lg:hidden">
           Swipe for more →
         </p>
+        <p className="mt-4 text-[12.5px] leading-snug text-plum-950/50 lg:mt-8 lg:text-center">
+          Example scenarios on Kiwi display units. Retail and restaurant show real
+          layouts made in Kiwi; the office and public-service content is
+          illustrative.
+        </p>
 
         {/* Desktop grid. */}
         <ul className="mt-14 hidden gap-5 lg:grid lg:grid-cols-4">
@@ -965,6 +924,7 @@ export function CUseCases() {
                     <StaticDevice
                       device={show.device}
                       image={show.image}
+                      content={showcaseContent(s, show.contentTitle)}
                       fitHeight={200}
                     />
                   </div>
@@ -980,81 +940,6 @@ export function CUseCases() {
               </li>
             );
           })}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-/* --------------------------------------------------------------- benefits */
-
-export function CBenefits() {
-  const items = [
-    [
-      "public",
-      "Manage remotely",
-      "Change a screen in another city without leaving your desk.",
-    ],
-    [
-      "schedule",
-      "Save time",
-      "Schedule once; dayparts and repeats do the rest.",
-    ],
-    [
-      "verified",
-      "Stay consistent",
-      "The same approved content, branch to branch.",
-    ],
-    [
-      "trending_up",
-      "Scale easily",
-      "A new screen is a claim code and one click.",
-    ],
-  ] as const;
-  return (
-    <section className="relative overflow-hidden bg-plum-950 py-14 text-cream-100 lg:py-28">
-      <img
-        src={sliceFullPurple}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 -right-16 w-[260px] rotate-12 select-none opacity-60 lg:-bottom-40 lg:-right-10 lg:w-[460px]"
-      />
-      <img
-        src={seedsLime}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-3 top-4 w-16 -rotate-12 select-none opacity-40 lg:right-16 lg:top-12 lg:w-24"
-      />
-      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-        <div className="max-w-2xl" data-reveal>
-          <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-lime-400">
-            Why teams switch
-          </p>
-          <h2 className="mt-2 text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-white sm:text-4xl lg:mt-3 lg:text-5xl">
-            Outcomes, not chores.
-          </h2>
-        </div>
-        <ul className="mt-8 flex flex-col gap-3 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-5">
-          {items.map(([icon, title, body], i) => (
-            <li
-              key={title}
-              data-reveal
-              style={delay(i * 70)}
-              className="flex items-center gap-4 rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10 lg:block lg:p-6"
-            >
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-lime-400 text-plum-950">
-                <Icon name={icon} size={22} />
-              </span>
-              <div className="min-w-0 lg:mt-5">
-                <h3 className="text-[17px] font-bold tracking-tight text-white lg:text-[18px]">
-                  {title}
-                </h3>
-                <p className="mt-0.5 text-[14px] leading-snug text-cream-100/70 lg:mt-2 lg:text-[14.5px] lg:leading-relaxed">
-                  {body}
-                </p>
-              </div>
-            </li>
-          ))}
         </ul>
       </div>
     </section>
@@ -1191,11 +1076,11 @@ export function CPricing() {
 
 export function CFinalCta() {
   return (
-    <section className="bg-[#f6f9ee] py-14 lg:py-28">
+    <section id="final-cta" className="bg-[#f6f9ee] py-14 lg:py-28">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <div
           data-reveal
-          className="relative overflow-hidden rounded-[28px] bg-lime-400 px-6 py-12 text-center shadow-[0_32px_64px_-32px_rgba(45,13,41,0.5)] sm:px-12 lg:py-16"
+          className="relative overflow-hidden rounded-[28px] bg-lime-400 px-6 py-12 text-center shadow-[0_18px_40px_-24px_rgba(45,13,41,0.35)] sm:px-12 lg:py-16"
         >
           <img
             src={sliceFullPurple}
@@ -1213,8 +1098,9 @@ export function CFinalCta() {
             See Kiwi on your screens.
           </h2>
           <p className="relative mx-auto mt-3 max-w-xl text-[15.5px] text-plum-950/75 lg:mt-4 lg:text-[17px]">
-            A 20-minute walkthrough on your own content.
+            See how your content looks on screen in a 20-minute demo.
           </p>
+          {/* One action: pricing sits a scroll above, so "See pricing" went (brief, 2026-09-08). */}
           <div className="relative mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:mt-8">
             <Button
               href={DEMO_LINK}
@@ -1223,13 +1109,6 @@ export function CFinalCta() {
             >
               Book a demo
               <Icon name="arrow_forward" size={18} />
-            </Button>
-            <Button
-              href="#pricing"
-              variant="ghost"
-              className="w-full bg-white/90 ring-plum-950/20 sm:w-auto lg:hover:bg-white"
-            >
-              See pricing
             </Button>
           </div>
         </div>
@@ -1245,10 +1124,11 @@ export function CFooter() {
     [
       "Product",
       [
+        ["#how", "How it works"],
         ["#demo", "See it in action"],
         ["#features", "Features"],
-        ["#how", "How it works"],
         ["#pricing", "Pricing"],
+        ["#faq", "Before you buy"],
       ],
     ],
     [
@@ -1360,18 +1240,29 @@ export function CFooter() {
 /* ------------------------------------------------------- sticky sales CTA */
 
 /**
- * Phones only: a small Book-a-demo bar that appears once the visitor has
- * scrolled past the live demo, and stays out of the way while the demo (and
- * its Publish button) is on screen.
+ * Phones only: a small Book-a-demo bar that appears once the visitor has scrolled past the
+ * recordings (meaningful product proof) and hides while the pricing cards, the final demo panel or
+ * the footer are on screen — those carry their own demo actions and the bar covered them (brief,
+ * 2026-09-08: "make the floating bar contextual"). Bottom padding respects the safe area.
  */
 export function CStickyCta() {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const demo = document.getElementById("demo");
     if (!demo) return;
+    const blockers = ["pricing", "faq", "final-cta"]
+      .map((id) => document.getElementById(id))
+      .concat([document.querySelector("footer")])
+      .filter((el): el is HTMLElement => el instanceof HTMLElement);
     const update = () => {
-      const r = demo.getBoundingClientRect();
-      setShow(r.bottom < 0 && window.innerWidth < 1024);
+      if (window.innerWidth >= 1024) return setShow(false);
+      const pastDemo = demo.getBoundingClientRect().bottom < 0;
+      // A blocker "covers" the moment when it fills the lower half of the viewport.
+      const covered = blockers.some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
+      });
+      setShow(pastDemo && !covered);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -1391,7 +1282,7 @@ export function CStickyCta() {
       )}
       aria-hidden={!show}
     >
-      <div className="mx-auto flex max-w-[520px] items-center gap-3 rounded-full bg-plum-950/95 p-1.5 pl-4 text-white shadow-[0_18px_40px_-16px_rgba(45,13,41,0.6)] backdrop-blur">
+      <div className="mx-auto flex max-w-[520px] items-center gap-3 rounded-full bg-plum-950/95 p-1.5 pl-4 text-white shadow-[0_14px_32px_-16px_rgba(45,13,41,0.55)] backdrop-blur">
         <span className="min-w-0 flex-1 truncate text-[13px] font-semibold">
           Ready to see it on your screens?
         </span>
