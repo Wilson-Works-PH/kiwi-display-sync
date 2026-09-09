@@ -39,6 +39,9 @@ const DEMO_LINK = "https://kiwi.com.ph/contact/";
 const SALES_LINK =
   "mailto:info@kiwi.com.ph?subject=Kiwi%20Enterprise%20pricing";
 const CONTACT_EMAIL = "info@kiwi.com.ph";
+// The hardware catalogue on the main Kiwi site: the 12 display units this section's
+// renders are taken from (see demo/devices.ts). The Solutions section links out to it.
+const HARDWARE_LINK = "https://kiwi.com.ph/digital-solutions/";
 const PHONES: [string, string][] = [
   ["+63 969 170 2299", "tel:+639691702299"],
   ["+63 2 8658 6962", "tel:+63286586962"],
@@ -662,6 +665,11 @@ export function CHero() {
  * `scale` sizes each mark for comparable visual weight (brief, 2026-09-08): a 32 px row made the
  * wordmarks read and the round seals vanish. Seals and stacked marks get more height, wide thin
  * wordmarks stay near the baseline size. Aspect ratios are never touched.
+ *
+ * Height alone can't balance a very wide wordmark, so the row also caps WIDTH at 160px — the width
+ * of the widest mark that height-normalises cleanly (City Garden, 3.6:1). Apple & Eve is 7.8:1 and
+ * ran to 282px at row height, reading as a banner beside its neighbours (user, 2026-09-09); the cap
+ * brings it level with City Garden and holds the line for any wide mark added later.
  */
 const CLIENTS = [
   { name: "Apple & Eve", src: clientAppleAndEve, scale: 1 },
@@ -694,7 +702,7 @@ function ClientLogo({
       decoding="async"
       draggable={false}
       style={{ height: `calc(var(--logo-h) * ${scale})` }}
-      className="w-auto max-w-[230px] shrink-0 object-contain opacity-85 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 [--logo-h:32px] lg:[--logo-h:36px]"
+      className="w-auto max-w-[160px] shrink-0 object-contain opacity-85 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 [--logo-h:32px] lg:[--logo-h:36px]"
     />
   );
 }
@@ -915,8 +923,9 @@ function Loc({ label }: { label: string }) {
  * retail and government cards, the corporate card showed a product catalogue). Real layouts where one
  * fits (retail: the 1920×1080 product catalogue on the 1080p indoor unit; restaurant: the 1080×1920
  * menu on the 1080×1920 floor-standing unit); the corporate and government cards use the drawn
- * illustrative content (`scenarios.ts`) because no office or public-service layout exists yet — the
- * section says so under the cards. Titles are descriptive, not invented customers.
+ * illustrative content (`scenarios.ts`) until the real office and public-service layouts land — the
+ * user is having them made (2026-09-09), so the "content is illustrative" note under the cards went.
+ * Titles are descriptive, not invented customers.
  */
 /**
  * Screens change: each card cycles between two pieces of content (real layouts where two exist for
@@ -990,16 +999,37 @@ export function CUseCases() {
               </article>
             );
           })}
+          {/* The deck ends on the catalogue: every unit under the content is real Kiwi hardware,
+              so the last card hands the visitor to the range that sells it (user, 2026-09-09). */}
+          <a
+            href={HARDWARE_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="flex w-[84%] shrink-0 flex-col overflow-hidden rounded-3xl bg-[#f6f9ee] ring-1 ring-plum-950/[0.06] sm:w-[60%]"
+          >
+            <div className="flex h-[300px] items-center justify-center px-6">
+              <span className="grid size-20 place-items-center rounded-full bg-lime-400 text-plum-950 shadow-[0_14px_30px_-16px_rgba(45,13,41,0.6)]">
+                <Icon name="arrow_forward" size={34} />
+              </span>
+            </div>
+            <div className="p-5">
+              <div className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.14em] text-leaf-600">
+                <Icon name="grid_view" size={16} />
+                More formats
+              </div>
+              <h3 className="mt-1 text-[20px] font-bold tracking-tight text-plum-950">
+                See all display solutions
+              </h3>
+              <p className="mt-1 text-[14px] leading-snug text-plum-950/65">
+                Kiosks, smart boards, stretch bars and the rest of the Kiwi
+                hardware range.
+              </p>
+            </div>
+          </a>
         </div>
         <p className="mt-3 text-center text-[12px] text-plum-950/45 lg:hidden">
           Swipe for more →
         </p>
-        <p className="mt-4 text-[12.5px] leading-snug text-plum-950/50 lg:mt-8 lg:text-center">
-          Example scenarios on Kiwi display units; the screens change the way a
-          schedule would change them. Retail and restaurant show real layouts
-          made in Kiwi; the office and public-service content is illustrative.
-        </p>
-
         {/* Desktop grid. */}
         <ul className="mt-14 hidden gap-5 lg:grid lg:grid-cols-4">
           {SCENARIOS.map((s, i) => {
@@ -1029,6 +1059,34 @@ export function CUseCases() {
               </li>
             );
           })}
+          {/* Same card, laid across the row: a fifth column would have squeezed the four device
+              renders (289px → 227px), and the deck's balance was already signed off. */}
+          <li data-reveal style={delay(320)} className="lg:col-span-4">
+            <a
+              href={HARDWARE_LINK}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-5 overflow-hidden rounded-2xl border border-plum-950/[0.08] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-leaf-600/40 hover:shadow-[0_24px_48px_-28px_rgba(45,13,41,0.45)]"
+            >
+              <span className="grid size-14 shrink-0 place-items-center rounded-full bg-lime-400 text-plum-950">
+                <Icon name="grid_view" size={26} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[17px] font-bold tracking-tight text-plum-950">
+                  See all display solutions
+                </span>
+                <span className="mt-1 block text-[14px] leading-relaxed text-plum-950/65">
+                  Kiosks, smart boards, stretch bars and the rest of the Kiwi
+                  hardware range on kiwi.com.ph.
+                </span>
+              </span>
+              <Icon
+                name="arrow_forward"
+                size={22}
+                className="shrink-0 text-plum-950/40"
+              />
+            </a>
+          </li>
         </ul>
       </div>
     </section>
