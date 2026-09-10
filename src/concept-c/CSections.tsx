@@ -1374,7 +1374,6 @@ export function CFooter() {
       </div>
       <div className="mx-auto mt-10 flex max-w-[1280px] flex-wrap items-center justify-between gap-3 border-t border-plum-950/[0.08] px-5 pt-6 text-[12.5px] text-plum-950/50 sm:px-8 lg:mt-12">
         <span>Kiwi Display Sync™ is a trademark of Kiwi Technologies.</span>
-        <span>Made in the Philippines</span>
       </div>
     </footer>
   );
