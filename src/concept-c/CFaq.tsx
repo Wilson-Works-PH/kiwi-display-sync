@@ -53,7 +53,18 @@ export function CFaq() {
       className="scroll-mt-14 border-t border-plum-950/[0.06] bg-white py-14 lg:scroll-mt-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-        <SectionHead eyebrow="Good to know" title="Before you buy." />
+        {/* The break is explicit: left to wrap on its own, "Let’s" is orphaned at the
+            end of line 1 at every width the heading wraps at (390: 294px of 335). */}
+        <SectionHead
+          eyebrow="FAQ"
+          title={
+            <>
+              Got Questions?
+              <br />
+              Let’s Talk Solutions.
+            </>
+          }
+        />
         <dl className="mx-auto mt-8 max-w-3xl divide-y divide-plum-950/[0.08] lg:mt-12">
           {QA.map(([q, a], i) => {
             const open = openSet.has(i);

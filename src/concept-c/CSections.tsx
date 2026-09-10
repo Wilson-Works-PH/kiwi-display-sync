@@ -1112,7 +1112,7 @@ export function CPricing() {
         "Manual scheduling · 10 schedules, 10 campaigns",
         "FAQ and self-serve help",
       ],
-      cta: "Book a demo",
+      cta: "Get Started",
     },
     {
       name: "Pro",
@@ -1129,7 +1129,7 @@ export function CPricing() {
         "90-day activity log",
         "Priority email and chat support",
       ],
-      cta: "Book a demo",
+      cta: "Upgrade Now",
     },
     {
       name: "Enterprise",
@@ -1145,7 +1145,7 @@ export function CPricing() {
         "Full audit trail",
         "Dedicated account manager and SLA",
       ],
-      cta: "Talk to sales",
+      cta: "Talk to Sales",
     },
   ];
   return (
@@ -1245,7 +1245,7 @@ export function CFinalCta() {
             See Kiwi on your screens.
           </h2>
           <p className="relative mx-auto mt-3 max-w-xl text-[15.5px] text-plum-950/75 lg:mt-4 lg:text-[17px]">
-            Book a 20-minute demo using your own content.
+            Start with a 20-minute demo using your own content.
           </p>
           {/* One action: pricing sits a scroll above, so "See pricing" went (brief, 2026-09-08). */}
           <div className="relative mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:mt-8">
@@ -1254,7 +1254,7 @@ export function CFinalCta() {
               variant="secondary"
               className="w-full sm:w-auto"
             >
-              Book a demo
+              Start Syncing
               <Icon name="arrow_forward" size={18} />
             </Button>
           </div>
@@ -1275,7 +1275,7 @@ export function CFooter() {
         ["#demo", "See it in action"],
         ["#features", "Features"],
         ["#pricing", "Pricing"],
-        ["#faq", "Before you buy"],
+        ["#faq", "FAQ"],
       ],
     ],
     [
@@ -1373,7 +1373,9 @@ export function CFooter() {
         </div>
       </div>
       <div className="mx-auto mt-10 flex max-w-[1280px] flex-wrap items-center justify-between gap-3 border-t border-plum-950/[0.08] px-5 pt-6 text-[12.5px] text-plum-950/50 sm:px-8 lg:mt-12">
-        <span>Kiwi Display Sync™ is a trademark of Kiwi Technologies.</span>
+        <span>
+          © {new Date().getFullYear()} Kiwi Technologies. All rights reserved.
+        </span>
       </div>
     </footer>
   );
