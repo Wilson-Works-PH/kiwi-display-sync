@@ -680,7 +680,7 @@ const CLIENTS = [
   { name: "GolfX Philippines", src: clientGolfx, scale: 1.1 },
   { name: "Alino Hotel", src: clientAlinoHotel, scale: 1.4 },
   { name: "Masil Charcoal Grill Restaurant", src: clientMasil, scale: 1.5 },
-  { name: "Paperdolls by RGMC", src: clientPaperdolls, scale: 1.45 },
+  { name: "Paperdolls by RGMC", src: clientPaperdolls, scale: 1 },
 ];
 
 function ClientLogo({
