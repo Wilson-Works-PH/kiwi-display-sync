@@ -12,8 +12,11 @@ const PHONE = "+63 969 170 2299";
 const NPC_REGISTRATION = "PIC-005-743-2026";
 
 /**
- * /privacy — the public privacy policy the app stores require. The product is
- * "Kiwi Display Sync" (user, 2026-09-08; the CMS is live at cms.kiwi.com.ph).
+ * /privacy — the public privacy policy the app stores require. "Kiwi Display
+ * Sync" is the ANDROID PLAYER's name (user, 2026-09-10); the web app is the
+ * "Kiwi Content Management System", live at cms.kiwi.com.ph. Don't use either
+ * name as an umbrella for the platform — the policy covers the player, the web
+ * app and this website separately.
  *
  * MERGED VERSION (2026-09-08): the CMS team's revised draft ("Kiwi Display Sync
  * Privacy Policy — Revised Draft, September 8, 2026") supplied the legal
@@ -94,13 +97,12 @@ export default function PrivacyPage() {
           <p>
             This Privacy Policy explains how {COMPANY} (“Kiwi”, “we”, “us” or
             “our”) collects, uses, shares and protects information when you use
-            Kiwi Display Sync, our digital signage platform. It covers three
-            things:
+            our digital signage platform. It covers three things:
           </p>
           <ul>
             <li>
-              <strong>The Kiwi Display Sync web app</strong> at cms.kiwi.com.ph
-              (“Kiwi CMS”), where teams manage screens, media, layouts and
+              <strong>The Kiwi Content Management System</strong>, our web app
+              at cms.kiwi.com.ph, where teams manage screens, media, layouts and
               schedules.
             </li>
             <li>
@@ -124,8 +126,8 @@ export default function PrivacyPage() {
 
           <h2>1. Who we are and how to contact us</h2>
           <p>
-            Kiwi Display Sync is developed and published by {COMPANY}, based in
-            the Philippines.
+            Kiwi Display Sync and the Kiwi Content Management System are
+            developed and published by {COMPANY}, based in the Philippines.
           </p>
           <ul>
             <li>
@@ -153,7 +155,7 @@ export default function PrivacyPage() {
           </ul>
 
           <h2>3. Information we collect</h2>
-          <h3>Account information (web app)</h3>
+          <h3>Account information (Kiwi Content Management System)</h3>
           <p>
             When an organisation administrator invites you, we create an account
             with your name and email address, and any business details your
@@ -170,15 +172,17 @@ export default function PrivacyPage() {
             organisation’s screens. This content belongs to your organisation.
             Do not upload personal data you do not have the right to display.
           </p>
-          <h3>Activity and security records (web app)</h3>
+          <h3>
+            Activity and security records (Kiwi Content Management System)
+          </h3>
           <p>
-            The web app keeps an audit log of actions taken in a workspace, such
-            as publishing a layout or authorising a display, with the account
-            that performed them and the time. Sign-in sessions record the
-            browser and network address they were opened from, so that you can
-            review and revoke them.
+            The Kiwi Content Management System keeps an audit log of actions
+            taken in a workspace, such as publishing a layout or authorising a
+            display, with the account that performed them and the time. Sign-in
+            sessions record the browser and network address they were opened
+            from, so that you can review and revoke them.
           </p>
-          <h3>Device information (Android app on displays)</h3>
+          <h3>Device information (Kiwi Display Sync on displays)</h3>
           <p>
             The player does not have user accounts and does not collect
             information about the people who look at a screen. It reports
@@ -223,17 +227,12 @@ export default function PrivacyPage() {
             screenshots or files you choose to share — so that we can reply and
             resolve the issue.
           </p>
-          <h3>This website</h3>
+          <h3>How we collect it</h3>
           <p>
-            The marketing site does not use analytics or advertising trackers
-            and sets no cookies of its own. If you contact us through a form or
-            email, we keep what you send us to reply.
-          </p>
-          <p>
-            We collect this information directly from you when an account is
+            We collect all of the above directly from you when an account is
             created for you, when you upload content or contact support, and
-            automatically from displays as they connect and sync with the web
-            app.
+            automatically from displays as they connect and sync with the Kiwi
+            Content Management System.
           </p>
 
           <h2>4. Basis for processing and your consent</h2>
@@ -424,8 +423,9 @@ export default function PrivacyPage() {
 
           <h2>13. Children’s privacy</h2>
           <p>
-            Kiwi Display Sync is a business tool for managing digital displays
-            and is not directed to children. We do not knowingly collect
+            Kiwi Display Sync and the Kiwi Content Management System are
+            business tools for managing digital displays and are not directed to
+            children. We do not knowingly collect
             personal data from anyone under 18. If we learn that a child has
             provided personal data we will take reasonable steps to delete it;
             parents or guardians may contact us using the details in Section 1.

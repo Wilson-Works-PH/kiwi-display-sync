@@ -1291,8 +1291,6 @@ export function CFooter() {
       "Company",
       [
         ["https://kiwi.com.ph", "kiwi.com.ph"],
-        [DEMO_LINK, "Book a demo"],
-        [SIGN_IN, "Sign in to Kiwi Display Sync"],
         [`mailto:${CONTACT_EMAIL}`, CONTACT_EMAIL],
         ["/privacy", "Privacy policy"],
       ],
@@ -1375,10 +1373,8 @@ export function CFooter() {
         </div>
       </div>
       <div className="mx-auto mt-10 flex max-w-[1280px] flex-wrap items-center justify-between gap-3 border-t border-plum-950/[0.08] px-5 pt-6 text-[12.5px] text-plum-950/50 sm:px-8 lg:mt-12">
-        <span>
-          © {new Date().getFullYear()} Kiwi Technologies. All rights reserved.
-        </span>
-        <span>PhilGEPS Platinum registered · Made in the Philippines</span>
+        <span>Kiwi Display Sync™ is a trademark of Kiwi Technologies.</span>
+        <span>Made in the Philippines</span>
       </div>
     </footer>
   );
