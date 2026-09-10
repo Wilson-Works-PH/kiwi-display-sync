@@ -16,8 +16,10 @@ import type { Quad } from "./homography";
  * content onto them with a real perspective transform (see homography.ts).
  * Corners were measured by masking the saturated wallpaper pixels in each
  * render (`sat > 28`) and taking the extreme points — re-run that if a render
- * is ever re-trimmed. Rotatable, K-type kiosk and the tabletop stay out of the
- * demo wall (tabletop is in the map for non-demo use).
+ * is ever re-trimmed. Rotatable and the K-type kiosk stay out of the demo wall.
+ * The tabletop render is shot at an angle too — its quad was measured the same
+ * way (2026-09-10, when the government card moved onto it); it carries a 9/16
+ * panel, so 1080x1920 content fills it edge to edge.
  */
 export type DeviceId =
   "indoor-display" | "floor-standing" | "outdoor" | "e-poster" | "tabletop";
@@ -94,7 +96,14 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
     src: tabletop,
     w: 895,
     h: 1385,
-    screen: { left: 16.54, top: 6.35, width: 67.37, height: 84.33 },
+    screen: { left: 13.57, top: 5.56, width: 80.24, height: 86.44 },
+    quad: [
+      [13.57, 5.56],
+      [73.2, 8.33],
+      [93.64, 86.56],
+      [31.1, 91.78],
+    ],
+    screenAspect: 9 / 16,
   },
 };
 
