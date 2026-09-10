@@ -21,6 +21,10 @@ import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
 import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
 import layoutKiwiFood from "../assets/media/layouts/kiwi-food.webp";
 import layoutKiwiTech2 from "../assets/media/layouts/kiwi-technologies-2.webp";
+import layoutCorpProfile from "../assets/media/layouts/corporate-profile.webp";
+import layoutCorpJobFair from "../assets/media/layouts/corporate-job-fair.webp";
+import layoutGovSchedule from "../assets/media/layouts/government-schedule.webp";
+import layoutGovHoliday from "../assets/media/layouts/government-holiday.webp";
 import wordmarkPlum from "../assets/brand/wordmark-plum.webp";
 import lockupPlum from "../assets/brand/lockup-plum.webp";
 import sliceHalfLime from "../assets/brand/slice-half-lime.png";
@@ -922,9 +926,9 @@ function Loc({ label }: { label: string }) {
  * Each example's content matches its industry (brief, 2026-09-08 — a beauty-clinic artwork sat on the
  * retail and government cards, the corporate card showed a product catalogue). Real layouts where one
  * fits (retail: the 1920×1080 product catalogue on the 1080p indoor unit; restaurant: the 1080×1920
- * menu on the 1080×1920 floor-standing unit); the corporate and government cards use the drawn
- * illustrative content (`scenarios.ts`) until the real office and public-service layouts land — the
- * user is having them made (2026-09-09), so the "content is illustrative" note under the cards went.
+ * menu on the 1080×1920 floor-standing unit); the corporate and government cards now use the
+ * real office and public-service artwork the user made (pasted in 2026-09-10), so no card is drawn
+ * illustration any more and the "content is illustrative" note under the cards stays gone.
  * Titles are descriptive, not invented customers.
  */
 /**
@@ -941,8 +945,11 @@ const INDUSTRY_SHOWCASE: Record<
   // as the layout "Kiwi Technologies - 2" instead.)
   retail: { device: "indoor-display", images: [layoutKiwiTech, layoutKiwiTech2] },
   restaurant: { device: "floor-standing", images: [layoutRestaurant, layoutKiwiFood] },
-  corporate: { device: "e-poster", contentTitles: ["Welcome screen", "Town hall"] }, // no tabletop: its render has no screen quad and the user dislikes it
-  government: { device: "outdoor", contentTitles: ["Permit requirements", "Office hours"] },
+  // Corporate and government now run the user's real artwork (2026-09-10). Each pair matches
+  // its unit's panel exactly: the corporate stills are 3100x8000 (0.3875) like the E-Poster's
+  // 1488x3840 panel, the government stills are 1080x1920 for the tabletop's 9/16 panel.
+  corporate: { device: "e-poster", images: [layoutCorpProfile, layoutCorpJobFair] },
+  government: { device: "tabletop", images: [layoutGovSchedule, layoutGovHoliday] },
 };
 const showcaseContents = (s: (typeof SCENARIOS)[number], titles?: string[]) =>
   titles
