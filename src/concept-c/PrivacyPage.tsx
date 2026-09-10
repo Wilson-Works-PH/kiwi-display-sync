@@ -6,7 +6,8 @@ import { CFooter, Logo } from "./CSections";
 const EFFECTIVE = "8 September 2026";
 const COMPANY = "Kiwi Technologies";
 const EMAIL = "info@kiwi.com.ph";
-const DPO_EMAIL = "dpo@kiwi.com.ph";
+const DPO_NAME = "Rhea Claire B. Bantolo";
+const DPO_EMAIL = "info@wilsonworksph.com";
 const PHONE = "+63 969 170 2299";
 const NPC_REGISTRATION = "PIC-005-743-2026";
 
@@ -26,7 +27,8 @@ const NPC_REGISTRATION = "PIC-005-743-2026";
  *
  * Still to be confirmed by the CMS team before publishing (their draft asserts
  * these; the code can't verify them):
- *   - the DPO mailbox (dpo@kiwi.com.ph) is live and monitored;
+ *   - the DPO mailbox (info@wilsonworksph.com) is live and monitored — note it
+ *     is a wilsonworksph.com address, not a kiwi.com.ph one (user, 2026-09-10);
  *   - the NPC registration wording — their draft says the registration is
  *     "under Wilson Works Trading Inc."; the registered entity must be the
  *     actual personal information controller;
@@ -141,9 +143,14 @@ export default function PrivacyPage() {
           <p>
             Our Data Protection Officer handles data subject requests and any
             concern that general support cannot resolve, including complaints
-            about how your information is handled:{" "}
-            <a href={`mailto:${DPO_EMAIL}`}>{DPO_EMAIL}</a>.
+            about how your information is handled.
           </p>
+          <ul>
+            <li>Data Protection Officer: {DPO_NAME}</li>
+            <li>
+              Email: <a href={`mailto:${DPO_EMAIL}`}>{DPO_EMAIL}</a>
+            </li>
+          </ul>
 
           <h2>3. Information we collect</h2>
           <h3>Account information (web app)</h3>
