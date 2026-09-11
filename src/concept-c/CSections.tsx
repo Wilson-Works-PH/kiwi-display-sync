@@ -7,7 +7,6 @@ import {
   type MouseEvent,
 } from "react";
 import { cx } from "./cx";
-import wordmarkLime from "../assets/brand/wordmark-lime.png";
 import clientAppleAndEve from "../assets/clients/apple-and-eve.webp";
 import clientCardinalSantos from "../assets/clients/cardinal-santos.webp";
 import clientCaviteStateUniversity from "../assets/clients/cavite-state-university.webp";
@@ -19,13 +18,13 @@ import clientMasil from "../assets/clients/masil.webp";
 import clientPaperdolls from "../assets/clients/paperdolls.webp";
 import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
 import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
-import layoutKiwiFood from "../assets/media/layouts/kiwi-food.webp";
 import layoutKiwiTech2 from "../assets/media/layouts/kiwi-technologies-2.webp";
+import layoutRestaurantLandscape from "../assets/media/layouts/kiwi-restaurant-landscape.webp";
 import layoutCorpProfile from "../assets/media/layouts/corporate-profile.webp";
 import layoutCorpJobFair from "../assets/media/layouts/corporate-job-fair.webp";
 import layoutGovSchedule from "../assets/media/layouts/government-schedule.webp";
 import layoutGovHoliday from "../assets/media/layouts/government-holiday.webp";
-import wordmarkPlum from "../assets/brand/wordmark-plum.webp";
+import lockupDisplaySync from "../assets/brand/lockup-display-sync-plum.webp";
 import lockupPlum from "../assets/brand/lockup-plum.webp";
 import sliceHalfLime from "../assets/brand/slice-half-lime.png";
 import sliceFullPurple from "../assets/brand/slice-full-purple.png";
@@ -142,38 +141,22 @@ function Eyebrow({
 }
 
 /**
- * The site logo: the official "kiwi" wordmark PNG with DISPLAY SYNC set underneath —
- * the same treatment the CMS gives its own "CONTENT MANAGEMENT SYSTEM" line. No icon
- * mark (user, 2026-09-07: "I don't like the K").
+ * The site logo: the official Kiwi Display Sync lockup the user supplied (2026-09-11),
+ * replacing the hand-set version that paired the "kiwi" wordmark with a typeset
+ * DISPLAY SYNC line. Height is 30px so the "kiwi" glyphs still measure the 22px they
+ * did before (they are 74.5 % of the lockup's ink), which keeps the nav unchanged.
+ * No icon mark (user, 2026-09-07: "I don't like the K").
  */
-export function Logo({
-  className,
-  mark = "plum",
-}: {
-  className?: string;
-  mark?: "plum" | "lime";
-}) {
+export function Logo({ className }: { className?: string }) {
   return (
-    <span
-      className={cx("inline-flex flex-col items-start leading-none", className)}
-    >
-      <img
-        src={mark === "plum" ? wordmarkPlum : wordmarkLime}
-        alt="Kiwi"
-        width={344}
-        height={120}
-        className="h-[22px] w-auto"
-        draggable={false}
-      />
-      <span
-        className={cx(
-          "font-header mt-[4px] text-[8px] font-bold uppercase tracking-[0.3em]",
-          mark === "plum" ? "text-plum-950/65" : "text-cream-100/80",
-        )}
-      >
-        Display Sync
-      </span>
-    </span>
+    <img
+      src={lockupDisplaySync}
+      alt="Kiwi Display Sync"
+      width={257}
+      height={120}
+      className={cx("h-[30px] w-auto select-none", className)}
+      draggable={false}
+    />
   );
 }
 
@@ -943,12 +926,14 @@ const INDUSTRY_SHOWCASE: Record<
   // Both retail items are real 1920×1080 layouts, so each fills the 16:9 panel edge to edge. (The raw
   // 2000×1294 "Display Solutions" media letterboxed and was rejected, 2026-09-08; the user published it
   // as the layout "Kiwi Technologies - 2" instead.)
-  retail: { device: "indoor-display", images: [layoutKiwiTech, layoutKiwiTech2] },
-  restaurant: { device: "floor-standing", images: [layoutRestaurant, layoutKiwiFood] },
+  retail: { device: "digital-totem", images: [layoutKiwiTech, layoutKiwiTech2] },
+  // The restaurant unit is the landscape indoor display now, so the card runs the one
+  // 16:9 restaurant layout we have; it holds still until a second landscape one exists.
+  restaurant: { device: "indoor-display", images: [layoutRestaurantLandscape] },
   // Corporate and government now run the user's real artwork (2026-09-10). Each pair matches
   // its unit's panel exactly: the corporate stills are 3100x8000 (0.3875) like the E-Poster's
   // 1488x3840 panel, the government stills are 1080x1920 for the tabletop's 9/16 panel.
-  corporate: { device: "e-poster", images: [layoutCorpProfile, layoutCorpJobFair] },
+  corporate: { device: "poster-stand", images: [layoutCorpProfile, layoutCorpJobFair] },
   government: { device: "tabletop", images: [layoutGovSchedule, layoutGovHoliday] },
 };
 const showcaseContents = (s: (typeof SCENARIOS)[number], titles?: string[]) =>
