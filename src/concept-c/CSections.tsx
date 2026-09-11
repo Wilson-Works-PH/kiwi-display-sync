@@ -18,10 +18,12 @@ import clientMasil from "../assets/clients/masil.webp";
 import clientPaperdolls from "../assets/clients/paperdolls.webp";
 import layoutKiwiTech from "../assets/media/layouts/kiwi-technologies.webp";
 import layoutRestaurant from "../assets/media/layouts/kiwi-restaurant.webp";
-import layoutKiwiTech2 from "../assets/media/layouts/kiwi-technologies-2.webp";
-import layoutRestaurantLandscape from "../assets/media/layouts/kiwi-restaurant-landscape.webp";
-import layoutCorpProfile from "../assets/media/layouts/corporate-profile.webp";
-import layoutCorpJobFair from "../assets/media/layouts/corporate-job-fair.webp";
+import layoutRestBestSeller from "../assets/media/layouts/restaurant-best-seller.webp";
+import layoutRestCafeMenu from "../assets/media/layouts/restaurant-cafe-menu.webp";
+import layoutRetailFurniture from "../assets/media/layouts/retail-furniture.webp";
+import layoutRetailHolidayPromo from "../assets/media/layouts/retail-holiday-promo.webp";
+import layoutCorpConference from "../assets/media/layouts/corporate-conference.webp";
+import layoutCorpLiveEvent from "../assets/media/layouts/corporate-live-event.webp";
 import layoutGovSchedule from "../assets/media/layouts/government-schedule.webp";
 import layoutGovHoliday from "../assets/media/layouts/government-holiday.webp";
 import lockupDisplaySync from "../assets/brand/lockup-display-sync-plum.webp";
@@ -926,14 +928,29 @@ const INDUSTRY_SHOWCASE: Record<
   // Both retail items are real 1920×1080 layouts, so each fills the 16:9 panel edge to edge. (The raw
   // 2000×1294 "Display Solutions" media letterboxed and was rejected, 2026-09-08; the user published it
   // as the layout "Kiwi Technologies - 2" instead.)
-  retail: { device: "digital-totem", images: [layoutKiwiTech, layoutKiwiTech2] },
-  // The restaurant unit is the landscape indoor display now, so the card runs the one
-  // 16:9 restaurant layout we have; it holds still until a second landscape one exists.
-  restaurant: { device: "indoor-display", images: [layoutRestaurantLandscape] },
-  // Corporate and government now run the user's real artwork (2026-09-10). Each pair matches
-  // its unit's panel exactly: the corporate stills are 3100x8000 (0.3875) like the E-Poster's
-  // 1488x3840 panel, the government stills are 1080x1920 for the tabletop's 9/16 panel.
-  corporate: { device: "poster-stand", images: [layoutCorpProfile, layoutCorpJobFair] },
+  // Retail's own ultra-tall stills (user, 2026-09-11): 2392x6177 = 0.3872 against the
+  // totem's measured 0.390 panel, i.e. 0.7% off — no visible bars.
+  retail: { device: "digital-totem", images: [layoutRetailFurniture, layoutRetailHolidayPromo] },
+  // Restaurant runs the user's two new boards, each CROPPED to 16:9 rather than squeezed
+  // (user, 2026-09-11) — the published "Signature Items" layout was replaced on their call.
+  // Cafe menu: 2000x1294 less 69 px of top blue margin and the 100 px checkerboard foot.
+  // Best seller: 2000x1214 less 44 px top / 45 px bottom, which the cream panel had spare
+  // (44 above the "Food" tag, 56 below the drinks list) — it only cuts deeper into the two
+  // pasta photos that already bled off the canvas, and trims the red panel's corner curves.
+  // Nothing readable was lost in either, though best seller's dish descriptions still render
+  // near 3.5 px at this panel size; it reads as a dense board rather than as words.
+  restaurant: {
+    device: "indoor-display",
+    images: [layoutRestBestSeller, layoutRestCafeMenu],
+  },
+  // Corporate's stills are 1920x1080, so the card runs the landscape Rotatable Movable
+  // (user, 2026-09-11) — the portrait poster stand could only have letterboxed them 34 %.
+  // (The 3100x8000 corporate stills cut for the E-Poster on 2026-09-10 went with it.)
+  corporate: {
+    device: "rotatable-landscape",
+    images: [layoutCorpConference, layoutCorpLiveEvent],
+  },
+  // Government: the user's 1080x1920 stills on the tabletop's 9/16 panel (2026-09-10).
   government: { device: "tabletop", images: [layoutGovSchedule, layoutGovHoliday] },
 };
 const showcaseContents = (s: (typeof SCENARIOS)[number], titles?: string[]) =>
