@@ -3,6 +3,8 @@ import floorStanding from "../../assets/devices/floor-standing.webp";
 import outdoor from "../../assets/devices/outdoor.webp";
 import ePoster from "../../assets/devices/e-poster.webp";
 import tabletop from "../../assets/devices/tabletop.webp";
+import digitalTotem from "../../assets/devices/digital-totem.webp";
+import posterStand from "../../assets/devices/poster-stand.webp";
 import type { Quad } from "./homography";
 
 /**
@@ -22,7 +24,13 @@ import type { Quad } from "./homography";
  * panel, so 1080x1920 content fills it edge to edge.
  */
 export type DeviceId =
-  "indoor-display" | "floor-standing" | "outdoor" | "e-poster" | "tabletop";
+  | "indoor-display"
+  | "floor-standing"
+  | "outdoor"
+  | "e-poster"
+  | "tabletop"
+  | "digital-totem"
+  | "poster-stand";
 
 export interface DeviceSpec {
   /** Catalog product name, as printed on kiwi.com.ph. */
@@ -102,6 +110,38 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
       [73.2, 8.33],
       [93.64, 86.56],
       [31.1, 91.78],
+    ],
+    screenAspect: 9 / 16,
+  },
+  /**
+   * The two units the user supplied for the Solutions row on 2026-09-11 (`units/`).
+   * The totem render is effectively frontal (its top and bottom panel edges differ by
+   * 0.2 %), so the measured rectangle IS the panel — no quad needed. Its panel is
+   * 0.390 w/h, i.e. an ultra-tall 1:2.56 poster, NOT 9/16.
+   */
+  "digital-totem": {
+    name: "Indoor Digital Totem",
+    src: digitalTotem,
+    w: 381,
+    h: 900,
+    screen: { left: 5.31, top: 4.77, width: 78.26, height: 84.88 },
+  },
+  /**
+   * Poster stand: shot at an angle, so it carries a quad. `screenAspect` is the 9/16
+   * the unit's portrait panel is assumed to be — the quad's own edges are foreshortened
+   * (325 px across vs 642 px down) and would lay content out squashed.
+   */
+  "poster-stand": {
+    name: "Digital Poster Stand",
+    src: posterStand,
+    w: 531,
+    h: 900,
+    screen: { left: 37.82, top: 2.65, width: 39.88, height: 45.65 },
+    quad: [
+      [37.82, 2.65],
+      [74.83, 5.43],
+      [77.7, 46.88],
+      [40.11, 48.3],
     ],
     screenAspect: 9 / 16,
   },
