@@ -4,7 +4,7 @@ import outdoor from "../../assets/devices/outdoor.webp";
 import ePoster from "../../assets/devices/e-poster.webp";
 import tabletop from "../../assets/devices/tabletop.webp";
 import digitalTotem from "../../assets/devices/digital-totem.webp";
-import posterStand from "../../assets/devices/poster-stand.webp";
+import rotatableLandscape from "../../assets/devices/rotatable-landscape.webp";
 import type { Quad } from "./homography";
 
 /**
@@ -30,7 +30,7 @@ export type DeviceId =
   | "e-poster"
   | "tabletop"
   | "digital-totem"
-  | "poster-stand";
+  | "rotatable-landscape";
 
 export interface DeviceSpec {
   /** Catalog product name, as printed on kiwi.com.ph. */
@@ -62,7 +62,11 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
     src: indoorDisplay,
     w: 1389,
     h: 793,
-    screen: { left: 1.11, top: 1.95, width: 97.67, height: 96.3 },
+    // Re-measured 2026-09-11: the old rect (1.11/1.95/97.67/96.3) sat ~0.8 % inside the
+    // panel on the right, so the render's own pale wallpaper showed as a white hairline
+    // beside the content (user spotted it on the cafe menu). Panel is 1.779 — 16:9, as the
+    // catalogue says — and this rect matches the lit area to the pixel.
+    screen: { left: 0.67, top: 1.75, width: 98.44, height: 96.89 },
   },
   "floor-standing": {
     name: "Indoor Floor-standing Large Format Display",
@@ -114,36 +118,37 @@ export const DEVICES: Record<DeviceId, DeviceSpec> = {
     screenAspect: 9 / 16,
   },
   /**
-   * The two units the user supplied for the Solutions row on 2026-09-11 (`units/`).
-   * The totem render is effectively frontal (its top and bottom panel edges differ by
-   * 0.2 %), so the measured rectangle IS the panel — no quad needed. Its panel is
-   * 0.390 w/h, i.e. an ultra-tall 1:2.56 poster, NOT 9/16.
+   * Retail's unit, identified against the catalogue as the "Indoor Full Screen
+   * Floor-standing Display" (same render, mean|diff| 0.6). Effectively frontal — its top and
+   * bottom panel edges differ by 0.2 % — so the measured rectangle IS the panel, no quad
+   * needed. Panel is 0.390 w/h, an ultra-tall 1:2.56 poster, NOT 9/16: kiwi.com.ph prints
+   * "1920 x 1080 pixels (2K)" for this unit, but it prints that for all 12 products on the
+   * page, so the render wins (same catalogue flaw as the E-Poster).
    */
   "digital-totem": {
-    name: "Indoor Digital Totem",
+    name: "Indoor Full Screen Floor-standing Display",
     src: digitalTotem,
     w: 381,
     h: 900,
-    screen: { left: 5.31, top: 4.77, width: 78.26, height: 84.88 },
+    // Re-measured 2026-09-11 off the lit panel (the saturated-ink mask had clipped its
+    // right edge, leaving a pale hairline): 0.3914 w/h.
+    screen: { left: 5.25, top: 4.78, width: 78.48, height: 84.89 },
   },
   /**
-   * Poster stand: shot at an angle, so it carries a quad. `screenAspect` is the 9/16
-   * the unit's portrait panel is assumed to be — the quad's own edges are foreshortened
-   * (325 px across vs 642 px down) and would lay content out squashed.
+   * "Rotatable Digital Display – Movable" in LANDSCAPE, pulled from the catalogue render
+   * on kiwi.com.ph/digital-solutions (user, 2026-09-11) because the corporate stills are
+   * 1920×1080. Frontal, and the panel is a true rectangle (its left/right edges wander by
+   * 1–2 px over 252 rows), so the measured rect IS the panel: 441×252 = 1.750 against the
+   * catalogue's 1920×1080, i.e. 1.6 % — under a pixel at the size it draws, so no
+   * `screenAspect` override. The white PORTRAIT variant of this same unit is the render
+   * the user sent as "Corporate-unit" (identical ink box, 870×1474); it is unused now.
    */
-  "poster-stand": {
-    name: "Digital Poster Stand",
-    src: posterStand,
-    w: 531,
+  "rotatable-landscape": {
+    name: "Rotatable Digital Display – Movable",
+    src: rotatableLandscape,
+    w: 576,
     h: 900,
-    screen: { left: 37.82, top: 2.65, width: 39.88, height: 45.65 },
-    quad: [
-      [37.82, 2.65],
-      [74.83, 5.43],
-      [77.7, 46.88],
-      [40.11, 48.3],
-    ],
-    screenAspect: 9 / 16,
+    screen: { left: 15.45, top: 5.56, width: 76.56, height: 28.0 },
   },
 };
 
